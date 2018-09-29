@@ -15,6 +15,7 @@ import {
   createStackNavigator
 } from 'react-navigation';
 import './src/services/ReactotronConfig';
+import RegistrationScreen from './src/components/Registration/RegistrationScreen';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -24,6 +25,7 @@ const MainNavigator = createStackNavigator({
   Splash: { screen: Splash },
   Main: { screen: Navigation },
   Login: { screen: LoginScreen },
+  Registration: { screen : RegistrationScreen },
 },
 {
   headerMode: 'screen',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image, Button } from 'react-native';
-import bgImage from '../../../assets/images/login-background2.png';
+import bgImage from '../../../assets/images/background.jpg';
 import logo from '../../../assets/images/healthscout-logo.png';
 
 // import { NavigationActions } from 'react-navigation';

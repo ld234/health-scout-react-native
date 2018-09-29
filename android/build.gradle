@@ -3,6 +3,10 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url 'https://dl.google.com/dl/android/maven2/'
+            name 'Google'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
@@ -15,12 +19,50 @@ buildscript {
 allprojects {
     repositories {
 				// Add jitpack repository (added by react-native-spinkit)
-				maven { url "https://jitpack.io" }
+		maven { url "https://jitpack.io" }
         mavenLocal()
         jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
+        }
+        maven {
+            url 'https://dl.google.com/dl/android/maven2/'
+            name 'Google'
+        }
+        maven {
+            url 'https://maven.google.com'
+        }
+        maven {
+            url 'https://customers.pspdfkit.com/maven/'
+
+            credentials {
+                username 'pspdfkit'
+                password 'TRIAL-ig_m1xgDIurshwDjETsNoYpZIOUF0_R_ikAsDHMtRR5meYl1eQUulQXAt7qasLUwjxe_IZa19Z2whMsDd3L30g'
+            }
+        }
+    }
+}
+
+ext {
+    buildToolsVersion = "26.0.3"
+    minSdkVersion = 16
+    compileSdkVersion = 23
+    targetSdkVersion = 26
+    supportLibVersion = "26.1.0"
+}
+
+subprojects {
+    afterEvaluate {project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion 26
+                buildToolsVersion '26.0.3'
+            }
+            dependencies {
+                compile "com.android.support:appcompat-v7:26.1.0"
+                compile 'com.pspdfkit:pspdfkit-demo:4.8.0'
+            }
         }
     }
 }

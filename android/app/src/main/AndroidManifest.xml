@@ -1,15 +1,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.healthscout">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RUN_INSTRUMENTATION"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+      tools:replace="android:allowBackup,icon,theme,label,name">
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -18,9 +26,26 @@
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+     <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+     <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+     <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+     <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+      <meta-data
+        android:name="foxit_sn"
+        android:value="s1KRl0zSVDdB1CQs3jf1nJLx5DVBNnRBAc+sOHGfUTvAXXqCcjhAMg=="/>
+      <meta-data
+        android:name="foxit_key"
+        android:value="ezJvjmkmtGh3d3raNiXMK8n9Ult8ApGeSQ7cJFazbY98luk5DeYa2PlVrzl/QQ/ha3oHg3vXQooJ8cIoAXahhLzZMcKFPbl+lLbTWsspaKJ8iQ7KYXoFbe/wlEuD0+slygso1m9GPsbU+7S8kV+9vzUgmEhJ9zWY/d9QlfKKyozFLJ0Gqoy/Z+4sLx8NIRWepa0lnww4XlTuSArG5hA//5Lr79YUCEsokp5/fjslO7Dzvb4DUmgxeSOD58QxsYY9QDVJJ68Yz5/6ErW6um4hrftOjRpoqztl4i8rl0hDzcJ9isxLk/nHMYtKYQVF3oAeQtLEDotG6p+4SlbrMWTtRsdfC6/EFcoJi/pRUX92ccpPTmsvZS4HIcaxZJbnTWCpHYopXvglZ4gE1TAISf/t+cx5yMogLAeWgY3PvRVzgZ/Oc5sUVXNhnldx3hpoeTdiMb1JMcZSi392xc1fo69G1wOKYXoSU2OQQy8oOpLTTij1D8/ae5P2AELqzVHOzcVYuzMZgHu9mTn9xVPSmrH3W/QteXNMotNTEsqkkdaV1Bs0T3Ch8dAKa+i2/5MQdxjztzLY1AeGSTorc8azfEsQH1JR6PO6DrEVj8N+6n19L9BJ29EHXU5Jhl6VEu1cxNyOSrT1iBMusKcMLb0epyDfnIbPAPNPAQoop3JtUcWQRPW/NIEgRHEyRDPZWO5Q4lmq0b76ei4fUOwUWbhjdtPHT802CUw/Or2TNXWZ+28x+rDIvlNt4wzv/gVLnWH1UnAxhTfyO3TAF0vggvSxLo0uNXbUFEeW8muZQayWXrRqs0x9Qb702VGLqnCqHHkfIeCNblC780qHmwmGIquXlAabDIA7P3JRTiT1MhD82z48cbfzLS0Fwm14Ami+j5ZFguIZSuOUwzMOf+R/mtTeVRft9Rq7JibDPJKrM3omTsE2iWSRfwTUXsdKP+MMo+MH7krRmGOlcIB37a/6DcaOe+ImEkmMDW37nZBopki17gJWT+gDSMRnu6s/ksULesZjCFj+KK4ZgM2rSwgxClbf0c1JFDrUfRpvabjW0K5e+b91jqKqSeOZM45b1jxMTyp2RvoE9KC54HHFrdL2vrSiXmwHzvtFhVDDZldHm4NnyFfCvMec0QG4Xa/8vKJfVIrnXlhugPHuZU0jpy/ewoobFF8sgX8WjPRWtFPqEMFMLa/uzvA+IHK6+ok7m4FtEWHcGj4Nb4vyOvIwG3qN2y7WoBp0tmXv/gSUGF6cTUnQxU6FTPsd4A=="/>
+      <meta-data
+        android:name="pspdfkit_license_key"
+        android:value="UwVh0UZSWm-QcsApCRkQwlo2bPOwfreOqlTMqA7ElCh1x4LaRBRfvAOhyZvnOE8l8v7rPtj38T3s_bixCECzwIMmFTNTKOGc8SkdsW8SsuidEFZ6E5YmTkuJOrsMYNQAzDaO5g-SPAi6Y6DAhGo7LaS_tzEeUOIurqmqsxtlUdbKiBKc5b2Pva-jFlDDEF9Kj2A7saCPLMxThfSWCWNU3rvi-G-Sof6ZeeTh_EnGC3hNGL3mF-FaElx0MnnyEC9EAW_lULo1UOD8bFZzcQhKi1RG3JxRDn9ZfcUgM5vBdzIzfai3UOCwA6DjhFRaGl8IUUwqrHIyoQNNLBVwWfKcmtXdxShn-JwodtxEdpKk3iyVZ_b4oHvjvqHSACPIaDa8f56Ry9g2n9uPP83VxXWgbO1Np_lrWNvomg0jtHSam4oNCxslvqmgpDdIHpHI0Cqt"/>
+      <activity
+        android:name="com.foxitreader.PDFReaderActivity"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+        android:screenOrientation="fullSensor"/>
     </application>
 
 </manifest>

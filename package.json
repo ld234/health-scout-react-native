@@ -19,31 +19,40 @@
     "preset": "react-native"
   },
   "dependencies": {
+    "@foxitsoftware/react-native-foxitpdf": "^6.1.2",
     "axios": "^0.18.0",
     "prop-types": "^15.6.2",
     "react": "16.3.1",
     "react-native": "~0.55.2",
     "react-native-elements": "^1.0.0-beta5",
+    "react-native-fs": "^2.11.15",
     "react-native-indicators": "^0.13.0",
     "react-native-keyboard-aware-scroll-view": "^0.7.2",
+    "react-native-linear-gradient": "^2.4.2",
     "react-native-material-bottom-navigation": "^1.0.0",
+    "react-native-material-textfield": "^0.12.0",
     "react-native-paper": "^2.0.1",
+    "react-native-pdf": "^5.0.5",
+    "react-native-pdf-lib": "^0.2.0",
+    "react-native-pspdfkit": "github:PSPDFKit/react-native",
     "react-native-router-flux": "^4.0.1",
     "react-native-spinkit": "^1.1.1",
     "react-native-star-rating": "^1.1.0",
     "react-native-status-bar-height": "^2.0.0",
     "react-native-textinput-effects": "^0.4.2",
     "react-native-vector-icons": "^4.2.0",
+    "react-native-view-pdf": "^0.4.1",
     "react-navigation": "^2.14.0",
     "react-navigation-material-bottom-tabs": "^0.4.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-persist": "^5.10.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "rn-fetch-blob": "^0.10.13"
   },
   "rnpm": {
     "assets": [
-	    "./assets/fonts/"
+      "./assets/fonts/"
     ]
   }
 }

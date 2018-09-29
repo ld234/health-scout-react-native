@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image, TextInput, Dimensions, 
   TouchableOpacity, TouchableWithoutFeedback, ScrollView, Keyboard, Platform} from 'react-native';
-import bgImage from '../../../assets/images/login-background2.png';
+import bgImage from '../../../assets/images/background.jpg';
 import logo from '../../../assets/images/healthscout-logo.png';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { login } from '../../actions/auth.actions';
 import { connect } from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
 
 const {width: WIDTH} = Dimensions.get('window');
 
@@ -53,6 +54,10 @@ class LoginScreen extends React.Component {
     this.setState({keyboardShow: false})
   }
 
+  navigateToRegistration = () => {
+    this.props.navigation.navigate('Registration');
+  }
+
   renderFormBody = () => {
     return (
       <View style={styles.backgroundContainer}>
@@ -89,13 +94,19 @@ class LoginScreen extends React.Component {
               <Icon name={this.state.press === false ? 'ios-eye-outline' : 'ios-eye-off-outline'} size={30} color={'rgba(255,255,255,.7)'}/>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.btnLogin} onPress={() => this.props.login(this.state.username, this.state.password, () => {
+        <TouchableOpacity onPress={() => this.props.login(this.state.username, this.state.password, () => {
             this.props.navigation.navigate('Main');
             console.log('called');
-          })}>
-          <Text style={styles.textLogin}>LOGIN</Text>
+        })} >
+          <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#021B79','#0575E6' ]}
+            locations={[0,0.7]}
+            style={styles.btnLogin}>
+            <Text style={styles.textLogin}>
+              LOGIN
+            </Text>
+          </LinearGradient>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnRegister}>
+        <TouchableOpacity style={styles.btnRegister} onPress={this.navigateToRegistration}>
           <Text style={styles.textLogin}>REGISTER</Text>
         </TouchableOpacity>
       </View>
@@ -128,8 +139,12 @@ class LoginScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-
+  linearGradient: {
+    flex: 1,
+    width: WIDTH - 80,
+    borderRadius: 45,
+    justifyContent: 'center',
+    marginTop: 20,
   },
   backgroundContainer: {
     flex: 1,
