@@ -10,6 +10,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import LoginScreen from './src/components/Login/LoginScreen';
 import Splash from './src/components/Login/Splash';
 import Navigation from './src/components/Navigation/Navigation';
+import MyPractitionerProfile from './src/components/MyPractitioner/MyPractitionerProfileScreen/MyPractitionerProfileScreen';
 // import { Font } from 'expo';
 import {
   createStackNavigator
@@ -21,15 +22,35 @@ const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 const persistor = persistStore(store);
 
+
+// export const MyPractitionerStack = StackNavigator({
+//   MyPracList: {
+//     screen: (props) => <MyPractitioners />,
+//     // screen: MyPractitioners,
+
+//     navigationOptions: {
+//       header: null
+//     }
+//   },
+//   PracDetail:{
+//     screen: MyPractitionerDetail,
+//     navigationOptions: {
+//       header: null
+//     }
+//   },
+// })
+
 const MainNavigator = createStackNavigator({
   Splash: { screen: Splash },
   Main: { screen: Navigation },
   Login: { screen: LoginScreen },
   Registration: { screen : RegistrationScreen },
+  PracProfile: {screen: MyPractitionerProfile},
 },
 {
   headerMode: 'screen',
   cardStyle: { backgroundColor: '#FFFFFF' },
+  tintColor: 'white',
 })
 
 export default class App extends React.Component {
