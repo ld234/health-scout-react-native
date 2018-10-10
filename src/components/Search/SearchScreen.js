@@ -1,7 +1,17 @@
 import React from 'react';
+import {TouchableOpacity, View, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import PracCard from './PracCard';
-import SearchBar from './SearchBar';
-import { ScrollView, StyleSheet, View, Image, Text } from 'react-native';
+import { connect } from 'react-redux';
+import { toggleSearchOptionModal, setSearchPracType, setSelectedSpecialties, setSelectedSortOption } from '../../actions/render.actions';
+import { getPracTypeSpecialties } from '../../actions/practitioner.actions';
+import Modal from 'react-native-modal';
+import {Surface} from 'react-native-paper';
+import LocationList from './LocationList';
+import SpecialtyList from './SpecialtyList';
+import DistanceList from './DistanceList';
+import FilterButton from './FilterButton';
+
+import { ScrollView, StyleSheet, Image, Text } from 'react-native';
 import {
     BallIndicator,
     BarIndicator,
@@ -15,63 +25,477 @@ import {
   } from 'react-native-indicators';
 
 import logo from '../../../assets/images/healthscout-logo.png'
-import { SCREEN_HEIGHT } from '../../constants';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants';
+import RadioGroup from 'react-native-radio-button-group';
+import {
+    MKRadioButton,
+    MKColor,
+    setTheme,
+  } from 'react-native-material-kit';
+
+setTheme({radioStyle: {
+ fillColor: '#17ac71ee',
+ borderOnColor: '#17ac71ee',
+ borderOffColor: '#17ac7166',
+ rippleColor: `rgba(${MKColor.RGBTeal},.15)`,
+}});
+
+import { PermissionsAndroid } from 'react-native';
+
+async function requestLocationPermission() {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        'title': 'HealthScout Location Permission',
+        'message': 'HealthScout needs access to your location.'
+      }
+    )
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("You can use the camera")
+    } else {
+      console.log("Camera permission denied")
+    }
+  } catch (err) {
+    console.warn(err)
+  }
+}
+
+requestLocationPermission();
   
 class SearchScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.radioGroup = new MKRadioButton.Group();
+        this.radioGroup2 = new MKRadioButton.Group();
+        this.state = {
+            isModalVisible: false,
+            value: 0,
+            selectedSortOption: this.props.renderState.selectedSortOption,
+            // pracTypes: [
+            //     {id: 0, labelView: (<View><Text style={styles.optionText}>Dietitian</Text></View>) },
+            //     {id: 1, labelView: (<View><Text style={styles.optionText}>Physiotherapist</Text></View>) },
+            //     {id: 2, labelView: (<View><Text style={styles.optionText}>Exercise Physiologist</Text></View>) }
+            // ],
+            specialties: [],
+            pracType: null,
+            specialty: null,
+            radius: 10,
+            openSearch: true,
+            selected: (new Map(): Map<string, boolean>)
+        }
+    }
+
+    _onChecked = (checked, pracType) => {
+        console.log(pracType, checked);
+        if(checked){
+            // this.props.setSearchPracType(pracType);
+            // this.props.getPracTypeSpecialties(pracType);
+            this.setState({pracType});
+        }
+    }
+
+    _renderFAB = () => {
+        return <FilterButton />
+    }
+
+    deleteSpecialty = (id) =>{
+        this.setState((state) => {
+            // copy the map rather than modifying state.
+            const selected = new Map(state.selected);
+            selected.delete(id);
+            return {selected};
+        });
+    }
+
+    renderPracTypeRadioGroup = () =>{
+        return (
+            <View style={styles.modal}>
+                {/* <RadioGroup
+                    options={this.state.types}
+                    activeButtonId="0"
+                    onChange={(value) => {this.setState({value:value})}}
+                    circleStyle={{
+                        width: 30,
+                        height: 30,
+                        marginRight: 15,
+                        borderWidth: 3,
+                        borderColor: '#ddd',
+                        fillColor: '#17ac71',
+                    }}
+                /> */}
+                <View style={{flex: 0.45, width: SCREEN_WIDTH * 0.6, alignItems: 'flex-start'}}>
+                    <View style={{flex: 0.33, flexDirection: 'row', justifyContent: 'center'}}>
+                        <MKRadioButton
+                            group={this.radioGroup}
+                            checked={this.props.renderState.searchPracType === 'Dietitian' ? true: false}
+                            onCheckedChange={(event) => this._onChecked(event.checked, 'Dietitian')}
+                        />
+                        <Text style={this.state.pracType !== 'Dietitian'? 
+                            styles.optionText : styles.activeText}>Dietitian</Text>
+                    </View>
+                    <View style={{flex: 0.33, flexDirection: 'row', justifyContent: 'center'}}>
+                        <MKRadioButton 
+                            group={this.radioGroup}
+                            checked={this.props.renderState.searchPracType === 'Physiotherapist' ? true: false}
+                            onCheckedChange={(event) => this._onChecked(event.checked, 'Physiotherapist')}
+                        />
+                        <Text style={this.state.pracType !== 'Physiotherapist'? 
+                            styles.optionText : styles.activeText}>Physiotherapist</Text>
+                    </View>
+                    <View style={{flex: 0.33, flexDirection: 'row', justifyContent: 'center'}}>
+                        <MKRadioButton 
+                            group={this.radioGroup}
+                            checked={this.props.renderState.searchPracType === 'Exercise Physiologist' ? true: false}
+                            onCheckedChange={(event) => this._onChecked(event.checked, 'Exercise Physiologist')}
+                        />
+                        <Text style={this.state.pracType !== 'Exercise Physiologist'? 
+                            styles.optionText : styles.activeText}>
+                            Exercise Physiologist
+                        </Text>
+                    </View>
+                </View>
+                <TouchableOpacity style={styles.cancelButton} onPress={() => {
+                    this.props.toggleSearchOptionModal();
+                    this.setState({pracType: null});
+                }}>
+                    <Text style={styles.cancelButtonText}>CANCEL</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.closeButton} onPress={() => {
+                    this.props.setSearchPracType(this.state.pracType);
+                    this.props.getPracTypeSpecialties(this.state.pracType);
+                    this.props.toggleSearchOptionModal();
+                }}>
+                    <Text style={styles.closeButtonText}>SELECT</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
+    renderDistanceList = () => {
+        return (
+            <View style={styles.listModal}>
+                <DistanceList />
+                <TouchableOpacity style={styles.closeButton} onPress={() => this.props.toggleSearchOptionModal()}>
+                    <Text style={styles.closeButtonText}>CLOSE</Text>
+                </TouchableOpacity>
+            </View>)
+    }
+
+    renderSpecialtyList = () => {
+        if(this.props.pracState.isGetPracTypeSpecialtysPending){
+            return <View><Text>Fetching data...</Text></View>
+        }
+        else if(!(this.props.pracState.pracTypeSpecialties && this.props.pracState.pracTypeSpecialties.length)){
+            return (
+                <View style={styles.modal}>
+                    <SpecialtyList />
+                    <TouchableOpacity style={styles.closeButton} onPress={() => this.props.toggleSearchOptionModal()}>
+                        <Text style={styles.closeButtonText}>OK</Text>
+                    </TouchableOpacity>
+                </View>)
+        }
+        else {
+            return (
+                <View style={styles.listModal}>
+                    <SpecialtyList selectedList={Array.from(this.state.selected.keys())? Array.from(this.state.selected.keys()): []} 
+                        callback={(id) => this._onPressItem(id)}
+                        delete={(id) => this.deleteSpecialty(id)} />
+                    <TouchableOpacity style={styles.cancelButton} onPress={() => this.props.toggleSearchOptionModal()}>
+                        <Text style={styles.cancelButtonText}>CANCEL</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.closeButton} onPress={() => {
+                        this.props.toggleSearchOptionModal();
+                        this.props.setSelectedSpecialties(Array.from(this.state.selected.keys()));
+                    }}>
+                        <Text style={styles.closeButtonText}>SELECT</Text>
+                    </TouchableOpacity>
+                </View>)
+        }
+    }
+
+    _onOptionChecked = (checked, opt) => {
+        if(checked)
+            this.setState({selectedSortOption: opt});
+    }
+
+    renderSortOptions = () => {
+        return (
+            <View style={styles.modal}>
+                <View style={{flex: 0.45, width: SCREEN_WIDTH * 0.6, alignItems: 'flex-start'}}>
+                    <View style={{flex: 0.33, flexDirection: 'row', justifyContent: 'center'}}>
+                        <MKRadioButton
+                            group={this.radioGroup}
+                            checked={this.state.selectedSortOption === 0 ? true: false}
+                            onCheckedChange={(event) => this._onOptionChecked(event.checked, 0)}
+                        />
+                        <Text style={this.state.selectedSortOption !== 0? 
+                            styles.optionText : styles.activeText}>Shortest Distance</Text>
+                    </View>
+                    <View style={{flex: 0.33, flexDirection: 'row', justifyContent: 'center'}}>
+                        <MKRadioButton 
+                            group={this.radioGroup}
+                            checked={this.state.selectedSortOption === 1 ? true: false}
+                            onCheckedChange={(event) => this._onOptionChecked(event.checked, 1)}
+                        />
+                        <Text style={this.state.selectedSortOption !== 1? 
+                            styles.optionText : styles.activeText}>Highest Rating</Text>
+                    </View>
+                </View>
+                <TouchableOpacity style={styles.closeButton} onPress={() => {
+                    this.props.setSelectedSortOption(this.state.selectedSortOption);
+                    this.props.toggleSearchOptionModal();
+                }}>
+                    <Text style={styles.closeButtonText}>SELECT</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    renderModal = (modalType) => {
+        switch(modalType) {
+            case 0:
+                return (
+                    <Modal onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
+                        {this.renderPracTypeRadioGroup()}
+                    </Modal>
+                );
+            case 1:
+                return (
+                    <Modal onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
+                        {this.renderSpecialtyList()}
+                    </Modal>
+                );
+            case 2: 
+                return (
+                    <Modal onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
+                        {this.renderDistanceList()}
+                    </Modal>
+                );
+            case 3:
+                return (
+                    <Modal onBackdropPress={() => {
+                        this.props.toggleSearchOptionModal();
+                        this.props.setSelectedSortOption(this.state.selectedSortOption);
+                    }} isVisible={this.props.renderState.isSearchOptionModalShown}>
+                        {this.renderSortOptions()}
+                    </Modal>
+                )
+            default:
+                return null;
+        }
+    }
+
+    _renderLocationList = () => {
+        const listLength = this.props.renderState.locationList.length;
+        console.log('listlength', listLength);
+        const height = Number.isInteger(listLength) && listLength <= 5 ?  listLength*60 : 300;
+        if(listLength)
+        return (
+            <Surface style={{
+                borderColor: '#ddd',
+                borderRadius: 3,
+                borderWidth: 1,
+                width: SCREEN_WIDTH -10, 
+                marginLeft: 5, 
+                backgroundColor: '#fff', 
+                position: 'absolute', 
+                top: 5, 
+                zIndex: 3000,
+                elevation: 4,
+                height: height
+            }}>
+                <LocationList />
+            </Surface>);
+        else return null;
+    }
+  
+    _onPressItem = (id) => {
+      // updater functions are preferred for transactional updates
+      this.setState((state) => {
+        // copy the map rather than modifying state.
+        const selected = new Map(state.selected);
+        selected.set(id, true);
+        return {selected};
+      });
+      Keyboard.dismiss();
+    };
+
     render() {
-        const list = [0,1,2];
-        if (!this.props.searchState){
+        const specialties = this.props.renderState.selectedSpecialties ? this.props.renderState.selectedSpecialties : [];
+        let list = this.props.pracState.pracSearchResult.map(item => {
+            if(item.rating == null) 
+                return {...item, rating: 0};
+            return item;
+        })
+            .filter(prac => specialties.every(sp => prac.Specialties.map(s => s.specialty).includes(sp)));
+        if (this.props.renderState.searchPracType && this.props.renderState.searchPracType.length) {
+            list = list.filter(prac => prac.pracType === this.props.renderState.searchPracType);
+        }
+        console.log('selected sort opt', this.props.renderState.selectedSortOption);
+        if (this.props.renderState.selectedSortOption == 0){
+            list = list.sort((a, b) => parseFloat(b.distance) - parseFloat(a.distance)).slice();
+            console.log('option 0', list);
+        } else if (this.props.renderState.selectedSortOption == 1){
+            list = list.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating)).slice();
+            console.log('option 1', list);
+        }
+        // console.log('after filter', list, list.length)
+        // console.log('ispending?', this.props.pracState.isSearchPracPending);
+        if (this.props.pracState.isSearchPracPending){
             return (
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo}></Image>
                     <Text style={styles.text}>Scouting for practitioner...</Text>
-                    <DotIndicator color='#47BD5D' size={12} animationDuration={1500} />
+                    <DotIndicator color='#17ac71' size={12} animationDuration={1000} />
                 </View>
-                
             );
         }
         return (
-            <View style={styles.screenContent}>
-                <SearchBar />
-                <ScrollView style={styles.screenContent} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewContent}>
-                    {list.map((item, idx) => {
-                        if (idx ===  0 )
-                            return <PracCard top={true} bottom={false} key={item} />;
-                        else if (idx === list.length - 1)
-                            return <PracCard top={false} bottom={true} key={item} />;
-                        else 
-                            return <PracCard top={false} bottom={false} key={item} />;
-                    })}
-                </ScrollView>
-            </View>
+            
+                <View style={styles.screenContent}>
+                    {/* <SearchBar /> */}
+                    
+                    <ScrollView style={styles.screenContent} showsVerticalScrollIndicator={false} keyboardDismissMode='on-drag'
+                        keyboardShouldPersistTaps={'always'} contentContainerStyle={styles.scrollViewContent}>
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{flex:1}}>
+                        <View onStartShouldSetResponder={() => true} >
+                            {list.map((item, idx) => {
+                                if (idx ===  0 )
+                                    return <PracCard data={item} top={true} bottom={false} key={idx} />;
+                                else if (idx === list.length - 1)
+                                    return <PracCard data={item} top={false} bottom={true} key={idx} />;
+                                else 
+                                    return <PracCard data={item} top={false} bottom={false} key={idx} />;
+                            })}
+                        </View>
+                        </TouchableWithoutFeedback>
+                    </ScrollView>
+                    {this.renderModal(this.props.renderState.searchOptionModalType)}
+                    {this.props.renderState.isLocationSuggestionShown ? 
+                        this._renderLocationList() : null}
+                    {this._renderFAB()}
+                </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    overlay:{
+        borderColor: '#ddd',
+        borderRadius: 3,
+        borderWidth: 1,
+        // height: 300,
+        width: SCREEN_WIDTH -10, 
+        marginLeft: 5, 
+        backgroundColor: '#fff', 
+        position: 'absolute', 
+        top: 5, 
+        zIndex: 3000,
+        elevation: 4,
+    },
+    closeButtonText:{
+        fontFamily: 'Quicksand-Medium',
+        fontSize: 16,
+        color: '#17ac71',
+        position:'absolute',
+        right: 0,
+    },
+    cancelButtonText:{
+        fontFamily: 'Quicksand-Medium',
+        fontSize: 16,
+        color: '#17ac71',
+        position:'absolute',
+        right: 0,
+    },
+    cancelButton: {
+        width: 65,
+        height: 50,
+        alignItems: 'center',
+        position: 'absolute',
+        right: 90,
+        bottom: -5,
+    },
+    closeButton: {
+        width: 65,
+        height: 50,
+        alignItems: 'center',
+        position: 'absolute',
+        right: 20,
+        bottom: -5,
+    },
+    optionText:{
+        fontFamily: 'Quicksand-Regular',
+        fontSize: 20,
+        paddingBottom: 4,
+    },
+    activeText:{
+        fontFamily: 'Quicksand-Medium',
+        fontSize: 20,
+        paddingBottom: 4,
+        color: '#17ac71',
+    },
+    listModal:{
+        height: SCREEN_HEIGHT - 200,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        justifyContent: 'center',
+        paddingLeft: 5,
+        paddingTop: 5,
+        paddingBottom: 50,
+        paddingRight: 5,
+    },
+    modal:{
+        height: SCREEN_HEIGHT - 400,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     screenContent:{
-        paddingBottom: 60,
+        paddingBottom: 0,
+        flex:1,
     },
     scrollViewContent: {
         flexGrow: 1,
         // flexDirection: 'row',
     },
     logo: {
-        width: 110,
+        width: 112,
         height: 149,
         marginBottom: 10
     },
     logoContainer: {
         alignItems: 'center',
-        marginTop: SCREEN_HEIGHT * 0.2
+        marginTop: SCREEN_HEIGHT * 0.1
     },
     text: {
         fontFamily: 'Quicksand-Medium',
-        color:'#47BD5D',
+        color:'#17ac71',
         marginBottom: 20,
         marginTop: 0,
         fontSize: 20
     }
-})
+});
 
-export default SearchScreen;
+
+const mapStateToProps = state => {
+    return {
+      renderState: state.renderSearchState,
+      pracState: state.practitionerState,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleSearchOptionModal: (modalType) => dispatch(toggleSearchOptionModal(modalType)),
+        getPracTypeSpecialties: (pracType) => dispatch(getPracTypeSpecialties(pracType)),
+        setSearchPracType: (pracType) => dispatch(setSearchPracType(pracType)),
+        setSelectedSpecialties: (list) => dispatch(setSelectedSpecialties(list)),
+        setSelectedSortOption: (n) => dispatch(setSelectedSortOption(n)),
+    }
+}
+
+  
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen);

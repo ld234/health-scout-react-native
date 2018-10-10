@@ -109,7 +109,7 @@ export default class PDFFile extends React.Component {
         <TouchableOpacity style={{ flex: 1, height: null}} onPress={(evt) => this.handlePress(evt) } >
           <PDFView
             fadeInDuration={250.0}
-            style={{ flex: 1, backgroundColor:'#f9f9f9' }}
+            style={{ flex: 1, backgroundColor:'#ffffff' }}
             resource={resources[resourceType]}
             resourceType={resourceType}
             onLoad={() => console.log(`PDF rendered from ${resourceType}`)}

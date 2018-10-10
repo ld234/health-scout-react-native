@@ -56,11 +56,10 @@
 		918B5A539D7C41F0961B9DA9 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A266A3AED26432DB93F5C5D /* Quicksand-Regular.ttf */; };
 		A36B5643C1B24AB2BDDACB83 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 354BF96BC41348C2AAC8AA8A /* libRNFetchBlob.a */; };
 		994EFEF4477A4A0086FE449B /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B65E10B453418290D8F6EE /* libRNFS.a */; };
-		E218ECE301AC4B409345ACFA /* libReactNativeViewPDF.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5649DA7351BF4395A2092034 /* libReactNativeViewPDF.a */; };
-		3A671ED5FEDE42098B0C98D5 /* libRNPDFLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDB9A5A17894202A3F13250 /* libRNPDFLib.a */; };
-		70C320250C5C4256AAAEA699 /* Times New Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA5B1F4229A140DDB26B94A4 /* Times New Roman.ttf */; };
-		AFEB6AF125A343EAB3764952 /* libRCTPdf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F073BD3A9F94D02B7EB4539 /* libRCTPdf.a */; };
 		340C07DE28374E3C8358C65C /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA94F99C76DA4BE2A216412C /* libBVLinearGradient.a */; };
+		FF9531EBD30E492EBC62BA4D /* libRCTPSPDFKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7318EDBB806E40E0BFC3C743 /* libRCTPSPDFKit.a */; };
+		45452BA09A4645999A77FA51 /* libRCTMaterialKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9130504C1124548A55632BE /* libRCTMaterialKit.a */; };
+		A829D3F87EA44550A7B27274 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C482FA3E7FD54455A8453245 /* libRNImagePicker.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -389,15 +388,14 @@
 		354BF96BC41348C2AAC8AA8A /* libRNFetchBlob.a */ = {isa = PBXFileReference; name = "libRNFetchBlob.a"; path = "libRNFetchBlob.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		3AB70EC2AB6644FF8223488D /* RNFS.xcodeproj */ = {isa = PBXFileReference; name = "RNFS.xcodeproj"; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		59B65E10B453418290D8F6EE /* libRNFS.a */ = {isa = PBXFileReference; name = "libRNFS.a"; path = "libRNFS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		0CA56842245749CEB224C4D4 /* ReactNativeViewPDF.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativeViewPDF.xcodeproj"; path = "../node_modules/react-native-view-pdf/ReactNativeViewPDF.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		5649DA7351BF4395A2092034 /* libReactNativeViewPDF.a */ = {isa = PBXFileReference; name = "libReactNativeViewPDF.a"; path = "libReactNativeViewPDF.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		B2D885AD00C742B4830BC9FF /* RNPDFLib.xcodeproj */ = {isa = PBXFileReference; name = "RNPDFLib.xcodeproj"; path = "../node_modules/react-native-pdf-lib/ios/RNPDFLib.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		FFDB9A5A17894202A3F13250 /* libRNPDFLib.a */ = {isa = PBXFileReference; name = "libRNPDFLib.a"; path = "libRNPDFLib.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		EA5B1F4229A140DDB26B94A4 /* Times New Roman.ttf */ = {isa = PBXFileReference; name = "Times New Roman.ttf"; path = "../node_modules/react-native-pdf-lib/assets/Times New Roman.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		41080256628C43E9AF43312A /* RCTPdf.xcodeproj */ = {isa = PBXFileReference; name = "RCTPdf.xcodeproj"; path = "../node_modules/react-native-pdf/ios/RCTPdf.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		0F073BD3A9F94D02B7EB4539 /* libRCTPdf.a */ = {isa = PBXFileReference; name = "libRCTPdf.a"; path = "libRCTPdf.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		C60E0B8720E54EA4B4746BF4 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; name = "BVLinearGradient.xcodeproj"; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		CA94F99C76DA4BE2A216412C /* libBVLinearGradient.a */ = {isa = PBXFileReference; name = "libBVLinearGradient.a"; path = "libBVLinearGradient.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		0B83E1A898F34F8F9134D343 /* RCTPSPDFKit.xcodeproj */ = {isa = PBXFileReference; name = "RCTPSPDFKit.xcodeproj"; path = "../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		7318EDBB806E40E0BFC3C743 /* libRCTPSPDFKit.a */ = {isa = PBXFileReference; name = "libRCTPSPDFKit.a"; path = "libRCTPSPDFKit.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		615EDE2BB0D64825BF43B02D /* RCTMaterialKit.xcodeproj */ = {isa = PBXFileReference; name = "RCTMaterialKit.xcodeproj"; path = "../node_modules/react-native-material-kit/iOS/RCTMaterialKit.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		D9130504C1124548A55632BE /* libRCTMaterialKit.a */ = {isa = PBXFileReference; name = "libRCTMaterialKit.a"; path = "libRCTMaterialKit.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		993C7B9980514516BEFA8449 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; name = "RNImagePicker.xcodeproj"; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		C482FA3E7FD54455A8453245 /* libRNImagePicker.a */ = {isa = PBXFileReference; name = "libRNImagePicker.a"; path = "libRNImagePicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -430,10 +428,10 @@
 				01A6AC272C48422A86210A71 /* libRNSpinkit.a in Frameworks */,
 				A36B5643C1B24AB2BDDACB83 /* libRNFetchBlob.a in Frameworks */,
 				994EFEF4477A4A0086FE449B /* libRNFS.a in Frameworks */,
-				E218ECE301AC4B409345ACFA /* libReactNativeViewPDF.a in Frameworks */,
-				3A671ED5FEDE42098B0C98D5 /* libRNPDFLib.a in Frameworks */,
-				AFEB6AF125A343EAB3764952 /* libRCTPdf.a in Frameworks */,
 				340C07DE28374E3C8358C65C /* libBVLinearGradient.a in Frameworks */,
+				FF9531EBD30E492EBC62BA4D /* libRCTPSPDFKit.a in Frameworks */,
+				45452BA09A4645999A77FA51 /* libRCTMaterialKit.a in Frameworks */,
+				A829D3F87EA44550A7B27274 /* libRNImagePicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,10 +622,10 @@
 				47525DE0ACF84C659543E707 /* RNSpinkit.xcodeproj */,
 				37E05472E81348ADA5DF44AF /* RNFetchBlob.xcodeproj */,
 				3AB70EC2AB6644FF8223488D /* RNFS.xcodeproj */,
-				0CA56842245749CEB224C4D4 /* ReactNativeViewPDF.xcodeproj */,
-				B2D885AD00C742B4830BC9FF /* RNPDFLib.xcodeproj */,
-				41080256628C43E9AF43312A /* RCTPdf.xcodeproj */,
 				C60E0B8720E54EA4B4746BF4 /* BVLinearGradient.xcodeproj */,
+				0B83E1A898F34F8F9134D343 /* RCTPSPDFKit.xcodeproj */,
+				615EDE2BB0D64825BF43B02D /* RCTMaterialKit.xcodeproj */,
+				993C7B9980514516BEFA8449 /* RNImagePicker.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -694,7 +692,6 @@
 				91FF83B0EC1040ACA5FFD5A9 /* Quicksand-Light.ttf */,
 				34A98EB277A6462F98236B98 /* Quicksand-Medium.ttf */,
 				9A266A3AED26432DB93F5C5D /* Quicksand-Regular.ttf */,
-				EA5B1F4229A140DDB26B94A4 /* Times New Roman.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1161,7 +1158,6 @@
 				7D12054F204646CD82D76B50 /* Quicksand-Light.ttf in Resources */,
 				C1B148B191C9446591F8AF06 /* Quicksand-Medium.ttf in Resources */,
 				918B5A539D7C41F0961B9DA9 /* Quicksand-Regular.ttf in Resources */,
-				70C320250C5C4256AAAEA699 /* Times New Roman.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1304,10 +1300,10 @@
 					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
-					"$(SRCROOT)/../node_modules/react-native-view-pdf/ReactNativeViewPDF",
-					"$(SRCROOT)/../node_modules/react-native-pdf-lib/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-pdf/ios/RCTPdf/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
+					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 			};
 			name = Debug;
@@ -1337,10 +1333,10 @@
 					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
-					"$(SRCROOT)/../node_modules/react-native-view-pdf/ReactNativeViewPDF",
-					"$(SRCROOT)/../node_modules/react-native-pdf-lib/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-pdf/ios/RCTPdf/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
+					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 			};
 			name = Release;
@@ -1366,10 +1362,10 @@
 					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
-					"$(SRCROOT)/../node_modules/react-native-view-pdf/ReactNativeViewPDF",
-					"$(SRCROOT)/../node_modules/react-native-pdf-lib/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-pdf/ios/RCTPdf/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
+					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 			};
 			name = Debug;
@@ -1394,10 +1390,10 @@
 					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
-					"$(SRCROOT)/../node_modules/react-native-view-pdf/ReactNativeViewPDF",
-					"$(SRCROOT)/../node_modules/react-native-pdf-lib/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-pdf/ios/RCTPdf/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
+					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 			};
 			name = Release;
@@ -1436,10 +1432,10 @@
 					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
-					"$(SRCROOT)/../node_modules/react-native-view-pdf/ReactNativeViewPDF",
-					"$(SRCROOT)/../node_modules/react-native-pdf-lib/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-pdf/ios/RCTPdf/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
+					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 			};
 			name = Debug;
@@ -1478,10 +1474,10 @@
 					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
-					"$(SRCROOT)/../node_modules/react-native-view-pdf/ReactNativeViewPDF",
-					"$(SRCROOT)/../node_modules/react-native-pdf-lib/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-pdf/ios/RCTPdf/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
+					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 			};
 			name = Release;
@@ -1519,10 +1515,10 @@
 					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
-					"$(SRCROOT)/../node_modules/react-native-view-pdf/ReactNativeViewPDF",
-					"$(SRCROOT)/../node_modules/react-native-pdf-lib/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-pdf/ios/RCTPdf/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
+					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 			};
 			name = Debug;
@@ -1560,10 +1556,10 @@
 					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
-					"$(SRCROOT)/../node_modules/react-native-view-pdf/ReactNativeViewPDF",
-					"$(SRCROOT)/../node_modules/react-native-pdf-lib/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-pdf/ios/RCTPdf/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
+					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 			};
 			name = Release;

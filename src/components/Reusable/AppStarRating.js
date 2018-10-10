@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-// import StarRating from 'react-native-star-rating';
-import { Rating } from 'react-native-elements';
+import Rating from 'react-native-star-rating';
 
 class AppStarRating extends Component {
 
@@ -19,19 +18,18 @@ class AppStarRating extends Component {
 
   render() {
     return (
-        <Rating fractions={1} type="star" {...this.props}/>
-    //   <StarRating
-    //     disabled={false}
-    //     emptyStar={'ios-star-outline'}
-    //     fullStar={'ios-star'}
-    //     halfStar={'ios-star-half'}
-    //     iconSet={'Ionicons'}
-    //     maxStars={5}
-    //     selectedStar={(rating) => this.onStarRatingPress(rating)}
-    //     fullStarColor={'#FFD800'}
-    //     emptyStarColor={'#FFD800'}
-    //     {...this.props}
-    //   />
+      <Rating disabled={true}
+        emptyStar={'ios-star-outline'}
+        fullStar={'ios-star'}
+        halfStar={'ios-star-half'}
+        iconSet={'Ionicons'}
+        maxStars={5}
+        rating={parseFloat(this.props.rating)}
+        starSize={20}
+        // selectedStar={(rating) => this.onStarRatingPress(rating)}
+        fullStarColor={'#FBBC05'} emptyStarColor={'#FBBC05'}
+        halfStarEnabled	={true}
+      />
     );
   }
 }

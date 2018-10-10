@@ -2,7 +2,12 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#3C97C9</item>
+        <item name="colorPrimary">#0D7E4A</item>
+        <item name="colorPrimaryDark">#0D7E4A</item>
+        <item name="colorAccent">#0D7E4A</item>
+        <item name="pspdf__contextualToolbarBackground">#0D7E4A</item>
+        <item name="pspdf__contextualToolbarSubmenuBackground">#47BD5D</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
 </resources>

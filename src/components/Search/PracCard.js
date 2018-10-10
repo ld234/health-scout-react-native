@@ -1,46 +1,49 @@
 import React from 'react';
 import { StyleSheet, Image, View } from 'react-native';
-import { Button, Card, Title, Paragraph, TouchableRipple, Text } from 'react-native-paper';
+import { Card, Title, Paragraph, TouchableRipple, Text } from 'react-native-paper';
 import StarRating from '../Reusable/AppStarRating';
 import { SCREEN_WIDTH } from '../../constants';
 
+const URL = 'http://10.0.2.2:8888'
 
 class PracCard extends React.Component {
     render() {
         return (
+            <TouchableRipple rippleColor="rgba(200, 200, 200, .32)">
             <Card elevation={2} style={this.props.top ? styles.cardTop : (this.props.bottom?  styles.cardBottom : styles.card)}>
                 <Card.Content>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <View style={styles.cardLeft}>
                             <Image
                                 style={styles.avatar}
-                                source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSODALYDYo2dqN0DG_kPNi2X7EAy1K8SpRRZQWkNv9alC62IHggOw'}}
+                                source={{uri: this.props.data.User.profilePic ?  `${URL}${this.props.data.User.profilePic}` :
+                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSODALYDYo2dqN0DG_kPNi2X7EAy1K8SpRRZQWkNv9alC62IHggOw'}}
                                 resizeMode='cover'
                                 borderRadius={50} />
                             <View style={styles.starRating}>
-                                <StarRating startingValue={3.3}
-                                    readonly
-                                    imageSize={20}/>
+                                <StarRating rating={this.props.data.rating} starSize={20} />
                             </View>
                         </View>
                         <View>
-                            <Title style={styles.cardTitle}>Dr. Rajesh Singh</Title>
-                            <Title style={styles.cardSubtitle}>Dietitian</Title>
-                            <Paragraph style={styles.cardContent}>I have been a dietian for around 10 years. I am experienced with diet problems such as anorexia.</Paragraph>
+                            <Title style={styles.cardTitle}>{`${this.props.data.User.title} ${this.props.data.User.fName} ${this.props.data.User.lName}`}</Title>
+                            <Title style={styles.cardSubtitle}>{this.props.data.pracType}</Title>
+                            <Paragraph style={styles.cardContent}>{this.props.data.description.slice(0,60)}{this.props.data.description.length > 60? '...': ''}</Paragraph>
                         </View>
                     </View>
                     
                 </Card.Content>
-                {/* <Card.Actions style={styles.cardAction}>
+                <Card.Actions style={styles.cardAction}>
                     <TouchableRipple
+                        borderless
                         onPress={() => console.log('Pressed')}
                         rippleColor="rgba(200, 200, 200, .32)"
                     >
                         <Text style={styles.actionText}>More</Text>
                     </TouchableRipple>
                     
-                </Card.Actions> */}
+                </Card.Actions>
             </Card>
+            </TouchableRipple>
         );
     }
 }
@@ -89,7 +92,7 @@ const styles = StyleSheet.create({
     },
     actionText: {
         fontFamily: 'Quicksand-Medium',
-        color: '#007F47',
+        color: '#17ac71',
         fontSize: 18,
     },
     starRating: {

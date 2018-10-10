@@ -144,10 +144,10 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-image-picker')
+    compile project(':react-native-material-kit')
+    compile project(':react-native-pspdfkit')
     compile project(':react-native-linear-gradient')
-    compile project(':react-native-pdf')
-    compile project(':react-native-pdf-lib')
-    compile project(':react-native-view-pdf')
     compile project(':react-native-fs')
     compile project(':rn-fetch-blob')
     compile project(':react-native-spinkit')

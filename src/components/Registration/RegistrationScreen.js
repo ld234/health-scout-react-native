@@ -1,8 +1,8 @@
 import React from 'react';
 import { TextInput, StyleSheet, Text, View, ImageBackground, Image, Dimensions, 
-  TouchableOpacity, TouchableWithoutFeedback, ScrollView, Keyboard, Picker } from 'react-native';
+  TouchableOpacity, TouchableWithoutFeedback, ScrollView, Keyboard, DatePickerAndroid, KeyboardAvoidingView } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
-import bgImage from '../../../assets/images/background.jpg';
+import bgImage from '../../../assets/images/background2.jpg';
 import logo from '../../../assets/images/healthscout-logo.png';
 import { login } from '../../actions/auth.actions';
 import { connect } from 'react-redux';
@@ -11,6 +11,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { Divider } from 'react-native-elements';
+import Drowdown from '../Reusable/Dropdown';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
+const URL = 'http://localhost:8888/user';
 
 
 const {width: WIDTH} = Dimensions.get('window');
@@ -24,11 +28,40 @@ class RegistrationScreen extends React.Component {
       keyboardShow: false,
       username: '',
       password: '',
+      dob: '',
+      email: '',
+      title: '',
+      gender: '',
+      fName:'',
+      lName:'',
+      titles : [{
+        value: 'Mr.',
+      }, {
+        value: 'Ms.',
+      }, {
+        value: 'Mrs.',
+      }],
+      genders : [{
+        value: 'Male',
+      }, {
+        value: 'Female',
+      }, {
+        value: 'Others',
+      }],
+      errors: {},
     }
   }
-  static navigationOptions = {
-    header: null
-  }
+  static navigationOptions = ({navigation}) => ({
+    title: 'Registration',
+    headerTitleStyle: {
+      flex:1,
+      fontFamily: 'Quicksand-Medium',
+      fontSize: 24,
+      fontWeight: '200',
+      textAlign: 'center',
+    },
+    headerRight: <View />
+  })
 
   showPassword = () => {
     this.setState({showPassword: !this.state.showPassword, press: !this.state.press });
@@ -37,7 +70,8 @@ class RegistrationScreen extends React.Component {
   onFocus = () => {
     this.setState({keyboardShow: true})
   }
-  onFocus = () => {
+  
+  onBlur = () => {
     this.setState({keyboardShow: false})
   }
 
@@ -70,130 +104,117 @@ class RegistrationScreen extends React.Component {
             value={this.state.confirmPassword}
             secureTextEntry={true}
             onChangeText={confirmPassword => this.setState({ confirmPassword })}
-                />
+        />
       </View>
     );
+  }
+
+  openDatePicker = async () => {
+    Keyboard.dismiss();
+    try {
+      const {action, year, month, day} = await DatePickerAndroid.open({
+        // Use `new Date()` for current date.
+        // May 25 2020. Month 0 is January.
+        date: new Date()
+      });
+      if (action !== DatePickerAndroid.dismissedAction) {
+        // Selected year, month (0-11), day
+        const formattedDay = day.toString().length < 2 ? `0${day}`:day;
+        const formattedMonth = month.toString().length < 2? `0${month}` : month;
+        this.setState({dob: [formattedDay,month+1, year].join('-')});
+        console.log('open succeeded')
+      }
+    } catch ({code, message}) {
+      console.warn('Cannot open date picker', message);
+    }
   }
 
   render() {
     return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
+          <ScrollView keyboardDismissMode='on-drag'
+            keyboardShouldPersistTaps={'always'} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollView}>
             <TouchableWithoutFeedback style={styles.backgroundContainer} onPress={Keyboard.dismiss}>
-            <View style={{width: WIDTH, paddingLeft: 40, paddingRight: 40 }}>
-                <View style={styles.logoContainer}>
+            <KeyboardAwareScrollView style={{width: WIDTH, paddingLeft: 40, paddingRight: 40, paddingBottom: 90}}>
+                {/* <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo}></Image>
-                    <Text style={styles.logoText}>HealthScout</Text>
-                </View>
+                    <Text style={styles.logoText}>Registration</Text>
+                </View> */}
                 <Sae
                     label={'Username'}
                     iconClass={Ionicons}
                     iconName={'ios-person-outline'}
-                    iconColor={'#7771ab'}
+                    iconColor={'#17ac71'}
                     iconSize={30}
-                    inputStyle={{fontFamily: 'Quicksand-Regular'}}
+                    inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
                     // TextInput props
                     autoCapitalize={'none'}
                     autoCorrect={false}
+                    returnKeyType='done'
+                    onChangeText={username => this.setState({username})}
                 />
                 <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
                 <Sae
                     label={'Email Address'}
                     iconClass={SimpleLineIcons}
                     iconName={'envelope'}
-                    iconColor={'#7771ab'}
+                    iconColor={'#17ac71'}
                     iconSize={20}
-                    inputStyle={{fontFamily: 'Quicksand-Regular'}}
+                    inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
                     // TextInput props
                     autoCapitalize={'none'}
                     autoCorrect={false}
+                    keyboardType={'email-address'}
+                    returnKeyType='done'
+                    onChangeText={email => this.setState({email})}
                 />
                 <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
                 <Sae
                     label={'Password'}
                     iconClass={Ionicons}
                     iconName={'ios-lock-outline'}
-                    iconColor={'#7771ab'}
+                    iconColor={'#17ac71'}
                     iconSize={20}
-                    inputStyle={{fontFamily: 'Quicksand-Regular'}}
+                    inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
                     // TextInput props
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     secureTextEntry={true}
+                    returnKeyType='done'
+                    onChangeText={password => this.setState({password})}
                 />
                 <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
                 <Sae
                     label={'Confirm Password'}
                     iconClass={Ionicons}
                     iconName={'ios-lock-outline'}
-                    iconColor={'#7771ab'}
+                    iconColor={'#17ac71'}
                     iconSize={20}
-                    inputStyle={{fontFamily: 'Quicksand-Regular'}}
+                    inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
                     // TextInput props
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     secureTextEntry={true}
+                    returnKeyType='done'
+                    onChangeText={confirmPassword => this.setState({confirmPassword})}
                 />
-                <Picker
-                    prompt="Title"
-                    selectedValue={this.state.title}
-                    style={{ height: 30, width: 100, color: '#7771ab', borderWidth: 1, borderColor:'white'}}
-                    onValueChange={(itemValue, itemIndex) => this.setState({title: itemValue})}>
-                    <Picker.Item label="Mr." value="mr" />
-                    <Picker.Item label="Mrs." value="mrs" />
-                    <Picker.Item label="Dr." value="dr" />
-                    <Picker.Item label="Ms." value="ms" />
-                </Picker>
-                <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
-                <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
-                <View style={{flexDirection:"row"}}>
-                    <View>
-                        <Sae
-                            style={{width: WIDTH/2-45, marginRight: 10}}
-                            label={'DOB'}
-                            iconClass={SimpleLineIcons}
-                            iconName={'pencil'}
-                            iconColor={'#7771ab'}
-                            iconSize={0}
-                            inputStyle={{fontFamily: 'Quicksand-Regular'}}
-                            
-                            // TextInput props
-                            autoCapitalize={'none'}
-                            autoCorrect={false}
-                        />
-                        <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
-                    </View>
-                    <View>
-                        <Sae
-                            style={{width: WIDTH/2-45}}
-                            label={'Gender'}
-                            iconClass={SimpleLineIcons}
-                            iconName={'pencil'}
-                            iconColor={'#7771ab'}
-                            iconSize={0}
-                            input
-                            inputStyle={{fontFamily: 'Quicksand-Regular'}}
-                            // TextInput props
-                            autoCapitalize={'none'}
-                            autoCorrect={false}
-                        />
-                        <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
-                    </View>
-                </View>
-                <View style={{flexDirection:"row"}}>
+               <View style={{flexDirection:"row"}}>
                     <View>
                         <Sae
                             style={{width: WIDTH/2-45, marginRight: 10}}
                             label={'First Name'}
                             iconClass={SimpleLineIcons}
                             iconName={'pencil'}
-                            iconColor={'#7771ab'}
+                            iconColor={'#17ac71'}
                             iconSize={0}
-                            inputStyle={{fontFamily: 'Quicksand-Regular'}}
+                            inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
                             
                             // TextInput props
                             autoCapitalize={'none'}
                             autoCorrect={false}
+                            returnKeyType='done'
+                            onFocus={this.onFocus}
+                            onBlur={this.onBlur}
                         />
                         <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
                     </View>
@@ -203,18 +224,65 @@ class RegistrationScreen extends React.Component {
                             label={'Last Name'}
                             iconClass={SimpleLineIcons}
                             iconName={'pencil'}
-                            iconColor={'#7771ab'}
+                            iconColor={'#17ac71'}
                             iconSize={0}
                             input
-                            inputStyle={{fontFamily: 'Quicksand-Regular'}}
+                            inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
                             // TextInput props
                             autoCapitalize={'none'}
                             autoCorrect={false}
+                            returnKeyType='done'
+                            onFocus={this.onFocus}
+                            onBlur={this.onBlur}
                         />
                         <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
                     </View>
                 </View>
-            </View>
+                <View style={{flexDirection:"row"}}>
+                    <View>
+                    <Drowdown 
+                      containerStyle={{width: WIDTH/2-45, marginRight: 10}}
+                      label="Title" 
+                      baseColor={'#17ac71'}
+                      data={this.state.titles}
+                      itemTextStyle={{fontSize: 20}}
+                      itemTextStyle={{fontFamily:'Quicksand-Regular', color:'#17ac71'}}
+                      returnKeyType='done'
+                      onChangeText={title => this.setState({title})}
+                    />
+                    </View>
+                    <View>
+                      <Drowdown 
+                        containerStyle={{width: WIDTH/2-45, marginRight: 10}}
+                        label="Gender" 
+                        baseColor={'#17ac71'}
+                        data={this.state.genders}
+                        itemTextStyle={{fontSize: 20}}
+                        itemTextStyle={{fontFamily:'Quicksand-Regular', color:'#17ac71'}}
+                        returnKeyType='done'
+                      />
+                        <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
+                    </View>
+                </View>
+                <Sae
+                  style={{width: WIDTH/2-45, marginRight: 10, top: -15,}}
+                  label={'DOB'}
+                  iconClass={SimpleLineIcons}
+                  iconName={'pencil'}
+                  iconColor={'#17ac71'}
+                  iconSize={0}
+                  inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
+                  
+                  // TextInput props
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  onFocus={() => this.openDatePicker()}
+                  value={this.state.dob}
+                  returnKeyType='done'
+              />
+              <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular'}}></Text></View>
+                
+            </KeyboardAwareScrollView>
             </TouchableWithoutFeedback>
           </ScrollView>
             <View>
@@ -245,11 +313,11 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   logo: {
-    width: 110,
-    height: 149,
+    // width: 110,
+    // height: 149,
   },
   logoText: {
-    color: '#fff',
+    color: '#17ac71',
     fontSize: 40,
     fontFamily: 'Quicksand-Regular',
     opacity: 0.7,
@@ -305,7 +373,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: null,
-    paddingTop: 45,
+    // paddingTop: 45,
     paddingBottom: 50,
   }
 });
