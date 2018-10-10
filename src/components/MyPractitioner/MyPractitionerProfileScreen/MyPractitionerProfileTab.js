@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     scrollContainer:{
         flex:1,
         height:550,
+        backgroundColor:"#eee"
     }
   });
 

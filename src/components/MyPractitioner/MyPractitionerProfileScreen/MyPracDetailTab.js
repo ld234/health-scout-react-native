@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { View,Text,ScrollView,StyleSheet } from 'react-native';
-
+// import { Icon } from 'react-native-vector-icons/'
 class MyPracDetailTab extends Component {
     state={
         description:"A passionate dietition working in the field for more than ten years and worked with numerous number of clients to solve their health issues",
@@ -10,26 +10,35 @@ class MyPracDetailTab extends Component {
     render(){
         return(
             <View style={styles.container}>
-                <Text style={styles.title}>
-                    About me
-                </Text>
+                <View style={styles.wrapper}>
+                    {/* <Icon name={}/> */}
+                    <Text style={styles.title}>
+                        ABOUT DOCTOR
+                    </Text>
 
-                <Text style={styles.description}>
-                    {this.state.description}
-                </Text>
+                    <View style={styles.hrLine}/>
 
-                <View style={styles.hrLine}/>
+                    <Text style={styles.description}>
+                        {this.state.description}
+                    </Text>
+                </View>
 
-                <Text style={styles.title}>
-                    Specialty
-                </Text>
-                <Text>{this.state.test}</Text>
-                <View style={styles.hrLine}/>
 
-                <Text style={styles.title}>
-                    Qualification
-                </Text>
-                <Text>{this.state.test}</Text>
+                <View style={styles.wrapper}>
+                    <Text style={styles.title}>
+                        SPECIALTY
+                    </Text>
+                    <Text></Text>
+                </View>
+
+                {/* <View style={styles.hrLine}/> */}
+
+                <View style={styles.wrapperLast}>
+                    <Text style={styles.title}>
+                        QUALIFICATION
+                    </Text>
+                    <Text></Text>
+                </View>
 
 
 
@@ -39,27 +48,44 @@ class MyPracDetailTab extends Component {
 }
 const styles = StyleSheet.create({
     container:{
-        marginTop:30,
-        paddingLeft: 20,
-        paddingRight: 20
+        // marginTop:10,
+        // paddingLeft: 20,
+        // paddingRight: 20
     },
-    descriptionTitle:{
-        color: 'green',
-        fontSize: 20,
+    wrapper:{
+        margin:10,
+        marginBottom:0,
+        backgroundColor: 'white',
+        padding: 20,
+        alignItems: 'center',
+        // borderLeftColor:'green',
+        // borderLeftWidth:20,
+        // elevation:1
+    },
+    wrapperLast:{
+        margin:10,
+        backgroundColor: 'white',
+        padding: 20,
+        // borderLeftColor:'green',
+        // borderLeftWidth:20,
+        // elevation:1
+    },
+    title:{
+        color: '#aaa',
+        fontSize: 15,
         fontFamily: 'Quicksand-Bold',
-        paddingBottom: 5
+        paddingBottom: 1
     },
     description:{
         fontSize: 12,
         fontFamily: 'Quicksand-light',
     },
     hrLine:{
-        marginTop:15,
-        marginBottom:15,
+        marginTop:5,
+        marginBottom:5,
         borderBottomColor: '#ccc',
         borderTopWidth: 0,
         borderBottomWidth: 1,
-        padding: 10,
     }
     
 });
