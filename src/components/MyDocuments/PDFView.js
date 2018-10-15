@@ -15,26 +15,26 @@ async function requestWriteExternalStoragePermission() {
     )
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       let dirs = RNFetchBlob.fs.dirs
-      // RNFetchBlob
-      //   .config({
-      //     // add this option that makes response data to be stored as a file,
-      //     // this is much more performant.
-      //     fileCache : true,
-      //     addAndroidDownloads : {
-      //       useDownloadManager : true,
-      //       notification : true,
-      //       path : dirs.DownloadDir + '/testfile.pdf',
-      //     }
-      //   })
-      //   .fetch('GET', 'http://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf', {
-      //     //some headers ..
-      //   })
-      //   .then((res) => {
-      //     // the temp file path
-      //     console.log(res);
-      //     console.log('The file saved to ', res.path())
-      //   })
-      //   .catch(err => console.log('err', err))
+      RNFetchBlob
+        .config({
+          // add this option that makes response data to be stored as a file,
+          // this is much more performant.
+          fileCache : true,
+          addAndroidDownloads : {
+            useDownloadManager : true,
+            notification : true,
+            path : dirs.DownloadDirs + '/testfile.pdf',
+          }
+        })
+        .fetch('GET', 'http://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf', {
+          //some headers ..
+        })
+        .then((res) => {
+          // the temp file path
+          console.log(res);
+          console.log('The file saved to ', res.path())
+        })
+        .catch(err => console.log('err', err))
     } else {
       console.log("Access to write file is denied.")
     }
@@ -83,7 +83,7 @@ export default class PDFFile extends React.Component {
     .drawText('HELLO WORLD!', {
       x: x,
       y: y,
-      color: '#000099',
+      color: '#fff',
     });
     const existingPDF = '/sdcard/Download/testfile-2.pdf';
     PDFDocument

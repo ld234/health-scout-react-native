@@ -2,10 +2,6 @@ import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
 
-export const SEARCH_PRAC_PENDING = 'SEARCH_PRAC_REQUEST';
-export const SEARCH_PRAC_SUCCESS = 'SEARCH_PRAC_SUCCESS';
-export const SEARCH_PRAC_ERROR = 'SEARCH_PRAC_ERROR';
-
 export const GET_PRAC_TYPE_SPECIALTY_PENDING = 'GET_PRAC_TYPE_SPECIALTY_PENDING';
 export const GET_PRAC_TYPE_SPECIALTY_SUCCESS = 'GET_PRAC_TYPE_SPECIALTY_SUCCESS';
 export const GET_PRAC_TYPE_SPECIALTY_ERROR = 'GET_PRAC_TYPE_SPECIALTY_ERROR';

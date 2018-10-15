@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
 import { Card, Title, Paragraph, TouchableRipple, Text } from 'react-native-paper';
 import StarRating from '../Reusable/AppStarRating';
 import { SCREEN_WIDTH } from '../../constants';
@@ -9,7 +9,6 @@ const URL = 'http://10.0.2.2:8888'
 class PracCard extends React.Component {
     render() {
         return (
-            <TouchableRipple rippleColor="rgba(200, 200, 200, .32)">
             <Card elevation={2} style={this.props.top ? styles.cardTop : (this.props.bottom?  styles.cardBottom : styles.card)}>
                 <Card.Content>
                     <View style={{flex: 1, flexDirection: 'row'}}>
@@ -43,7 +42,6 @@ class PracCard extends React.Component {
                     
                 </Card.Actions>
             </Card>
-            </TouchableRipple>
         );
     }
 }

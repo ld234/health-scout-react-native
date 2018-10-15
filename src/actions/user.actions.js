@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { logout } from './auth.actions';
+import { AsyncStorage } from 'react-native';
 export const GET_USER_PENDING = 'GET_USER_PENDING';
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const GET_USER_ERROR = 'GET_USER_ERROR';
 
-const ROOT_URL = 'https://localhost:8080/api/user';
+const ROOT_URL = 'https://10.0.2.2:8888/user';
 
 function setGetUserPending(isGetUserPending) {
 	return {
@@ -33,23 +34,25 @@ export function getUserDetails(cb) {
 		dispatch(setGetUserPending(true));
 		dispatch(setGetUserSuccess(false));
 		dispatch(setGetUserError(null));
-
-		axios
-			.get(ROOT_URL, {
-				headers: {
-					'x-access-token': localStorage.getItem('localToken'),
-				},
-			})
-			.then(res => {
-				dispatch(setGetUserPending(false));
-				dispatch(setGetUserSuccess(true, res.data));
-				if (cb) cb(res.data.pracType);
-			})
-			.catch(err => {
-				dispatch(setGetUserPending(false));
-				dispatch(setGetUserSuccess(false, null));
-				if (err.response && err.response.data.message) dispatch(setGetUserError(err.response.data.message));
-				dispatch(logout());
-			});
+		AsyncStorage.getItem('id_token')
+		.then(res => {
+			axios
+				.get(ROOT_URL, {
+					headers: {
+						'x-access-token': res,
+					},
+				})
+				.then(res => {
+					dispatch(setGetUserPending(false));
+					dispatch(setGetUserSuccess(true, res.data));
+					if (cb) cb();
+				})
+				.catch(err => {
+					dispatch(setGetUserPending(false));
+					dispatch(setGetUserSuccess(false, null));
+					if (err.response && err.response.data.message) dispatch(setGetUserError(err.response.data.message));
+					dispatch(logout());
+				});
+		})
 	};
 }

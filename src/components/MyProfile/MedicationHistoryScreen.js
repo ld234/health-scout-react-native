@@ -4,6 +4,18 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import { Sae } from 'react-native-textinput-effects';
+import moment from 'moment';
+import {
+  BallIndicator,
+  BarIndicator,
+  DotIndicator,
+  MaterialIndicator,
+  PacmanIndicator,
+  PulseIndicator,
+  SkypeIndicator,
+  UIActivityIndicator,
+  WaveIndicator
+} from 'react-native-indicators';
 import {
   ScrollView,
   StyleSheet,
@@ -11,15 +23,17 @@ import {
   View,
   TouchableOpacity,
   Keyboard,
-  DatePickerAndroid
+  DatePickerAndroid,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
-import { STATUS_BAR_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants';
 import MaterialIconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/SimpleLineIcons';
-Octicons
+import { addMedication, getMedications, deleteMedication } from '../../actions/medication.actions';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+
 const BACON_IPSUM =
   'Bacon';
 
@@ -46,21 +60,7 @@ const CONTENT = [
   },
 ];
 
-const SELECTORS = [
-  {
-    title: 'First',
-    value: 0,
-  },
-  {
-    title: 'Third',
-    value: 2,
-  },
-  {
-    title: 'None',
-  },
-];
-
-export default class MedicationHistoryScreen extends Component {
+class MedicationHistoryScreen extends Component {
   static navigationOptions = ({navigation}) => {
       return {
           title: 'Medication History',
@@ -75,11 +75,15 @@ export default class MedicationHistoryScreen extends Component {
     collapsed: true,
     fillDate: '',
     modal: false,
+    dialog: false,
+    errors: {},
   };
 
   toggleExpanded = () => {
     this.setState({ collapsed: !this.state.collapsed });
   };
+
+  toggleDialog = (item) => this.setState({dialog : !this.state.dialog, selectedItem: item});
 
   setSections = sections => {
     this.setState({
@@ -87,12 +91,56 @@ export default class MedicationHistoryScreen extends Component {
     });
   };
 
-  onFocus = () => {
-    this.setState({keyboardShow: true})
-  }
+  onFocus = event => {
+    const newErr = _.merge(this.state.errors, { [event]: null });
+		this.setState({errors: newErr } );
+	};
+
+	onBlur = value => {
+		if (_.isEmpty(this.state[value])) {
+			const newErr = _.merge(this.state.errors, { [value]: '*field required' });
+			this.setState({ errors: newErr });
+		} else {
+			const newErr = _.merge(this.state.errors, { [value]: null });
+			this.setState({ errors: newErr });
+		}
+  };
   
-  onBlur = () => {
-    this.setState({keyboardShow: false})
+  validateForm = () => {
+    let valid = true;
+    const fields = ['fillDate', 'medication'];
+    if (Number.isInteger(parseInt(this.state.quantity))){
+    } else {
+      const newErr = _.merge(this.state.errors, { quantity: '*invalid value' });
+      this.setState({ errors: newErr });
+      valid = false;
+    }
+    if (!fields.every(name => !_.isEmpty(this.state[name]))) {
+      this.onBlur('fillDate');
+      this.onBlur('medication');
+      valid = false;
+    }
+    if (valid) {
+      const { fillDate, medication, dosageForm, strength, quantity } = this.state;
+      console.log(fillDate);
+      const obj = { fillDate, medication };
+      if (dosageForm) obj['dosageForm'] = dosageForm;
+      if (strength) obj['strength'] = strength;
+      if (quantity) obj['quantity'] = quantity;
+      this.props.addMedication(obj, this.toggleModal);
+      this.resetForm();
+    }
+  }
+
+  resetForm = () =>{
+    this.setState({errors: {}});
+    this.setState({
+      fillDate: '', 
+      medication: '', 
+      dosageForm: '', 
+      strength: '', 
+      quantity: '',
+    })
   }
 
   openDatePicker = async () => {
@@ -101,22 +149,42 @@ export default class MedicationHistoryScreen extends Component {
       const {action, year, month, day} = await DatePickerAndroid.open({
         // Use `new Date()` for current date.
         // May 25 2020. Month 0 is January.
-        date: new Date()
+        date: new Date(),
+        maxDate: new Date(),
       });
       if (action !== DatePickerAndroid.dismissedAction) {
         // Selected year, month (0-11), day
         const formattedDay = day.toString().length < 2 ? `0${day}`:day;
         const formattedMonth = month.toString().length < 2? `0${month}` : month;
         this.setState({fillDate: [formattedDay,month+1, year].join('-')});
+        this.onBlur('fillDate');
+      } else {
+        this.onBlur('fillDate');
+        // this.setState({errors: { fillDate: '*fields required'}})
       }
     } catch ({code, message}) {
       console.warn('Cannot open date picker', message);
     }
   }
 
+  handleOnScroll = event => {
+    this.setState({
+      scrollOffset: event.nativeEvent.contentOffset.y
+    });
+  };
+
   renderFormContent = () => {
       return (
-          <View style={styles.longModal} >
+          <ScrollView
+            ref={ref => (this.scrollViewRef = ref)}
+            keyboardShouldPersistTaps={'always'}
+            showsVerticalScrollIndicator={false} 
+            style={{position: 'relative'}} 
+            onScroll={this.handleOnScroll}
+            contentContainerStyle={styles.longModal} >
+            <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular', textAlign:'center'}}>
+              {this.props.medicationState.addMedicationError}
+            </Text></View>
             <Sae
               style={{width: SCREEN_WIDTH*0.78, marginRight: 10}}
               label={'Fill Date'}
@@ -131,10 +199,11 @@ export default class MedicationHistoryScreen extends Component {
               autoCorrect={false}
               returnKeyType='done'
               onFocus={() => this.openDatePicker()}
-              onBlur={this.onBlur}
+              onBlur={() => this.onBlur('fillDate')}
               value={this.state.fillDate}
               onChangeText={fillDate => this.setState({fillDate})}
           />
+          <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular', textAlign:'right'}}>{this.state.errors.fillDate}</Text></View>
           <Sae
               style={{width: SCREEN_WIDTH*0.78, marginRight: 10}}
               label={'Medication'}
@@ -148,10 +217,12 @@ export default class MedicationHistoryScreen extends Component {
               autoCapitalize={'none'}
               autoCorrect={false}
               returnKeyType='done'
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
+              onFocus={() => this.onFocus('medication')}
+              onBlur={() => this.onBlur('medication')}
+              value={this.state.medication}
               onChangeText={medication => this.setState({medication})}
           />
+          <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular', textAlign:'right'}}>{this.state.errors.medication}</Text></View>
           <Sae
               style={{width: SCREEN_WIDTH*0.78, marginRight: 10}}
               label={'Strength'}
@@ -165,10 +236,10 @@ export default class MedicationHistoryScreen extends Component {
               autoCapitalize={'none'}
               autoCorrect={false}
               returnKeyType='done'
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
+              value={this.state.strength}
               onChangeText={strength => this.setState({strength})}
           />
+          <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular', textAlign:'right'}}></Text></View>
           <Sae
               style={{width: SCREEN_WIDTH*0.78, marginRight: 10}}
               label={'Dosage Form'}
@@ -182,10 +253,10 @@ export default class MedicationHistoryScreen extends Component {
               autoCapitalize={'none'}
               autoCorrect={false}
               returnKeyType='done'
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
+              value={this.state.dosageForm}
               onChangeText={dosageForm => this.setState({dosageForm})}
           />
+          <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular', textAlign:'right'}}></Text></View>
           <Sae
               style={{width: SCREEN_WIDTH*0.78, marginRight: 10}}
               label={'Quantity'}
@@ -199,13 +270,12 @@ export default class MedicationHistoryScreen extends Component {
               autoCapitalize={'none'}
               autoCorrect={false}
               returnKeyType='done'
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
+              value={this.state.quantity}
+              onChangeText={quantity => this.setState({quantity})}
           />
+          <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular', textAlign:'right'}}>{this.state.errors.quantity}</Text></View>
           <TouchableOpacity style={styles.closeButton} onPress={() => {
-              // this.props.setSearchPracType(this.state.pracType);
-              // this.props.getPracTypeSpecialties(this.state.pracType);
-              // this.props.toggleSearchOptionModal();
+              this.validateForm();
           }}>
               <Text style={styles.closeButtonText}>ADD</Text>
           </TouchableOpacity>
@@ -214,7 +284,7 @@ export default class MedicationHistoryScreen extends Component {
           }}>
               <Text style={styles.cancelButtonText}>CANCEL</Text>
           </TouchableOpacity>
-          </View>
+          </ScrollView>
       )
   }
 
@@ -222,11 +292,59 @@ export default class MedicationHistoryScreen extends Component {
 
   renderModal = () => {
     return (
-        <Modal onBackdropPress={this.toggleModal} isVisible={this.state.modal}>
+        <Modal 
+          style={{alignContent:'center', paddingTop: 50}}
+          scrollTo={this.handleScrollTo}
+          onBackButtonPress={this.toggleModal}
+          scrollOffset={this.state.scrollOffset}
+          // onSwipe={this.toggleModal} swipeDirection="up" 
+          onBackdropPress={this.toggleModal} isVisible={this.state.modal}>
             {this.renderFormContent()}
         </Modal>
     );
   }
+
+  renderDialog = () => {
+    return (
+        <Modal 
+          style={{alignContent:'center',paddingTop:0}}
+          onBackButtonPress={this.toggleDialog}
+          onBackdropPress={this.toggleDialog} isVisible={this.state.dialog}>
+            <View style={styles.dialog}>
+              <View style={{flex:1, width: SCREEN_WIDTH*.9 }}>
+              <View style={styles.dialogHeader}>
+                <Text style={styles.dialogHeaderText}>CONFIRM MEDICATION DELETE</Text>
+              </View>
+              <View style={{flex:0.6, width:SCREEN_WIDTH*0.9, justifyContent: 'center'}}>
+                <Text style={!this.props.medicationState.deleteMedicationError? styles.dialogText: [styles.dialogText, {color: '#f00'}]}>
+                  {!this.props.medicationState.deleteMedicationError? 
+                  'Are you sure you want to delete this medication?': 
+                  this.props.medicationState.deleteMedicationError}
+                </Text>
+              </View>
+              <TouchableOpacity style={styles.closeButton} onPress={() => {
+                  const { fillDate, medication } = this.state.selectedItem;
+                  let idx = this.props.medicationState.medications.findIndex(item => item.fillDate === fillDate && item.medication === medication);
+                  this.props.deleteMedication({ fillDate: moment(fillDate, 'DD-MM-YYYY').format('YYYY-MM-DD'), medication }, this.toggleDialog, idx);
+              }}>
+                  <Text style={styles.closeButtonText}>OK</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.cancelButton} onPress={() => {
+                this.toggleDialog();
+              }}>
+                  <Text style={styles.cancelButtonText}>CANCEL</Text>
+              </TouchableOpacity>
+              </View>
+            </View>
+        </Modal>
+    );
+  }
+
+  handleScrollTo = p => {
+    if (this.scrollViewRef) {
+      this.scrollViewRef.scrollTo(p);
+    }
+  };
 
   renderHeader = (section, _, isActive) => {
     return (
@@ -238,9 +356,12 @@ export default class MedicationHistoryScreen extends Component {
         <View style={{flexDirection: 'row'}}>
             <MaterialIconCommunity name={'pill'} color={'#17ac71'} size={26}></MaterialIconCommunity>
             <View style={{flexDirection: 'row'}}>
-                <Text style={styles.headerText}>{section.title}</Text>
+                <Text style={styles.headerText}>{section.medication}</Text>
             </View>
-            {isActive? <TouchableOpacity style={{flexDirection: 'row', position: 'absolute', bottom: 0, right: 0 }}>
+            {isActive? 
+            <TouchableOpacity 
+              onPress={() => this.toggleDialog(section)}
+              style={{flexDirection: 'row', position: 'absolute', bottom: 0, right: 0 }}>
                 <Octicons name={'trash'} color={'#666'} size={26}></Octicons>
             </TouchableOpacity> :null }
         </View>
@@ -262,6 +383,10 @@ export default class MedicationHistoryScreen extends Component {
     );
   };
 
+  componentDidMount(){
+    this.props.getMedications();
+  }
+
   renderContent(section, _, isActive) {
     return (
       <Animatable.View
@@ -275,7 +400,7 @@ export default class MedicationHistoryScreen extends Component {
                     <Text style={styles.contentTextLeft}>Fill Date</Text>
                 </View>
                 <View style={[styles.contentContainer, styles.separator]}>
-                    <Text style={styles.contentText}>{section.content}</Text>
+                    <Text style={styles.contentText}>{section.fillDate}</Text>
                 </View>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -283,7 +408,7 @@ export default class MedicationHistoryScreen extends Component {
                     <Text style={styles.contentTextLeft}>Strength</Text>
                 </View>
                 <View style={[styles.contentContainer, styles.separator]}>
-                    <Text style={styles.contentText}>{section.content}</Text>
+                    <Text style={styles.contentText}>{section.strength}</Text>
                 </View>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -291,7 +416,7 @@ export default class MedicationHistoryScreen extends Component {
                     <Text style={styles.contentTextLeft}>Dosage Form</Text>
                 </View>
                 <View style={[styles.contentContainer, styles.separator]}>
-                    <Text style={styles.contentText}>{section.content}</Text>
+                    <Text style={styles.contentText}>{section.dosageForm}</Text>
                 </View>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -299,7 +424,7 @@ export default class MedicationHistoryScreen extends Component {
                     <Text style={styles.contentTextLeft}>Quantity</Text>
                 </View>
                 <View style={[styles.contentContainer]}>
-                    <Text style={styles.contentText}>{section.content}</Text>
+                    <Text style={styles.contentText}>{section.quantity}</Text>
                 </View>
             </View>
         </Animatable.View>
@@ -309,21 +434,24 @@ export default class MedicationHistoryScreen extends Component {
 
   render() {
     const { activeSections } = this.state;
-
+    if (this.props.isGetMedicationsPending) return <MaterialIndicator color='#17ac71' />
     return (
         <View style={styles.container}>
             <ScrollView 
+              keyboardDismissMode='on-drag'
+              keyboardShouldPersistTaps={'always'}
               style={{marginTop: 60}}
-              showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+              showsVerticalScrollIndicator={false} 
+              ontentContainerStyle={{ paddingBottom: 120 }}>
                 <Accordion
-                    activeSections={activeSections}
-                    sections={CONTENT}
-                    touchableComponent={TouchableOpacity}
-                    expandMultiple={false}
-                    renderHeader={this.renderHeader}
-                    renderContent={this.renderContent}
-                    duration={400}
-                    onChange={this.setSections}
+                  activeSections={activeSections}
+                  sections={this.props.medicationState.medications}
+                  touchableComponent={TouchableOpacity}
+                  expandMultiple={false}
+                  renderHeader={this.renderHeader}
+                  renderContent={this.renderContent}
+                  duration={400}
+                  onChange={this.setSections}
                 />
             </ScrollView>
             <FAB 
@@ -336,6 +464,7 @@ export default class MedicationHistoryScreen extends Component {
                 }}
             />
             {this.renderModal()}
+            {this.renderDialog()}
         </View>
     );
   }
@@ -424,7 +553,7 @@ const styles = StyleSheet.create({
     borderStyle: 'dotted',
   },
   longModal:{
-    height: SCREEN_HEIGHT - 250,
+    height: SCREEN_HEIGHT - 200,
     width: SCREEN_WIDTH*0.9,
     backgroundColor: 'white',
     borderRadius: 10,
@@ -433,7 +562,6 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 50,
     paddingRight: 25,
-
   },
   closeButtonText:{
     fontFamily: 'Quicksand-Medium',
@@ -443,26 +571,70 @@ const styles = StyleSheet.create({
     right: 0,
   },
   cancelButtonText:{
-      fontFamily: 'Quicksand-Medium',
-      fontSize: 16,
-      color: '#17ac71',
-      position:'absolute',
-      right: 0,
+    fontFamily: 'Quicksand-Medium',
+    fontSize: 16,
+    color: '#17ac71',
+    position:'absolute',
+    right: 0,
   },
   cancelButton: {
-      width: 65,
-      height: 50,
-      alignItems: 'center',
-      position: 'absolute',
-      right: 70,
-      bottom: -5,
+    width: 65,
+    height: 50,
+    alignItems: 'center',
+    position: 'absolute',
+    right: 70,
+    bottom: -5,
   },
   closeButton: {
-      width: 65,
-      height: 50,
-      alignItems: 'center',
-      position: 'absolute',
-      right: 20,
-      bottom: -5,
+    width: 65,
+    height: 50,
+    alignItems: 'center',
+    position: 'absolute',
+    right: 20,
+    bottom: -5,
+  },
+  dialog: {
+    top: -20,
+    height: SCREEN_HEIGHT * 0.3,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    justifyContent:'center',
+    alignItems: 'center',
+  },
+  dialogText: {
+    textAlign: 'center',
+    fontFamily: 'Quicksand-Regular',
+    fontSize: 18,
+  },
+  dialogHeader: {
+    height: 65, 
+    backgroundColor: '#17ac71', 
+    top: 0, 
+    position: 'relative', 
+    borderTopRightRadius: 10, 
+    borderTopLeftRadius: 10,
+    justifyContent: 'center',
+    paddingLeft: 20,
+  },
+  dialogHeaderText: {
+    fontFamily: 'Quicksand-Medium',
+    color: '#fff',
+    fontSize: 20,
   }
 });
+
+const mapStateToProps = state => {
+  return {
+    medicationState: state.medicationState,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addMedication: (med,cb) => dispatch(addMedication(med,cb)),
+    deleteMedication: (med, cb, idx) => dispatch(deleteMedication(med,cb,idx)),
+    getMedications: () => dispatch(getMedications()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MedicationHistoryScreen);

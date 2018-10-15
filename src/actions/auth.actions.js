@@ -64,8 +64,7 @@ export function login(username, password, cb) {
 
 export function logout() {
 	return async dispatch => {
-		console.log('Logging out');
-		await removeItem('id_token');
+		await AsyncStorage.removeItem('id_token');
 		dispatch(setLoginPending(false));
 		dispatch(setLoginSuccess(false, null));
 		dispatch(setLoginError(null));

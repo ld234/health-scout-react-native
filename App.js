@@ -14,8 +14,10 @@ import MedicationHistoryScreen from './src/components/MyProfile/MedicationHistor
 import FamilyHistoryScreen from './src/components/MyProfile/FamilyHistoryScreen';
 import AllergyHistoryScreen from './src/components/MyProfile/AllergyHistoryScreen';
 import ConsultationHistoryScreen from './src/components/MyProfile/ConsultationHistoryScreen';
-
 import MyPractitionerProfile from './src/components/MyPractitioner/MyPractitionerProfileScreen/MyPractitionerProfileScreen';
+import PDFViewScreen from './src/components/MyDocuments/PDFViewScreen';
+import MyDocumentsScreen from './src/components/MyDocuments/MyDocumentsScreen';
+import FlashMessage from "react-native-flash-message";
 // import { Font } from 'expo';
 import {
   createStackNavigator
@@ -72,7 +74,10 @@ const MainNavigator = createStackNavigator({
   FamilyHistory: { screen: FamilyHistoryScreen},
   ConsultationHistory: { screen: ConsultationHistoryScreen },
   AllergyHistory: { screen: AllergyHistoryScreen },
-  PracProfile: { screen: MyPractitionerProfile }
+  PracProfile: { screen: MyPractitionerProfile },
+  PDFView: {screen: PDFViewScreen},
+  MyDocuments: { screen: MyDocumentsScreen }
+  // PracSearchProfile: { screen: PracSearchProfileScreen },
 },
 {
   headerMode: 'screen',
@@ -110,6 +115,7 @@ export default class App extends React.Component {
         <Provider store={store}>
           <PaperProvider theme={theme}>
             <MainNavigator></MainNavigator>
+            <FlashMessage position="top" />
           </PaperProvider>
         </Provider>
       )

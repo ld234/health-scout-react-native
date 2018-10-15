@@ -52,6 +52,7 @@ class MyPractitionerList extends Component {
     onContactSelected(pracUsername) {
         this.props.navigation.navigate('PracProfile', pracUsername);
     }
+    
     renderPractioners() {
         return this.state.practitioners.map(practitioner => 
             <TouchableOpacity key={practitioner.title} onPress={()=>this.onContactSelected(practitioner.title)}>
