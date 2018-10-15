@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  AppRegistry,
   StyleSheet,
   NativeModules,
   Text,
@@ -15,7 +14,9 @@ const DOCUMENT = "file:///sdcard/Download/testfile-2.pdf";
 const CONFIGURATION = {
   scrollContinuously: false,
   showPageNumberOverlay: true,
-  pageScrollDirection: "vertical"
+  pageScrollDirection: "vertical",
+  enableAnnotationEditing: true,
+  showAnnotationListAction: true,
 };
 
 // Change 'YourApp' to your app's name.

@@ -28,7 +28,7 @@ class Splash extends React.Component {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <View style={styles.logoContainer}>
-          <Image source={logo} style={styles.logo}></Image>
+          {/* <Image source={logo} style={styles.logo}></Image> */}
           <Text style={styles.logoText}> Welcome to HealthScout</Text>
         </View>
       </ImageBackground>

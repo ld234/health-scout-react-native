@@ -1,8 +1,8 @@
-
 import React, { Component } from 'react';
 import { FAB } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
+import { SwipeRow } from 'react-native-swipe-list-view';
 import {
   ScrollView,
   StyleSheet,
@@ -13,7 +13,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
-import { STATUS_BAR_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
+import { STATUS_BAR_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants';
 import MaterialIconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -22,27 +22,19 @@ const BACON_IPSUM =
 
 const CONTENT = [
   {
-    title: 'Aspirin',
+    title: 'Diabetes',
     content: BACON_IPSUM,
   },
   {
-    title: 'Acetaminophen',
+    title: 'Heart Failure',
     content: BACON_IPSUM,
   },
   {
-    title: 'Alprazolam',
+    title: 'Stroke',
     content: BACON_IPSUM,
   },
   {
-    title: 'Ofloxacin',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Quinidex',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Traditional Herbs',
+    title: 'Cancer',
     content: BACON_IPSUM,
   },
 ];
@@ -61,7 +53,16 @@ const SELECTORS = [
   },
 ];
 
-export default class MyPracPastConsultationTab extends Component {
+export default class FamilyHistoryScreen extends Component {
+  static navigationOptions = ({navigation}) => {
+      return {
+          title: 'Family History',
+          headerTitleStyle: {flex: 1, textAlign: 'center', fontFamily: 'Quicksand-Medium', fontWeight: '200', fontSize: 24, color:'#17ac71'},
+          headerRight: <View></View>,
+          headerTransparent: true,
+          headerTintColor: '#17ac71',
+      }
+  }
   state = {
     activeSections: [],
     collapsed: true,
@@ -101,11 +102,28 @@ export default class MyPracPastConsultationTab extends Component {
         transition="backgroundColor"
       >
         <View style={{flexDirection: 'row'}}>
-            <MaterialIconCommunity name={'history'} color={'#17ac71'} size={26}></MaterialIconCommunity>
+            <MaterialIconCommunity name={'human-male-female'} color={'#17ac71'} size={26}></MaterialIconCommunity>
             <View style={{flexDirection: 'row'}}>
                 <Text style={styles.headerText}>{section.title}</Text>
             </View>
+            {isActive? <TouchableOpacity style={{flexDirection: 'row', position: 'absolute', bottom: 0, right: 0 }}>
+                <Octicons name={'trash'} color={'#666'} size={26}></Octicons>
+            </TouchableOpacity> :null }
         </View>
+        {/* <View style={styles.standalone}>
+          <SwipeRow leftOpenValue={75} rightOpenValue={-75}>
+            <View style={styles.standaloneRowBack}>
+              <Text style={styles.backTextWhite}>Left</Text>
+              <Text style={styles.backTextWhite}>Right</Text>
+            </View>
+            <View style={styles.standaloneRowFront}>
+                <MaterialIconCommunity name={'human-male-female'} color={'#17ac71'} size={26}></MaterialIconCommunity>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.headerText}>{section.title}</Text>
+                </View>
+            </View>
+          </SwipeRow>
+        </View> */}
       </Animatable.View>
     );
   };
@@ -120,25 +138,9 @@ export default class MyPracPastConsultationTab extends Component {
         <Animatable.View animation={isActive ? 'fadeIn' : undefined}>
             <View style={{flexDirection: 'row'}}>
                 <View style={[styles.contentLeftContainer, styles.separator]}>
-                    <Text style={styles.contentTextLeft}>Date</Text>
+                    <Text style={styles.contentTextLeft}>Family Relationship</Text>
                 </View>
                 <View style={[styles.contentContainer, styles.separator]}>
-                    <Text style={styles.contentText}>{section.content.slice(0,9)}</Text>
-                </View>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-                <View style={[styles.contentLeftContainer, styles.separator]}>
-                    <Text style={styles.contentTextLeft}>Summary</Text>
-                </View>
-                <View style={[styles.contentContainer, styles.separator]}>
-                    <Text style={styles.contentText}>{section.content}</Text>
-                </View>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-                <View style={[styles.contentLeftContainer]}>
-                    <Text style={styles.contentTextLeft}>Intervention</Text>
-                </View>
-                <View style={[styles.contentContainer]}>
                     <Text style={styles.contentText}>{section.content}</Text>
                 </View>
             </View>
@@ -152,7 +154,9 @@ export default class MyPracPastConsultationTab extends Component {
 
     return (
         <View style={styles.container}>
-          
+            <ScrollView 
+              style={{marginTop: 60}}
+              showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
                 <Accordion
                     activeSections={activeSections}
                     sections={CONTENT}
@@ -163,7 +167,16 @@ export default class MyPracPastConsultationTab extends Component {
                     duration={400}
                     onChange={this.setSections}
                 />
-            
+            </ScrollView>
+            <FAB 
+                icon={({ size, color }) => (
+                    <Icon size={28} color={'white'} name="add" />
+                )}
+                style={styles.fab}
+                onPress={() => {
+                    console.log('filter button pressed');
+                }}
+            />
         </View>
     );
   }
@@ -173,7 +186,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    marginTop: 10,
   },
   
   fab: {
@@ -238,7 +250,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   contentContainer: {
-    width: SCREEN_WIDTH * 0.63,
+    width: SCREEN_WIDTH * 0.62,
     paddingBottom: 10,
     paddingTop: 10,
   },
@@ -248,9 +260,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   separator: {
-    borderBottomColor: '#efefef',
-    borderBottomWidth: 1,
-    borderStyle: 'dotted',
+    // borderBottomColor: '#efefef',
+    // borderBottomWidth: 1,
   },
   longModal:{
     height: SCREEN_HEIGHT - 200,

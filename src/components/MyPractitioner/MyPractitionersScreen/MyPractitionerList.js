@@ -1,41 +1,94 @@
 import React, { Component } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import PracCard from '../../Search/PracCard';
+import PracCard from './MyPracCard';
+import { getMyPractitioners } from '../../../actions/practitionerProfile.actions';
+import { connect } from 'react-redux';
+
+
 
 class MyPractitionerList extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            practitioners: [],
-        };
         props = this.props;
     }
-    componentWillMount() {
-    console.log('ComponentwillMount in AlbumList');  
-    axios.get('https://rallycoding.herokuapp.com/api/music_albums')
-        .then(response => this.setState({ practitioners: response.data }));
+    componentDidMount() {
+        this.props.getMyPractitioners();
     }
 
     onContactSelected(pracUsername) {
         this.props.navigation.navigate('PracProfile', pracUsername);
+        // this.props.practitionerProfileState.myPractitioners;
+
     }
     renderPractioners() {
-        return this.state.practitioners.map(practitioner => 
-            <TouchableOpacity key={practitioner.title} onPress={()=>this.onContactSelected(practitioner.title)}>
-                <PracCard />
-            </TouchableOpacity>
-            );
+        const myPractitioners = this.props.practitionerProfileState.myPractitioners;
+        const searchQuery = this.props.searchState.searchQuery;
+
+        if(searchQuery){
+            let result = myPractitioners.filter( practitioner => practitioner.fName.match(`^.*${searchQuery}.*`)
+            return myPractitioners.filter((practitioner, idx) => {
+                if()
+                return(
+                    <TouchableOpacity key={practitioner.pracUsername} onPress={()=>this.onContactSelected(practitioner.title)}>
+                    <PracCard data={practitioner} top={true} bottom={false} />
+                    </TouchableOpacity>
+                );
+            }
+        }
+        else {
+            if(myPractitioners){
+                return myPractitioners.map((practitioner, idx) => {
+                    if(idx === 0 ){
+                        return(
+                            <TouchableOpacity key={practitioner.pracUsername} onPress={()=>this.onContactSelected(practitioner.title)}>
+                                <PracCard data={practitioner} top={true} bottom={false} />
+                            </TouchableOpacity>
+                            )
+                        }
+                    else if (idx === practitioner.length - 1){
+                        return(
+                            <TouchableOpacity key={practitioner.pracUsername} onPress={()=>this.onContactSelected(practitioner.title)}>
+                                <PracCard data={practitioner} top={false} bottom={true}/>
+                            </TouchableOpacity>
+                        )
+                    }
+                    else{
+                        return (
+                        <TouchableOpacity key={practitioner.pracUsername} onPress={()=>this.onContactSelected(practitioner.title)}>
+                            <PracCard data={practitioner} top={false} bottom={false}/>
+                        </TouchableOpacity>
+                        )
+                    }
+                });
+            }
+            else{
+                return null;
+            }
+        }
     }
     render() {  
-        console.log(this.state.practitioners);  
+        console.log(this.props.practitionerProfileState.myPractitioners);  
         return (
             <ScrollView>
                 {this.renderPractioners()}
             </ScrollView>
         );
     }
-
 }
 
-export default MyPractitionerList;
+const mapStateToProps = state => {
+    return {
+        practitionerProfileState: state.practitionerProfileState,
+        searchState: state.mypracSearchState,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getMyPractitioners: () => dispatch(getMyPractitioners()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyPractitionerList);
+

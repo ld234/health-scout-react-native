@@ -62,7 +62,7 @@ class LoginScreen extends React.Component {
     return (
       <View style={styles.backgroundContainer}>
         <View style={styles.logoContainer}>
-          <Image source={logo} style={styles.logo}></Image>
+          {/* <Image source={logo} style={styles.logo}></Image> */}
           <Text style={styles.logoText}>HealthScout</Text>
         </View>
         <View>
@@ -118,7 +118,8 @@ class LoginScreen extends React.Component {
       return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
           {/* <KeyboardAvoidingView  keyboardVerticalOffset={0} behavior="padding" enabled style={styles.backgroundContainer}> */}
-          <ScrollView style={styles.scrollView}>
+          <ScrollView keyboardDismissMode='on-drag'
+            keyboardShouldPersistTaps={'always'} style={styles.scrollView}>
             <TouchableWithoutFeedback style={styles.backgroundContainer} onPress={Keyboard.dismiss}>
               {this.renderFormBody()}
             </TouchableWithoutFeedback>
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoContainer: {
+    paddingTop: 170,
     alignItems: 'center',
   },
   logo: {

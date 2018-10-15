@@ -3,10 +3,11 @@ package com.healthscout;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.gettipsi.stripe.StripeReactPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.github.xinthink.rnmk.ReactMaterialKitPackage;
+import com.pspdfkit.react.PSPDFKitPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
-import org.wonday.pdf.RCTPdfView;
-import com.hopding.pdflib.PDFLibPackage;
-import com.reactlibrary.PDFViewPackage;
 import com.rnfs.RNFSPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
@@ -31,10 +32,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new StripeReactPackage(),
+            new ImagePickerPackage(),
+            new ReactMaterialKitPackage(),
+            new PSPDFKitPackage(),
             new LinearGradientPackage(),
-            new RCTPdfView(),
-            new PDFLibPackage(),
-            new PDFViewPackage(),
             new RNFSPackage(),
             new RNFetchBlobPackage(),
             new RNSpinkitPackage(),

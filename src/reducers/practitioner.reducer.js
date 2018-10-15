@@ -5,6 +5,9 @@ import {
 	GET_PRAC_TYPE_SPECIALTY_PENDING,
 	GET_PRAC_TYPE_SPECIALTY_SUCCESS,
 	GET_PRAC_TYPE_SPECIALTY_ERROR,
+	SEARCH_PRAC_PENDING,
+	SEARCH_PRAC_SUCCESS,
+	SEARCH_PRAC_ERROR
 } from '../actions/practitioner.actions';
 
 const INITIAL_STATE = {
@@ -16,6 +19,10 @@ const INITIAL_STATE = {
 	isGetPracTypeSpecialtySuccess: false,
 	pracTypeSpecialties: [],
 	getPracTypeSpecialtyError: null,
+	isSearchPracPending: false,
+	isSearchPracSuccess: false,
+	searchPracError: null,
+	pracSearchResult: [],
 };
 
 export default function pracReducer(state = INITIAL_STATE, action) {
@@ -52,6 +59,22 @@ export default function pracReducer(state = INITIAL_STATE, action) {
 				...state,
 				getPracTypeSpecialtyError: action.getPracTypeSpecialtyError,
 			};
+		case SEARCH_PRAC_PENDING:
+			return {
+				...state,
+				isSearchPracPending: action.isSearchPracPending,
+			}
+		case SEARCH_PRAC_SUCCESS:
+			return {
+				...state,
+				isSearchPracSuccess: action.isSearchPracSuccess,
+				pracSearchResult: action.pracSearchResult,
+			}
+		case SEARCH_PRAC_ERROR:
+			return {
+				...state,
+				searchPracError: action.searchPracError,
+			}
 		default:
 			return state;
 	}

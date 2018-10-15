@@ -10,13 +10,37 @@ import { StyleSheet, Text, View } from 'react-native';
 import LoginScreen from './src/components/Login/LoginScreen';
 import Splash from './src/components/Login/Splash';
 import Navigation from './src/components/Navigation/Navigation';
+import MedicationHistoryScreen from './src/components/MyProfile/MedicationHistoryScreen';
+import FamilyHistoryScreen from './src/components/MyProfile/FamilyHistoryScreen';
+import AllergyHistoryScreen from './src/components/MyProfile/AllergyHistoryScreen';
+import ConsultationHistoryScreen from './src/components/MyProfile/ConsultationHistoryScreen';
+import SearchPracProfile from './src/components/Search/SearchPracProfile';
 import MyPractitionerProfile from './src/components/MyPractitioner/MyPractitionerProfileScreen/MyPractitionerProfileScreen';
+import PaymentPage from './src/components/Search/PaymentPage';
 // import { Font } from 'expo';
 import {
   createStackNavigator
 } from 'react-navigation';
 import './src/services/ReactotronConfig';
 import RegistrationScreen from './src/components/Registration/RegistrationScreen';
+
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  fonts:  {
+    ...DefaultTheme.fonts,
+    regular: 'Quicksand-Regular',
+    medium: 'Quicksand-Medium',
+  },
+  colors: {
+    ...DefaultTheme.colors,
+    // primary: '#3498db',
+    // accent: '#f1c40f',
+  }
+};
+
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -45,7 +69,13 @@ const MainNavigator = createStackNavigator({
   Main: { screen: Navigation },
   Login: { screen: LoginScreen },
   Registration: { screen : RegistrationScreen },
-  PracProfile: {screen: MyPractitionerProfile},
+  MedicationHistory: { screen: MedicationHistoryScreen },
+  FamilyHistory: { screen: FamilyHistoryScreen},
+  ConsultationHistory: { screen: ConsultationHistoryScreen },
+  AllergyHistory: { screen: AllergyHistoryScreen },
+  PracProfile: { screen: MyPractitionerProfile },
+  SearchPracProfile:{ screen: SearchPracProfile },
+  PaymentPage:{ screen: PaymentPage},
 },
 {
   headerMode: 'screen',
@@ -81,7 +111,9 @@ export default class App extends React.Component {
     if (this.state.fontLoaded)
       return (
         <Provider store={store}>
-          <MainNavigator></MainNavigator>
+          <PaperProvider theme={theme}>
+            <MainNavigator></MainNavigator>
+          </PaperProvider>
         </Provider>
       )
     else return null;
