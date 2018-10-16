@@ -215,3 +215,19 @@ Changed index.js of react-native-material-dropdown TextField (renderBase() funct
         labelHeight={29}
 Changed styles.js in react-native-material-textfield/src/field/ by adding to input style: 
   fontFamily:'Quicksand-Regular',
+
+
+React native flash message:
+
+  flashText: {
+    fontSize: 16, //
+    fontFamily:'Quicksand-Regular', //
+    lineHeight: 16,
+    color: "#fff",
+  },
+  flashTitle: {
+    fontSize: 18, //
+    fontFamily:'Quicksand-Medium', //
+    fontWeight: "200", //
+    marginBottom: 0, //
+  },

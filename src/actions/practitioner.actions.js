@@ -35,7 +35,6 @@ function setGetPracTypeSpecialtyError(getSpecialtyError) {
 }
 
 export function getPracTypeSpecialties(pracType) {
-	console.log('in getPractypeSpecialties', pracType);
 	return dispatch => {
 		dispatch(setGetPracTypeSpecialtyPending(true));
 		dispatch(setGetPracTypeSpecialtySuccess(false));
@@ -48,7 +47,6 @@ export function getPracTypeSpecialties(pracType) {
 					},
 				})
 				.then(res => {
-					console.log('pracType res ', res.data);
 					dispatch(setGetPracTypeSpecialtyPending(false));
 					dispatch(setGetPracTypeSpecialtySuccess(true, res.data));
 				})
@@ -92,7 +90,6 @@ function setSearchPracError(searchPracError) {
 }
 
 export function searchPracByRadius(radius, latitude, longitude) {
-	console.log(radius, latitude, longitude);
 	return dispatch => {
 		dispatch(setSearchPracPending(true));
 		dispatch(setSearchPracSuccess(false, []));
@@ -110,12 +107,10 @@ export function searchPracByRadius(radius, latitude, longitude) {
 					}
 				})
 				.then( res => {
-					console.log(res.data);
 					dispatch(setSearchPracPending(false));
 					dispatch(setSearchPracSuccess(true, res.data));
 				})
 				.catch(err => {
-					console.log('err', JSON.stringify(err, 0, 4));
 					dispatch(setSearchPracPending(false));
 					dispatch(setSearchPracSuccess(false, []));
 					if (err) dispatch(setSearchPracError(err));

@@ -278,12 +278,10 @@ export function getMyPractitioners() {
 					},
 				})
 				.then(res => {
-					console.log('connect res ', res.data);
 					dispatch(getMyPractitionersPending(false));
 					dispatch(getMyPractitionersSuccess(true, res.data));
 				})
 				.catch(err => {
-					console.log('connect err ', err);
 					dispatch(getMyPractitionersPending(false));
 					dispatch(getMyPractitionersSuccess(false, null));
 					dispatch(getMyPractitionersError(err.response));

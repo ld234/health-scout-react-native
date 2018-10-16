@@ -21,7 +21,7 @@ const SearchRoute = (props) => <SearchScreen {...props}/>;
 
 const ProfileRoute = (props) => <MyProfileScreen {...props} />;
 
-const DocumentRoute = () => <MyDocumentsScreen />;
+const DocumentRoute = (props) => <MyDocumentsScreen {...props} />;
 
 const MyPracRoute = (props) => <MyPractitioners {...props} />;
 
@@ -32,7 +32,7 @@ export default class MyComponent extends React.Component {
       { key: 'profile', title: 'My Profile', icon: <SimpleLineIcon size={23} name={'user'} color={'white'} />, color: '#377F63' },
       { key: 'albums', title: 'My Documents', icon:  <SimpleLineIcon size={23} name={'docs'} color={'white'} />,color: '#1BCC86' },
       { key: 'myprac', title: 'My Practitioners', icon: <SimpleLineIcon size={23} name={'people'} color={'white'} />,color: '#17AC71' },
-      { key: 'recents', title: 'Find Practitioner', icon: <SimpleLineIcon size={23} name={'magnifier'} color={'#fff'} />, color: '#117F54' },
+      { key: 'search', title: 'Find Practitioner', icon: <SimpleLineIcon size={23} name={'magnifier'} color={'#fff'} />, color: '#117F54' },
     ],
   };
 
@@ -43,9 +43,20 @@ export default class MyComponent extends React.Component {
     if (typeof(navigation.state.params)==='undefined' || 
     typeof(navigation.state.params.title) === 'undefined' || 
     navigation.state.params.title === 'My Profile')
-  {
+    {
+      return {
+        title: 'My Profile',
+        headerTransparent: true,
+        headerLeft: <MaterialIcon name="menu" style={{color: 'white', marginLeft: 10, marginTop: 5,}} size={30}></MaterialIcon>,
+        headerTitleStyle: {flex: 1, textAlign: 'center', fontFamily: 'Quicksand-Medium', fontWeight: '200', fontSize: 24, color:'#fff'},
+        headerRight: <MaterialIcon name={'more-vert'} style={{color: 'white', marginRight: 10, marginTop: 5,}} size={30}></MaterialIcon>,
+        headerStyle: {
+          borderBottomWidth: 0,
+        }
+      };
+  } else if (navigation.state.params.title === 'My Documents'){
     return {
-      title: 'My Profile',
+      title: 'My Documents',
       headerTransparent: true,
       headerLeft: <MaterialIcon name="menu" style={{color: 'white', marginLeft: 10, marginTop: 5,}} size={30}></MaterialIcon>,
       headerTitleStyle: {flex: 1, textAlign: 'center', fontFamily: 'Quicksand-Medium', fontWeight: '200', fontSize: 24, color:'#fff'},
@@ -55,7 +66,6 @@ export default class MyComponent extends React.Component {
       }
     };
   } else {
-    console.log('current title',navigation.state.params.title);
   return {
     title: typeof(navigation.state.params)==='undefined' || typeof(navigation.state.params.title) === 'undefined' ? 'My Profile': navigation.state.params.title,
     headerStyle: {
@@ -115,7 +125,7 @@ export default class MyComponent extends React.Component {
     profile: (props) => <ProfileRoute {...this.props} />,
     albums: (props) => <DocumentRoute {...this.props} />,
     myprac: (props) => <MyPracRoute {...this.props} />,
-    recents: (props) => <SearchRoute {...this.props} />,
+    search: (props) => <SearchRoute {...this.props} />
   });
 
   render() {

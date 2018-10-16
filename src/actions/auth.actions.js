@@ -46,7 +46,6 @@ export function login(username, password, cb) {
 				password,
 			})
 			.then(async res => {
-				console.log('data', res.data);
 				await AsyncStorage.setItem('id_token', res.data.token);
 				// deviceStorage.saveItem("id_token", res.data.token);
 				dispatch(setLoginPending(false));
@@ -54,7 +53,6 @@ export function login(username, password, cb) {
 				cb();
 			})
 			.catch(err => {
-				console.log('err', JSON.stringify(err, 0, 4));
 				dispatch(setLoginPending(false));
 				dispatch(setLoginSuccess(false, null));
 				if (err) dispatch(setLoginError(err));
@@ -64,8 +62,7 @@ export function login(username, password, cb) {
 
 export function logout() {
 	return async dispatch => {
-		console.log('Logging out');
-		await removeItem('id_token');
+		await AsyncStorage.removeItem('id_token');
 		dispatch(setLoginPending(false));
 		dispatch(setLoginSuccess(false, null));
 		dispatch(setLoginError(null));
@@ -73,12 +70,10 @@ export function logout() {
 }
 
 export function checkAuth(cb) {
-	console.log('checkAuth');
 	return dispatch => {
 		dispatch(setLoginPending(true));
 		dispatch(setLoginSuccess(false, null));
 		AsyncStorage.getItem('id_token').then(res => {
-			console.log('restok',res);
 			axios
 			.post(
 				`${ROOT_URL}/checkAuth`,
@@ -95,7 +90,6 @@ export function checkAuth(cb) {
 				setTimeout(() => cb('Main'),2000);
 			})
 			.catch(() => {
-				console.log('Auth fail');
 				dispatch(setLoginPending(false));
 				dispatch(setLoginSuccess(false, null));
 				dispatch(setLoginError(null));

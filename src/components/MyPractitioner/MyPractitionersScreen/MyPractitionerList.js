@@ -21,6 +21,7 @@ class MyPractitionerList extends Component {
         // this.props.practitionerProfileState.myPractitioners;
 
     }
+    
     renderPractioners() {
         const myPractitioners = this.props.practitionerProfileState.myPractitioners;
         const searchQuery = this.props.searchState.searchQuery;

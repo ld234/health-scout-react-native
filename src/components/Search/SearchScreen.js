@@ -256,25 +256,32 @@ class SearchScreen extends React.Component {
         switch(modalType) {
             case 0:
                 return (
-                    <Modal onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
+                    <Modal 
+                        onBackButtonPress={this.props.toggleSearchOptionModal}
+                        onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
                         {this.renderPracTypeRadioGroup()}
                     </Modal>
                 );
             case 1:
                 return (
-                    <Modal onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
+                    <Modal 
+                        onBackButtonPress={this.props.toggleSearchOptionModal}
+                        onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
                         {this.renderSpecialtyList()}
                     </Modal>
                 );
             case 2: 
                 return (
-                    <Modal onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
+                    <Modal onBackButtonPress={this.props.toggleSearchOptionModal}
+                        onBackButtonPress={this.props.toggleSearchOptionModal}
+                        onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
                         {this.renderDistanceList()}
                     </Modal>
                 );
             case 3:
                 return (
-                    <Modal onBackdropPress={() => {
+                    <Modal onBackButtonPress={this.props.toggleSearchOptionModal}
+                        onBackdropPress={() => {
                         this.props.toggleSearchOptionModal();
                         this.props.setSelectedSortOption(this.state.selectedSortOption);
                     }} isVisible={this.props.renderState.isSearchOptionModalShown}>
@@ -321,6 +328,10 @@ class SearchScreen extends React.Component {
       Keyboard.dismiss();
     };
 
+    onPracSelected = item => {
+        this.props.navigation.navigate('PracSearchProfile', item);
+    }
+
     render() {
         const specialties = this.props.renderState.selectedSpecialties ? this.props.renderState.selectedSpecialties : [];
         let list = this.props.pracState.pracSearchResult.map(item => {
@@ -334,7 +345,7 @@ class SearchScreen extends React.Component {
         }
         console.log('selected sort opt', this.props.renderState.selectedSortOption);
         if (this.props.renderState.selectedSortOption == 0){
-            list = list.sort((a, b) => parseFloat(b.distance) - parseFloat(a.distance)).slice();
+            list = list.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance)).slice();
             console.log('option 0', list);
         } else if (this.props.renderState.selectedSortOption == 1){
             list = list.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating)).slice();
@@ -361,12 +372,24 @@ class SearchScreen extends React.Component {
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{flex:1}}>
                         <View onStartShouldSetResponder={() => true} >
                             {list.map((item, idx) => {
-                                if (idx ===  0 )
-                                    return <TouchableOpacity onPress={() => this.props.navigation.navigate("SearchPracProfile", {pracInfo :item})}><PracCard data={item} top={true} bottom={false} key={idx} /></TouchableOpacity>;
-                                else if (idx === list.length - 1)
-                                    return <TouchableOpacity onPress={() => this.props.navigation.navigate("SearchPracProfile", {pracInfo :item})}><PracCard data={item} top={false} bottom={true} key={idx} /></TouchableOpacity>;
-                                else 
-                                    return <TouchableOpacity onPress={() => this.props.navigation.navigate("SearchPracProfile", {pracInfo :item})}><PracCard data={item} top={false} bottom={false} key={idx} /></TouchableOpacity>;
+                                if (idx ===  0 ) {
+                                    return (<TouchableOpacity key={item.pracUsername}
+                                        onPress={()=>this.onPracSelected(item)}>
+                                        <PracCard data={item} top={true} bottom={false} /> 
+                                    </TouchableOpacity> );
+                                }
+                                else if (idx === list.length - 1) {
+                                    return (<TouchableOpacity 
+                                        onPress={()=>this.onPracSelected(item)} key={item.pracUsername}>
+                                        <PracCard data={item} top={false} bottom={true} /> 
+                                    </TouchableOpacity> );
+                                }
+                                else {
+                                    return (<TouchableOpacity 
+                                        onPress={()=>this.onPracSelected(item)} key={item.pracUsername}>
+                                        <PracCard data={item} top={false} bottom={true} /> 
+                                    </TouchableOpacity>);
+                                }
                             })}
                         </View>
                         </TouchableWithoutFeedback>

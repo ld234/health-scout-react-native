@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, ImageBackground, Image, Button } from 'react-na
 import bgImage from '../../../assets/images/background.jpg';
 import logo from '../../../assets/images/healthscout-logo.png';
 
-// import { NavigationActions } from 'react-navigation';
 
 import { connect } from 'react-redux';
 import { checkAuth } from '../../actions/auth.actions';
@@ -28,7 +27,6 @@ class Splash extends React.Component {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <View style={styles.logoContainer}>
-          {/* <Image source={logo} style={styles.logo}></Image> */}
           <Text style={styles.logoText}> Welcome to HealthScout</Text>
         </View>
       </ImageBackground>

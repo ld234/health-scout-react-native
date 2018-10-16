@@ -2,10 +2,6 @@ import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
 
-export const SEARCH_PRAC_PENDING = 'SEARCH_PRAC_REQUEST';
-export const SEARCH_PRAC_SUCCESS = 'SEARCH_PRAC_SUCCESS';
-export const SEARCH_PRAC_ERROR = 'SEARCH_PRAC_ERROR';
-
 export const GET_PRAC_TYPE_SPECIALTY_PENDING = 'GET_PRAC_TYPE_SPECIALTY_PENDING';
 export const GET_PRAC_TYPE_SPECIALTY_SUCCESS = 'GET_PRAC_TYPE_SPECIALTY_SUCCESS';
 export const GET_PRAC_TYPE_SPECIALTY_ERROR = 'GET_PRAC_TYPE_SPECIALTY_ERROR';
@@ -35,7 +31,6 @@ function setGetPracTypeSpecialtyError(getSpecialtyError) {
 }
 
 export function getPracTypeSpecialties(pracType) {
-	console.log('in getPractypeSpecialties', pracType);
 	return dispatch => {
 		dispatch(setGetPracTypeSpecialtyPending(true));
 		dispatch(setGetPracTypeSpecialtySuccess(false));
@@ -48,7 +43,6 @@ export function getPracTypeSpecialties(pracType) {
 					},
 				})
 				.then(res => {
-					console.log('pracType res ', res.data);
 					dispatch(setGetPracTypeSpecialtyPending(false));
 					dispatch(setGetPracTypeSpecialtySuccess(true, res.data));
 				})
@@ -92,7 +86,6 @@ function setSearchPracError(searchPracError) {
 }
 
 export function searchPracByRadius(radius, latitude, longitude) {
-	console.log(radius, latitude, longitude);
 	return dispatch => {
 		dispatch(setSearchPracPending(true));
 		dispatch(setSearchPracSuccess(false, []));
@@ -110,12 +103,10 @@ export function searchPracByRadius(radius, latitude, longitude) {
 					}
 				})
 				.then( res => {
-					console.log(res.data);
 					dispatch(setSearchPracPending(false));
 					dispatch(setSearchPracSuccess(true, res.data));
 				})
 				.catch(err => {
-					console.log('err', JSON.stringify(err, 0, 4));
 					dispatch(setSearchPracPending(false));
 					dispatch(setSearchPracSuccess(false, []));
 					if (err) dispatch(setSearchPracError(err));

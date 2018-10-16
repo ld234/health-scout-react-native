@@ -14,9 +14,16 @@ import MedicationHistoryScreen from './src/components/MyProfile/MedicationHistor
 import FamilyHistoryScreen from './src/components/MyProfile/FamilyHistoryScreen';
 import AllergyHistoryScreen from './src/components/MyProfile/AllergyHistoryScreen';
 import ConsultationHistoryScreen from './src/components/MyProfile/ConsultationHistoryScreen';
+<<<<<<< HEAD
 import SearchPracProfile from './src/components/Search/SearchPracProfile';
 import MyPractitionerProfile from './src/components/MyPractitioner/MyPractitionerProfileScreen/MyPractitionerProfileScreen';
 import PaymentPage from './src/components/Search/PaymentPage';
+=======
+import MyPractitionerProfile from './src/components/MyPractitioner/MyPractitionerProfileScreen/MyPractitionerProfileScreen';
+import PDFViewScreen from './src/components/MyDocuments/PDFViewScreen';
+import MyDocumentsScreen from './src/components/MyDocuments/MyDocumentsScreen';
+import FlashMessage from "react-native-flash-message";
+>>>>>>> 2dec737e304b3c86cc7a02cb4cde0aa9c2a2f1a1
 // import { Font } from 'expo';
 import {
   createStackNavigator
@@ -74,8 +81,9 @@ const MainNavigator = createStackNavigator({
   ConsultationHistory: { screen: ConsultationHistoryScreen },
   AllergyHistory: { screen: AllergyHistoryScreen },
   PracProfile: { screen: MyPractitionerProfile },
-  SearchPracProfile:{ screen: SearchPracProfile },
-  PaymentPage:{ screen: PaymentPage},
+  PDFView: {screen: PDFViewScreen},
+  MyDocuments: { screen: MyDocumentsScreen }
+  // PracSearchProfile: { screen: PracSearchProfileScreen },
 },
 {
   headerMode: 'screen',
@@ -113,6 +121,7 @@ export default class App extends React.Component {
         <Provider store={store}>
           <PaperProvider theme={theme}>
             <MainNavigator></MainNavigator>
+            <FlashMessage position="top" />
           </PaperProvider>
         </Provider>
       )

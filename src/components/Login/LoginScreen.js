@@ -25,24 +25,6 @@ class LoginScreen extends React.Component {
     header: null
   }
 
-  // componentDidMount () {
-  //   this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
-  //   this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
-  // }
-
-  // componentWillUnmount () {
-  //   this.keyboardDidShowListener.remove();
-  //   this.keyboardDidHideListener.remove();
-  // }
-
-  // _keyboardDidShow = () => {
-  //   this.setState({ keyboardShow: !this.state.keyboardShow})
-  // }
-
-  // _keyboardDidHide = () => {
-  //   this.setState({ keyboardShow: !this.state.keyboardShow})
-  // }
-
   showPassword = () => {
     this.setState({showPassword: !this.state.showPassword, press: !this.state.press });
   }
@@ -62,7 +44,6 @@ class LoginScreen extends React.Component {
     return (
       <View style={styles.backgroundContainer}>
         <View style={styles.logoContainer}>
-          {/* <Image source={logo} style={styles.logo}></Image> */}
           <Text style={styles.logoText}>HealthScout</Text>
         </View>
         <View>
@@ -96,7 +77,6 @@ class LoginScreen extends React.Component {
         </View>
         <TouchableOpacity onPress={() => this.props.login(this.state.username, this.state.password, () => {
             this.props.navigation.navigate('Main');
-            console.log('called');
         })} >
           <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#021B79','#0575E6' ]}
             locations={[0,0.7]}
@@ -117,14 +97,12 @@ class LoginScreen extends React.Component {
     if (this.state.keyboardShow) {
       return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-          {/* <KeyboardAvoidingView  keyboardVerticalOffset={0} behavior="padding" enabled style={styles.backgroundContainer}> */}
           <ScrollView keyboardDismissMode='on-drag'
             keyboardShouldPersistTaps={'always'} style={styles.scrollView}>
             <TouchableWithoutFeedback style={styles.backgroundContainer} onPress={Keyboard.dismiss}>
               {this.renderFormBody()}
             </TouchableWithoutFeedback>
           </ScrollView>
-          {/* </KeyboardAvoidingView> */}
         </ImageBackground>
       );
     } else {
@@ -207,7 +185,7 @@ const styles = StyleSheet.create({
     borderRadius: 45,
     borderWidth: 1,
     borderColor: '#00b6ff',
-    backgroundColor: 'transparent', //'#00b6ff',
+    backgroundColor: 'transparent', 
     justifyContent: 'center',
     marginTop: 20,
     opacity: .8,

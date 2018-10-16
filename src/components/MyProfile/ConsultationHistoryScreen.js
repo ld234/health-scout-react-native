@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { FAB } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Modal from 'react-native-modal';
-import { SwipeRow } from 'react-native-swipe-list-view';
 import {
   ScrollView,
   StyleSheet,
@@ -11,57 +9,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
-import { STATUS_BAR_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants';
 import MaterialIconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import Octicons from 'react-native-vector-icons/SimpleLineIcons';
+import { getConsultations } from '../../actions/consultation.actions';
+import { connect } from 'react-redux';
 
-const BACON_IPSUM =
-  'Bacon ipsum dolor amet chuck turducken landjaeger tongue spare ribs.';
-
-const CONTENT = [
-  {
-    title: 'Aspirin',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Acetaminophen',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Alprazolam',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Ofloxacin',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Quinidex',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Traditional Herbs',
-    content: BACON_IPSUM,
-  },
-];
-
-const SELECTORS = [
-  {
-    title: 'First',
-    value: 0,
-  },
-  {
-    title: 'Third',
-    value: 2,
-  },
-  {
-    title: 'None',
-  },
-];
-
-export default class ConsultationHistoryScreen extends Component {
+class ConsultationHistoryScreen extends Component {
   static navigationOptions = ({navigation}) => {
       return {
           title: 'Consultation History',
@@ -71,6 +25,7 @@ export default class ConsultationHistoryScreen extends Component {
           headerTintColor: '#17ac71',
       }
   }
+
   state = {
     activeSections: [],
     collapsed: true,
@@ -86,22 +41,6 @@ export default class ConsultationHistoryScreen extends Component {
     });
   };
 
-  renderFormContent = () => {
-      return (
-          <View styles={style.longModal} >
-
-          </View>
-      )
-  }
-
-  renderModal = () => {
-    return (
-        <Modal onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
-            {this.renderFormContent()}
-        </Modal>
-    );
-  }
-
   renderHeader = (section, _, isActive) => {
     return (
       <Animatable.View
@@ -114,27 +53,14 @@ export default class ConsultationHistoryScreen extends Component {
             <View style={{flexDirection: 'row'}}>
                 <Text style={styles.headerText}>{section.title}</Text>
             </View>
-            {isActive? <TouchableOpacity style={{flexDirection: 'row', position: 'absolute', bottom: 0, right: 0 }}>
-                <Octicons name={'trash'} color={'#666'} size={26}></Octicons>
-            </TouchableOpacity> :null }
         </View>
-        {/* <View style={styles.standalone}>
-          <SwipeRow leftOpenValue={75} rightOpenValue={-75}>
-            <View style={styles.standaloneRowBack}>
-              <Text style={styles.backTextWhite}>Left</Text>
-              <Text style={styles.backTextWhite}>Right</Text>
-            </View>
-            <View style={styles.standaloneRowFront}>
-                <MaterialIconCommunity name={'history'} color={'#17ac71'} size={26}></MaterialIconCommunity>
-                <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.headerText}>{section.title}</Text>
-                </View>
-            </View>
-          </SwipeRow>
-        </View> */}
       </Animatable.View>
     );
   };
+
+  componentDidMount() {
+    this.props.getConsultations();
+  }
 
   renderContent(section, _, isActive) {
     return (
@@ -149,7 +75,7 @@ export default class ConsultationHistoryScreen extends Component {
                     <Text style={styles.contentTextLeft}>Date</Text>
                 </View>
                 <View style={[styles.contentContainer, styles.separator]}>
-                    <Text style={styles.contentText}>{section.content.slice(0,9)}</Text>
+                    <Text style={styles.contentText}>{section.consultDate}</Text>
                 </View>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -157,7 +83,7 @@ export default class ConsultationHistoryScreen extends Component {
                     <Text style={styles.contentTextLeft}>Summary</Text>
                 </View>
                 <View style={[styles.contentContainer, styles.separator]}>
-                    <Text style={styles.contentText}>{section.content}</Text>
+                    <Text style={styles.contentText}>{section.summary}</Text>
                 </View>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -165,7 +91,15 @@ export default class ConsultationHistoryScreen extends Component {
                     <Text style={styles.contentTextLeft}>Intervention</Text>
                 </View>
                 <View style={[styles.contentContainer]}>
-                    <Text style={styles.contentText}>{section.content}</Text>
+                    <Text style={styles.contentText}>{section.intervention}</Text>
+                </View>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+                <View style={[styles.contentLeftContainer]}>
+                    <Text style={styles.contentTextLeft}>Practitioner</Text>
+                </View>
+                <View style={[styles.contentContainer]}>
+                    <Text style={styles.contentText}>{`${section.pracTitle} ${section.fName} ${section.lName} - ${section.pracType}`}</Text>
                 </View>
             </View>
         </Animatable.View>
@@ -173,9 +107,45 @@ export default class ConsultationHistoryScreen extends Component {
     );
   }
 
+  renderModal = () => {
+    // return (
+    //     <Modal 
+    //       style={{alignContent:'center',paddingTop:0}}
+    //       onBackButtonPress={this.toggleDialog}
+    //       onBackdropPress={this.toggleDialog} isVisible={this.state.dialog}>
+    //         <View style={styles.dialog}>
+    //           <View style={{flex:1, width: SCREEN_WIDTH*.9 }}>
+    //           <View style={styles.dialogHeader}>
+    //             <Text style={styles.dialogHeaderText}>CONFIRM MEDICATION DELETE</Text>
+    //           </View>
+    //           <View style={{flex:0.6, width:SCREEN_WIDTH*0.9, justifyContent: 'center', paddingLeft: 10, paddingRight: 10}}>
+    //             <Text style={!this.props.allergyState.deleteAllergyError? styles.dialogText: [styles.dialogText, {color: '#f00'}]}>
+    //               {!this.props.allergyState.deleteAllergyError? 
+    //               'Are you sure you want to delete this allergy from your allergy history?': 
+    //               this.props.allergyState.deleteAllergyError}
+    //             </Text>
+    //           </View>
+    //           <TouchableOpacity style={styles.closeButton} onPress={() => {
+    //               const { symptom, allergy } = this.state.selectedItem;
+    //               let idx = this.props.allergyState.allergies.findIndex(item => item.allergy === allergy);
+    //               this.props.deleteAllergy({ allergy }, this.toggleDialog, idx);
+    //           }}>
+    //               <Text style={styles.closeButtonText}>OK</Text>
+    //           </TouchableOpacity>
+    //           <TouchableOpacity style={styles.cancelButton} onPress={() => {
+    //             this.toggleDialog();
+    //           }}>
+    //               <Text style={styles.cancelButtonText}>CANCEL</Text>
+    //           </TouchableOpacity>
+    //           </View>
+    //         </View>
+    //     </Modal>
+    // );
+  }
+
   render() {
     const { activeSections } = this.state;
-
+    console.log('cons', this.props.consultationState.consultations);
     return (
         <View style={styles.container}>
             <ScrollView 
@@ -183,7 +153,7 @@ export default class ConsultationHistoryScreen extends Component {
               showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120}}>
                 <Accordion
                     activeSections={activeSections}
-                    sections={CONTENT}
+                    sections={this.props.consultationState.consultations}
                     touchableComponent={TouchableOpacity}
                     expandMultiple={false}
                     renderHeader={this.renderHeader}
@@ -191,16 +161,18 @@ export default class ConsultationHistoryScreen extends Component {
                     duration={400}
                     onChange={this.setSections}
                 />
+                
             </ScrollView>
-            <FAB 
-                icon={({ size, color }) => (
-                    <Icon size={28} color={'white'} name="add" />
-                )}
-                style={styles.fab}
-                onPress={() => {
-                    console.log('filter button pressed');
+            {/* <FAB 
+                  icon={({ size, color }) => (
+                      <Icon size={28} color={'white'} name="filter-list" />
+                  )}
+                  style={styles.fab}
+                  onPress={() => {
+                    this.toggleModal();
                 }}
-            />
+            /> */}
+            {this.renderModal()}
         </View>
     );
   }
@@ -211,7 +183,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  
   fab: {
     position: 'absolute',
     margin: 20,
@@ -299,3 +270,17 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
 });
+
+const mapStateToProps = state => {
+  return {
+    consultationState: state.consultationState,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getConsultations: () => dispatch(getConsultations()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConsultationHistoryScreen);
