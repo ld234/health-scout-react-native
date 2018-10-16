@@ -10,6 +10,7 @@ import LocationList from './LocationList';
 import SpecialtyList from './SpecialtyList';
 import DistanceList from './DistanceList';
 import FilterButton from './FilterButton';
+import { updateViewCount } from '../../actions/practitionerProfile.actions';
 
 import { ScrollView, StyleSheet, Image, Text } from 'react-native';
 import {
@@ -72,11 +73,6 @@ class SearchScreen extends React.Component {
             isModalVisible: false,
             value: 0,
             selectedSortOption: this.props.renderState.selectedSortOption,
-            // pracTypes: [
-            //     {id: 0, labelView: (<View><Text style={styles.optionText}>Dietitian</Text></View>) },
-            //     {id: 1, labelView: (<View><Text style={styles.optionText}>Physiotherapist</Text></View>) },
-            //     {id: 2, labelView: (<View><Text style={styles.optionText}>Exercise Physiologist</Text></View>) }
-            // ],
             specialties: [],
             pracType: null,
             specialty: null,
@@ -296,7 +292,7 @@ class SearchScreen extends React.Component {
     _renderLocationList = () => {
         const listLength = this.props.renderState.locationList.length;
         console.log('listlength', listLength);
-        const height = Number.isInteger(listLength) && listLength <= 5 ?  listLength*60 : 300;
+        const height = Number.isInteger(listLength) && listLength <= 4 ?  (listLength+1)*60 : 300;
         if(listLength)
         return (
             <Surface style={{
@@ -316,7 +312,7 @@ class SearchScreen extends React.Component {
             </Surface>);
         else return null;
     }
-  
+   
     _onPressItem = (id) => {
       // updater functions are preferred for transactional updates
       this.setState((state) => {
@@ -329,7 +325,8 @@ class SearchScreen extends React.Component {
     };
 
     onPracSelected = item => {
-        this.props.navigation.navigate('PracSearchProfile', item);
+        this.props.navigation.navigate('SearchPracProfile', item);
+        this.props.updateViewCount(item.pracUsername);
     }
 
     render() {
@@ -339,20 +336,15 @@ class SearchScreen extends React.Component {
                 return {...item, rating: 0};
             return item;
         })
-            .filter(prac => specialties.every(sp => prac.Specialties.map(s => s.specialty).includes(sp)));
+            .filter(prac => specialties.every(sp => prac.Specialties.map(s => s.specialty).includes(sp))).filter(prac => prac.distance <= this.props.renderState.selectedRadius);
         if (this.props.renderState.searchPracType && this.props.renderState.searchPracType.length) {
             list = list.filter(prac => prac.pracType === this.props.renderState.searchPracType);
         }
-        console.log('selected sort opt', this.props.renderState.selectedSortOption);
         if (this.props.renderState.selectedSortOption == 0){
             list = list.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance)).slice();
-            console.log('option 0', list);
         } else if (this.props.renderState.selectedSortOption == 1){
             list = list.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating)).slice();
-            console.log('option 1', list);
         }
-        // console.log('after filter', list, list.length)
-        // console.log('ispending?', this.props.pracState.isSearchPracPending);
         if (this.props.pracState.isSearchPracPending){
             return (
                 <View style={styles.logoContainer}>
@@ -363,17 +355,18 @@ class SearchScreen extends React.Component {
             );
         }
         return (
-            
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{flex:1}}>
                 <View style={styles.screenContent}>
                     {/* <SearchBar /> */}
                     
-                    <ScrollView style={styles.screenContent} showsVerticalScrollIndicator={false} keyboardDismissMode='on-drag'
+                    <ScrollView style={styles.screenContent} showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps={'always'} contentContainerStyle={styles.scrollViewContent}>
-                        <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{flex:1}}>
-                        <View onStartShouldSetResponder={() => true} >
+                        
+                        <View >
                             {list.map((item, idx) => {
                                 if (idx ===  0 ) {
-                                    return (<TouchableOpacity key={item.pracUsername}
+                                    return (
+                                    <TouchableOpacity key={item.pracUsername}
                                         onPress={()=>this.onPracSelected(item)}>
                                         <PracCard data={item} top={true} bottom={false} /> 
                                     </TouchableOpacity> );
@@ -387,18 +380,20 @@ class SearchScreen extends React.Component {
                                 else {
                                     return (<TouchableOpacity 
                                         onPress={()=>this.onPracSelected(item)} key={item.pracUsername}>
-                                        <PracCard data={item} top={false} bottom={true} /> 
+                                        <PracCard data={item} top={false} bottom={false} /> 
                                     </TouchableOpacity>);
                                 }
                             })}
                         </View>
-                        </TouchableWithoutFeedback>
+                       
                     </ScrollView>
+                    
                     {this.renderModal(this.props.renderState.searchOptionModalType)}
                     {this.props.renderState.isLocationSuggestionShown ? 
                         this._renderLocationList() : null}
                     {this._renderFAB()}
                 </View>
+            </TouchableWithoutFeedback>
         );
     }
 }
@@ -516,6 +511,7 @@ const mapDispatchToProps = dispatch => {
         setSearchPracType: (pracType) => dispatch(setSearchPracType(pracType)),
         setSelectedSpecialties: (list) => dispatch(setSelectedSpecialties(list)),
         setSelectedSortOption: (n) => dispatch(setSelectedSortOption(n)),
+        updateViewCount: (prac) => dispatch(updateViewCount(prac)),
     }
 }
 

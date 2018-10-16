@@ -18,6 +18,8 @@ import MyPractitionerProfile from './src/components/MyPractitioner/MyPractitione
 import PDFViewScreen from './src/components/MyDocuments/PDFViewScreen';
 import MyDocumentsScreen from './src/components/MyDocuments/MyDocumentsScreen';
 import FlashMessage from "react-native-flash-message";
+import SearchPracProfile from './src/components/Search/SearchPracProfile';
+import PaymentPage from './src/components/Search/PaymentPage';
 // import { Font } from 'expo';
 import {
   createStackNavigator
@@ -76,8 +78,10 @@ const MainNavigator = createStackNavigator({
   AllergyHistory: { screen: AllergyHistoryScreen },
   PracProfile: { screen: MyPractitionerProfile },
   PDFView: {screen: PDFViewScreen},
-  MyDocuments: { screen: MyDocumentsScreen }
+  MyDocuments: { screen: MyDocumentsScreen },
   // PracSearchProfile: { screen: PracSearchProfileScreen },
+  SearchPracProfile:{ screen: SearchPracProfile },
+  PaymentPage:{ screen: PaymentPage},
 },
 {
   headerMode: 'screen',

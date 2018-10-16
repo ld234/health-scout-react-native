@@ -125,6 +125,9 @@ class PdfViewScreen extends Component<{}> {
 
     handleFileFetch = () => {
       console.log('component did mount', this.state.permissionGranted);
+      const url = this.props.navigation.getParam('readOnly') ? 
+        `https://10.0.2.2:9000/clients/profile/exchangeDocument/patient/viewSentDocument?title=${this.props.navigation.getParam('title')}&pracUsername=${this.props.navigation.getParam('pracUsername')}` : 
+        `http://10.0.2.2:8888/${this.props.navigation.getParam('file')}`
       if(this.state.permissionGranted) {
         AsyncStorage.getItem('id_token').then(res => {
           const dirs = RNFetchBlob.fs.dirs;
@@ -134,13 +137,14 @@ class PdfViewScreen extends Component<{}> {
             // this is much more performant.
             fileCache : true,
             appendExt : 'pdf',
+            trusty: true,
             // addAndroidDownloads : {
             //   useDownloadManager : true,
             //   notification : true,
             //   path : dirs.DownloadDirs + '/testfile.pdf',
             // }
           })
-          .fetch('GET', `http://10.0.2.2:8888/${this.props.navigation.getParam('file')}`, {
+          .fetch('GET', url,{
             'x-access-token': res,
           })
           .then((res) => {
@@ -162,10 +166,6 @@ class PdfViewScreen extends Component<{}> {
     }
 
     _onDocumentSave = () => {
-    //   let formdata = new FormData();
-    //   formdata.append('pracUsername', this.props.navigation.getParam('pracUsername'));
-    //   formdata.append('title', this.props.navigation.getParam('title'));
-    //   formdata.append('file', this.props.navigation.getParam('pracUsername'));
       console.log('save document');
       const filename = this.state.filePath.split('/');
       this.props.sendDocument({
@@ -206,7 +206,7 @@ class PdfViewScreen extends Component<{}> {
       } else if (this.props.documentState.isSendDocumentSuccess){
         this.state.fileCache.flush();
         showMessage({
-          message: "Save Document Error",
+          message: "Send Document Success",
           description: 'Your document has been sent successfully to your practitioner.',
           type: "success",
           // floating: true,

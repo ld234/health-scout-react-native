@@ -15,7 +15,7 @@ class MyListItem extends React.PureComponent {
     render() {
       console.log(this.props);
       const textColor = "#666";
-      const font = 'Quicksand-Regular' //: 'Quicksand-Regular';
+      const font = 'Quicksand-Regular';
       return (
         <TouchableOpacity key={this.props.title} onPress={this._onPress}>
           <View style={{height: 80,  justifyContent: 'center', paddingLeft: 50, borderBottomColor: '#eee', borderBottomWidth: 1}}>

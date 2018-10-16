@@ -40,7 +40,7 @@ class LocationList extends React.PureComponent {
           this.props.setLocationSearchQuery(id);
           this.props.searchPracByRadius(this.props.renderState.selectedRadius, obj.coords.latitude, obj.coords.longitude);
           Keyboard.dismiss();
-        })
+        }, (err) => console.log('err: ', err),  { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
       } else {
         this.props.setCoord(lat,lng);
         this.props.setLocationSuggestionShow(false);

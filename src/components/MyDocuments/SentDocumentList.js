@@ -4,8 +4,9 @@ import FA from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
 import {connect} from 'react-redux';
 import {SCREEN_HEIGHT , SCREEN_WIDTH} from '../../constants';
-import { getReceivedDocuments } from '../../actions/document.actions';
+import { getSentDocuments } from '../../actions/document.actions';
 import { MaterialIndicator } from 'react-native-indicators';
+import moment from 'moment';
 
 class MyListItem extends React.PureComponent {
     _onPress = () => {
@@ -26,7 +27,7 @@ class MyListItem extends React.PureComponent {
                         {this.props.title}
                     </Text>
                     <Text style={{ color: textColor, fontFamily:font, fontSize: 14,textAlign:'left', paddingRight: 13 }}>
-                        {this.props.doctorName}
+                        {this.props.status? 'Seen': 'Not seen'} by {this.props.pracTitle}{this.props.fName} {this.props.lName}
                     </Text>
                 </View>
                 
@@ -37,7 +38,7 @@ class MyListItem extends React.PureComponent {
     }
   }
   
-class NewDocumentList extends React.Component {
+class SentDocumentList extends React.Component {
     constructor(props){
         super(props);
         this.state = {selected: -1, modal: false, selectedDoc: {} };
@@ -47,9 +48,9 @@ class NewDocumentList extends React.Component {
     _onPressItem = (id) => {
         this.toggleModal();
         const fields = id.split('_');
-        const idx = this.props.documentState.receivedDocs.findIndex(item => fields[0] === item.title && fields[0] && item.pracUsername === fields[1]);
+        const idx = this.props.documentState.sentDocuments.findIndex(item => fields[0] === item.title && fields[0] && item.pracUsername === fields[1]);
         if (idx >= 0) {
-            this.setState({selectedDoc: {...this.props.documentState.receivedDocs[idx], justSendIdx: idx, readOnly: true}})
+            this.setState({selectedDoc: {...this.props.documentState.sentDocuments[idx], justSendIdx: idx, readOnly: true}})
         }
     };
 
@@ -61,8 +62,7 @@ class NewDocumentList extends React.Component {
         <MyListItem
             id={`${item.title}_${item.pracUsername}`}
             onPressItem={this._onPressItem}
-            title={item.title}
-            doctorName={item.doctorName}
+            {...item}
         />
     );
 
@@ -104,7 +104,7 @@ class NewDocumentList extends React.Component {
                             </View>
                             <View style={styles.sectionBody}>
                                 <Text style={styles.sectionBodyText}>
-                                    {this.state.selectedDoc.doctorName}
+                                    {this.state.selectedDoc.pracTitle} {this.state.selectedDoc.fName} {this.state.selectedDoc.lName}
                                 </Text>
                             </View>
                         </View>
@@ -116,7 +116,7 @@ class NewDocumentList extends React.Component {
                             </View>
                             <View style={styles.sectionBody}>
                                 <Text style={styles.sectionBodyText}>
-                                    {this.state.selectedDoc.doctorName}
+                                    {moment(new Date(this.state.selectedDoc.receivedDate)).format('DD-MM-YYYY HH:mm:ss')}
                                 </Text>
                             </View>
                         </View>
@@ -160,19 +160,19 @@ class NewDocumentList extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getReceivedDocuments();
+        this.props.getSentDocuments();
     }
 
   
     render() {
-        if (this.props.documentState.isGetReceivedDocumentsPending) return <MaterialIndicator color='#17ac71' />
-        return (
+        if (this.props.documentState.isGetSentDocumentsPending) return <MaterialIndicator color='#17ac71' />
+        else return (
             <View>
                 <FlatList
                     contenContainerStyle={{justifyContent:'center', flex: 1}}
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps={'always'}
-                    data={this.props.documentState.receivedDocs}
+                    data={this.props.documentState.sentDocuments}
                     extraData={this.state}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
@@ -180,12 +180,13 @@ class NewDocumentList extends React.Component {
                 {this.renderModal()}
             </View>
         );
+                
     }
 }
 
 const styles = StyleSheet.create({
     longModal:{
-        height: SCREEN_HEIGHT - 300,
+        height: SCREEN_HEIGHT - 220,
         width: SCREEN_WIDTH*0.9,
         backgroundColor: 'white',
         borderRadius: 10,
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
         top: -30,
     },
     section : {
-        marginTop: 30,
+        marginTop: 20,
     },
     sectionHeader: {
 
@@ -239,8 +240,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getReceivedDocuments: () => dispatch(getReceivedDocuments()),
+        getSentDocuments: () => dispatch(getSentDocuments()),
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewDocumentList);
+export default connect(mapStateToProps, mapDispatchToProps)(SentDocumentList);

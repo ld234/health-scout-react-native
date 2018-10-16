@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { View, Text, Platform } from 'react-native';
 import SearchBar from './SearchBar/SearchBar';
 import MyPractitionerList from './MyPractitionerList';
-class MyPractitionersScreen extends Component {
+import { getMyPractitioners } from '../../../actions/mypracSearch.actions';
+
+export default class MyPractitionersScreen extends Component {
     // componentDidMount(){
     //     console.log(this.props.navigation);
     // }
@@ -13,7 +15,5 @@ class MyPractitionersScreen extends Component {
                 <MyPractitionerList navigation ={this.props.navigation}/>
             </View>
         )
-    }
-}
-
-export default MyPractitionersScreen;
+    };
+};

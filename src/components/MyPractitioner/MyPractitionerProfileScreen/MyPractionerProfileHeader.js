@@ -1,28 +1,40 @@
 import React, {Component} from 'react';
 import { ScrollView, StyleSheet,Image, View, Text, Platform,TouchableWithoutFeedback, Keyboard } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {connect } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
-const MyPractitionerProfileHeader = () => {
+const URL = 'http://10.0.2.2:8888';
+
+class MyPractitionerProfileHeader extends Component {
+    constructor(props){
+        super(props);
+    }
+    
+    render() {
+        console.log('pracinfo state', this.props.pracProfileState);
+        if(this.props.pracProfileState.isGetProfileInfoPending) return <MaterialIndicator color="#17ac71" />
         return (
             <View style={styles.profileHeaderContainer}>
                 <LinearGradient  start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}locations={[0,0.8]} colors={['#167434','#17AC71' ]}locations={[0,0.9]} style={styles.profileGradient}>
                 <Image
                     style={styles.profilePic}
-                    source={require('../../../../assets/images/profile.jpg')}
+                    source={{uri:`${URL}${this.props.pracProfileState.generalInfo.User.profilePic}`}}
                 />
                 <Text 
                     style={styles.profileName}>
-                    Jesse Moore
+                    {this.props.pracProfileState.generalInfo.User.title} {this.props.pracProfileState.generalInfo.User.fName} {this.props.pracProfileState.generalInfo.User.lName}
                 </Text>
                 <Text
                     style={styles.practitionerType}>
-                    Dietition
+                    {this.props.pracProfileState.generalInfo.pracType}
                 </Text>
                 {/* <Icon name={}/> */}
                 </LinearGradient>
                 
             </View>
         )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -53,4 +65,10 @@ const styles = StyleSheet.create({
    
 })
 
-export default MyPractitionerProfileHeader;
+const mapStateToProps = state =>{
+    return {
+        pracProfileState: state.practitionerProfileState,
+    }
+}
+
+export default connect(mapStateToProps)( MyPractitionerProfileHeader);

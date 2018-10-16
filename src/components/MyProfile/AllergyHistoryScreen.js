@@ -19,46 +19,6 @@ import { addAllergy, deleteAllergy, getAllergies } from '../../actions/allergy.a
 import { Sae } from 'react-native-textinput-effects';
 import _ from 'lodash';
 
-const BACON_IPSUM =
-  'Bacon ipsum dolor amet chuck turducken landjaeger tongue spare ribs.';
-
-const CONTENT = [
-  {
-    title: 'Aspirin',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Acetaminophen',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Alprazolam',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Ofloxacin',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Quinidex',
-    content: BACON_IPSUM,
-  },
-];
-
-const SELECTORS = [
-  {
-    title: 'First',
-    value: 0,
-  },
-  {
-    title: 'Third',
-    value: 2,
-  },
-  {
-    title: 'None',
-  },
-];
-
 class AllergyHistoryScreen extends Component {
   static navigationOptions = ({navigation}) => {
       return {

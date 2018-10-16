@@ -198,7 +198,7 @@ class MyDocumentsScreen extends React.Component {
           locations={[0,0.8]} colors={['#167434','#17AC71']}
           locations={[0,0.9]} />
           <TabView
-              style={{position: 'relative', top: -55, height: SCREEN_HEIGHT}}
+              style={{position: 'relative', top: -50, height: SCREEN_HEIGHT}}
               navigationState={this.state}
               renderScene={this._renderScene}
               renderTabBar={this._renderTabBar}

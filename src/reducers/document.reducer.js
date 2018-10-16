@@ -50,7 +50,7 @@ export default function docReducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				isGetSentDocumentsSuccess: action.isGetSentDocumentsSuccess,
-				receivedDocs: action.medication? [...state.receivedDocs, action.medication]: state.receivedDocs,
+				sentDocuments: action.sentDocuments && action.sentDocuments.length?  action.sentDocuments : state.sentDocuments,
 			};
 		case GET_SENT_DOCUMENTS_ERROR:
 			return {
@@ -71,6 +71,7 @@ export default function docReducer(state = INITIAL_STATE, action) {
 				receivedDocs: Number.isInteger(action.justSendIdx) ? 
 					state.receivedDocs.filter((item, idx) => idx !== action.justSendIdx): 
 					state.receivedDocs,
+				sentDocuments: action.newSentDoc ? [...state.sentDocuments, action.newSentDoc] : state.sentDocuments, 
 			};
 		case SEND_DOCUMENT_ERROR:
 			console.log(state);

@@ -19,7 +19,7 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../../constants';
       }
     FirstRoute = () => (
         <View style={styles.scrollContainer}>
-            <ScrollView onScroll={(e)=>{
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={(e)=>{
                     var windowHeight = Dimensions.get('window').height,
                         height = e.nativeEvent.contentSize.height,
                         offset = e.nativeEvent.contentOffset.y;
@@ -34,7 +34,7 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../../constants';
     );
     SecondRoute = () => (
         <View style={styles.scrollContainer}>
-            <ScrollView onScroll={(e)=>{
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={(e)=>{
                     var windowHeight = Dimensions.get('window').height,
                         height = e.nativeEvent.contentSize.height,
                         offset = e.nativeEvent.contentOffset.y;
@@ -45,7 +45,7 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../../constants';
                         this.props.enableScroll();
                     }
                 }}>
-                <PractitionerPastConsultations/>
+                <PractitionerPastConsultations {...this.props} />
             </ScrollView>
         </View>
     );
@@ -70,6 +70,7 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../../constants';
      };
     
     render() {
+        console.log('navi props 2', this.props.navigation);
       return (
         <TabView
           navigationState={this.state}
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     scrollContainer:{
         flex:1,
         height:550,
+        backgroundColor:"#eee"
     }
   });
 

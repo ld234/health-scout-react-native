@@ -7,6 +7,8 @@ import familyReducer from './family.history.reducer';
 import allergyReducer from './allergy.reducer';
 import consultationReducer from './consultation.reducer';
 import documentReducer from './document.reducer';
+import practitionerProfileReducer from './practitionerProfile.reducer';
+import mypracSearchState from './mypracSearch.reducer';
 // import { persistReducer } from 'redux-persist';
 
 const rootReducer = combineReducers({
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
     allergyState: allergyReducer,
     consultationState: consultationReducer,
     documentState: documentReducer,
+    practitionerProfileState:practitionerProfileReducer,
+    mypracSearchState: mypracSearchState
 });
 
 export default rootReducer;

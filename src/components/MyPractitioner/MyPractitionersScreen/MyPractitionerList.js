@@ -1,74 +1,136 @@
 import React, { Component } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import PracCard from '../../Search/PracCard';
-
-const data = {
-    "pracUsername": "ldt999",
-    "pracType": "Dietitian",
-    "serviceProvided": "Weight loss",
-    "businessAddress": "21 Keira St, Wollongong, NSW 2500",
-    "description": 'hello word',
-    "rating": "2.75",
-    "User": {
-        "title": "Ms.",
-        "fName": "Dan",
-        "lName": "Tran",
-        "profilePic": "/profilePics/ldt999-1534066039817.png"
-    },
-    "Specialties": [
-        {
-            "specialty": "Allergy and food sensitivity"
-        },
-        {
-            "specialty": "Coeliac disease (Gluten free)"
-        },
-        {
-            "specialty": "Community education"
-        },
-        {
-            "specialty": "Liver disease"
-        },
-        {
-            "specialty": "Osteoporosis"
-        }
-    ]
-}
+import PracCard from './MyPracCard';
+import { getMyPractitioners, updateViewCount } from '../../../actions/practitionerProfile.actions';
+import { connect } from 'react-redux';
 
 class MyPractitionerList extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            practitioners: [],
-        };
         props = this.props;
     }
-    componentWillMount() {
-    console.log('ComponentwillMount in AlbumList');  
-    axios.get('https://rallycoding.herokuapp.com/api/music_albums')
-        .then(response => this.setState({ practitioners: response.data }));
+
+    componentDidMount() {
+        this.props.getMyPractitioners();
     }
 
-    onContactSelected(pracUsername) {
-        this.props.navigation.navigate('PracProfile', pracUsername);
+    onPracSelected = (prac) => {
+        console.log('Prac profile',prac);
+        this.props.navigation.navigate('PracProfile', prac);
+        // this.props.practitionerProfileState.myPractitioners;
     }
     
     renderPractioners() {
-        return this.state.practitioners.map(practitioner => 
-            <TouchableOpacity key={practitioner.title} onPress={()=>this.onContactSelected(practitioner.title)}>
-                <PracCard data={data} />
-            </TouchableOpacity>
-            );
+        const myPractitioners = this.props.practitionerProfileState.myPractitioners;
+        console.log('prac state', myPractitioners);
+        const searchQuery = this.props.searchState.searchQuery;
+        console.log('search query', searchQuery);
+        if(searchQuery && searchQuery.length > 0 && myPractitioners.length &&  myPractitioners.length  > 0){
+            let result = myPractitioners.filter( practitioner => practitioner.fName.toLowerCase().match(`^.*${searchQuery.toLowerCase()}.*$`) ||
+                practitioner.lName.toLowerCase().match(`^.*${searchQuery.toLowerCase()}.*$`) || 
+                `${practitioner.fName} ${practitioner.lName}`.toLowerCase().match(`^.*${searchQuery.toLowerCase()}.*$`));
+            console.log('filter', result);
+            return result.map((practitioner, idx) => {
+                if (idx=== 0) {
+                    return(
+                        <TouchableOpacity key={practitioner.pracUsername} onPress={() => this.onPracSelected(practitioner)}>
+                            <PracCard data={practitioner} top={true} bottom={false} />
+                        </TouchableOpacity>
+                    );
+                } else if (idx === myPractitioners.length - 1){
+                    return (
+                        <TouchableOpacity key={practitioner.pracUsername} onPress={() => this.onPracSelected(practitioner)}>
+                            <PracCard data={practitioner} top={false} bottom={true} />
+                        </TouchableOpacity>
+                    )
+                } else {
+                    return (
+                        <TouchableOpacity key={practitioner.pracUsername} onPress={() => this.onPracSelected(practitioner)}>
+                            <PracCard data={practitioner} top={false} bottom={false} />
+                        </TouchableOpacity>
+                    )
+                }
+            });
+        }
+        else {
+            return myPractitioners.map((practitioner, idx) => {
+                if (idx=== 0) {
+                    return(
+                        <TouchableOpacity key={practitioner.pracUsername} onPress={() => this.onPracSelected(practitioner)}>
+                            <PracCard data={practitioner} top={true} bottom={false} />
+                        </TouchableOpacity>
+                    );
+                } else if (idx === myPractitioners.length - 1){
+                    return (
+                        <TouchableOpacity key={practitioner.pracUsername} onPress={() => this.onPracSelected(practitioner)}>
+                            <PracCard data={practitioner} top={false} bottom={true} />
+                        </TouchableOpacity>
+                    )
+                } else {
+                    return (
+                        <TouchableOpacity key={practitioner.pracUsername} onPress={() => this.onPracSelected(practitioner)}>
+                            <PracCard data={practitioner} top={false} bottom={false} />
+                        </TouchableOpacity>
+                    )
+                }
+            });
+        }
+        // else {
+        //     if(myPractitioners){
+        //         return myPractitioners.map((practitioner, idx) => {
+        //             if(idx === 0 ){
+        //                 return(
+        //                     <TouchableOpacity key={practitioner.pracUsername} onPress={()=>this.onPracSelected(practitioner.title)}>
+        //                         <PracCard data={practitioner} top={true} bottom={false} />
+        //                     </TouchableOpacity>
+        //                     )
+        //                 }
+        //             else if (idx === practitioner.length - 1){
+        //                 return(
+        //                     <TouchableOpacity key={practitioner.pracUsername} onPress={()=>this.onPracSelected(practitioner.title)}>
+        //                         <PracCard data={practitioner} top={false} bottom={true}/>
+        //                     </TouchableOpacity>
+        //                 )
+        //             }
+        //             else{
+        //                 return (
+        //                 <TouchableOpacity key={practitioner.pracUsername} onPress={()=>this.onPracSelected(practitioner.title)}>
+        //                     <PracCard data={practitioner} top={false} bottom={false}/>
+        //                 </TouchableOpacity>
+        //                 )
+        //             }
+        //         });
+        //     }
+        //     else{
+        //         return null;
+        //     }
+        // }
     }
+
     render() {  
-        console.log(this.state.practitioners);  
+        console.log(this.props.practitionerProfileState.myPractitioners);  
         return (
             <ScrollView>
                 {this.renderPractioners()}
             </ScrollView>
         );
     }
-
 }
 
-export default MyPractitionerList;
+const mapStateToProps = state => {
+    return {
+        practitionerProfileState: state.practitionerProfileState,
+        searchState: state.mypracSearchState,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getMyPractitioners: () => dispatch(getMyPractitioners()),
+        updateViewCount: (prac) => dispatch(updateViewCount(prac)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyPractitionerList);
+

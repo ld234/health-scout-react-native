@@ -15,7 +15,7 @@ class PracCard extends React.Component {
                         <View style={styles.cardLeft}>
                             <Image
                                 style={styles.avatar}
-                                source={{uri: this.props.data.User.profilePic ?  `${URL}${this.props.data.User.profilePic}` :
+                                source={{uri: this.props.data.profilePic ?  `${URL}${this.props.data.profilePic}` :
                                     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSODALYDYo2dqN0DG_kPNi2X7EAy1K8SpRRZQWkNv9alC62IHggOw'}}
                                 resizeMode='cover'
                                 borderRadius={50} />
@@ -24,7 +24,7 @@ class PracCard extends React.Component {
                             </View>
                         </View>
                         <View>
-                            <Title style={styles.cardTitle}>{`${this.props.data.User.title} ${this.props.data.User.fName} ${this.props.data.User.lName}`}</Title>
+                            <Title style={styles.cardTitle}>{`${this.props.data.title} ${this.props.data.fName} ${this.props.data.lName}`}</Title>
                             <Title style={styles.cardSubtitle}>{this.props.data.pracType}</Title>
                             <Paragraph style={styles.cardContent}>{this.props.data.description.slice(0,60)}{this.props.data.description.length > 60? '...': ''}</Paragraph>
                         </View>
@@ -32,13 +32,14 @@ class PracCard extends React.Component {
                     
                 </Card.Content>
                 <Card.Actions style={styles.cardAction}>
-                    <TouchableRipple
+                    <Text style={styles.distanceText}>Distance: {this.props.data.distance.toString().slice(0,6)}km</Text>
+                    {/* <TouchableRipple
                         borderless
                         onPress={() => console.log('Pressed')}
                         rippleColor="rgba(200, 200, 200, .32)"
                     >
                         <Text style={styles.actionText}>More</Text>
-                    </TouchableRipple>
+                    </TouchableRipple> */}
                     
                 </Card.Actions>
             </Card>
@@ -82,16 +83,19 @@ const styles = StyleSheet.create({
     },
     cardAction: {
         marginLeft: 13,
-        paddingLeft: 300,
+        // paddingLeft: 300,
         paddingRight: 3,
         paddingTop: 5,
         paddingBottom: 5,
         marginBottom: 10,
+        flexDirection: 'row',
     },
     actionText: {
         fontFamily: 'Quicksand-Medium',
         color: '#17ac71',
         fontSize: 18,
+        position: 'relative',
+        right: 100,
     },
     starRating: {
         width: 0.25*SCREEN_WIDTH,
@@ -99,6 +103,12 @@ const styles = StyleSheet.create({
     },
     cardLeft: {
         width: 0.29*SCREEN_WIDTH
+    },
+    distanceText: {
+        fontFamily: 'Quicksand-Regular',
+        fontSize: 16,
+        color: '#999',
+        textAlign: 'right',
     }
 });
 

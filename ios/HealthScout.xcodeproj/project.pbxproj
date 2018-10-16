@@ -60,6 +60,8 @@
 		FF9531EBD30E492EBC62BA4D /* libRCTPSPDFKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7318EDBB806E40E0BFC3C743 /* libRCTPSPDFKit.a */; };
 		45452BA09A4645999A77FA51 /* libRCTMaterialKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9130504C1124548A55632BE /* libRCTMaterialKit.a */; };
 		A829D3F87EA44550A7B27274 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C482FA3E7FD54455A8453245 /* libRNImagePicker.a */; };
+		81BA08792DCD49B495016AE1 /* libTPSStripe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD6D445A8DD1461AB83D77A7 /* libTPSStripe.a */; };
+		F38E79F26D2E4FF5B0A7BD13 /* libStripeNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 222BAFF027CB4E3D91F01F99 /* libStripeNative.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -396,6 +398,10 @@
 		D9130504C1124548A55632BE /* libRCTMaterialKit.a */ = {isa = PBXFileReference; name = "libRCTMaterialKit.a"; path = "libRCTMaterialKit.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		993C7B9980514516BEFA8449 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; name = "RNImagePicker.xcodeproj"; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		C482FA3E7FD54455A8453245 /* libRNImagePicker.a */ = {isa = PBXFileReference; name = "libRNImagePicker.a"; path = "libRNImagePicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		B443028371EE41BEB8CBC448 /* TPSStripe.xcodeproj */ = {isa = PBXFileReference; name = "TPSStripe.xcodeproj"; path = "../node_modules/tipsi-stripe/ios/TPSStripe.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		AD6D445A8DD1461AB83D77A7 /* libTPSStripe.a */ = {isa = PBXFileReference; name = "libTPSStripe.a"; path = "libTPSStripe.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		619883D19C104549A3BDDA65 /* StripeNative.xcodeproj */ = {isa = PBXFileReference; name = "StripeNative.xcodeproj"; path = "../node_modules/react-native-stripe/StripeNative.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		222BAFF027CB4E3D91F01F99 /* libStripeNative.a */ = {isa = PBXFileReference; name = "libStripeNative.a"; path = "libStripeNative.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -432,6 +438,8 @@
 				FF9531EBD30E492EBC62BA4D /* libRCTPSPDFKit.a in Frameworks */,
 				45452BA09A4645999A77FA51 /* libRCTMaterialKit.a in Frameworks */,
 				A829D3F87EA44550A7B27274 /* libRNImagePicker.a in Frameworks */,
+				81BA08792DCD49B495016AE1 /* libTPSStripe.a in Frameworks */,
+				F38E79F26D2E4FF5B0A7BD13 /* libStripeNative.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +634,8 @@
 				0B83E1A898F34F8F9134D343 /* RCTPSPDFKit.xcodeproj */,
 				615EDE2BB0D64825BF43B02D /* RCTMaterialKit.xcodeproj */,
 				993C7B9980514516BEFA8449 /* RNImagePicker.xcodeproj */,
+				B443028371EE41BEB8CBC448 /* TPSStripe.xcodeproj */,
+				619883D19C104549A3BDDA65 /* StripeNative.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1291,8 +1301,6 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HealthScout.app/HealthScout";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1304,6 +1312,8 @@
 					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
 					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
 				);
 			};
 			name = Debug;
@@ -1324,8 +1334,6 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HealthScout.app/HealthScout";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1337,6 +1345,8 @@
 					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
 					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
 				);
 			};
 			name = Release;
@@ -1366,6 +1376,8 @@
 					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
 					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
 				);
 			};
 			name = Debug;
@@ -1394,6 +1406,8 @@
 					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
 					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
 				);
 			};
 			name = Release;
@@ -1423,8 +1437,6 @@
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1436,6 +1448,8 @@
 					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
 					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
 				);
 			};
 			name = Debug;
@@ -1465,8 +1479,6 @@
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1478,6 +1490,8 @@
 					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
 					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
 				);
 			};
 			name = Release;
@@ -1506,8 +1520,6 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1519,6 +1531,8 @@
 					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
 					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
 				);
 			};
 			name = Debug;
@@ -1547,8 +1561,6 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1560,6 +1572,8 @@
 					"$(SRCROOT)/../node_modules/react-native-pspdfkit/ios/RCTPSPDFKit/**",
 					"$(SRCROOT)/../node_modules/react-native-material-kit/iOS/RCTMaterialKit",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
 				);
 			};
 			name = Release;

@@ -17,7 +17,7 @@ import { StackNavigator } from 'react-navigation';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 
-const SearchRoute = () => <SearchScreen />;
+const SearchRoute = (props) => <SearchScreen {...props}/>;
 
 const ProfileRoute = (props) => <MyProfileScreen {...props} />;
 
@@ -30,7 +30,7 @@ export default class MyComponent extends React.Component {
     index: 0,
     routes: [
       { key: 'profile', title: 'My Profile', icon: <SimpleLineIcon size={23} name={'user'} color={'white'} />, color: '#377F63' },
-      { key: 'albums', title: 'My Documents', icon:  <SimpleLineIcon size={23} name={'docs'} color={'white'} />,color: '#1BCC86' },
+      { key: 'documents', title: 'My Documents', icon:  <SimpleLineIcon size={23} name={'docs'} color={'white'} />,color: '#1BCC86' },
       { key: 'myprac', title: 'My Practitioners', icon: <SimpleLineIcon size={23} name={'people'} color={'white'} />,color: '#17AC71' },
       { key: 'search', title: 'Find Practitioner', icon: <SimpleLineIcon size={23} name={'magnifier'} color={'#fff'} />, color: '#117F54' },
     ],
@@ -123,7 +123,7 @@ export default class MyComponent extends React.Component {
 
   _renderScene = BottomNavigation.SceneMap({
     profile: (props) => <ProfileRoute {...this.props} />,
-    albums: (props) => <DocumentRoute {...this.props} />,
+    documents: (props) => <DocumentRoute {...this.props} />,
     myprac: (props) => <MyPracRoute {...this.props} />,
     search: (props) => <SearchRoute {...this.props} />
   });
