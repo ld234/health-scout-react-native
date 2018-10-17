@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Customised Filter button
+ * Created:  5 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FAB } from 'react-native-paper';
@@ -21,7 +28,6 @@ class FilterGroup extends React.Component{
                 )}
                 onPress={() => {
                     this.props.toggleSearchOptionModal(3);
-                    console.log('filter button pressed');
                 }}
             />);
     }

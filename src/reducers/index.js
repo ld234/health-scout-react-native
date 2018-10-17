@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan @Tenzin
+ * Description: reducer for
+ * Created:  5 August 2018
+ * Last modified:  14 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import { combineReducers } from 'redux';
 import authReducer from './auth.reducer';
 import renderReducer from './render.reducer';

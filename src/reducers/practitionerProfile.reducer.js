@@ -1,3 +1,12 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Tenzin
+ * Description: reducer for update view count,
+ * get profile info, get testimonial, set connection, 
+ * get connected pracitioner
+ * Created:  2 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import {
     UPDATE_VIEWCOUNT_PENDING,
     UPDATE_VIEWCOUNT_ERROR,
@@ -64,7 +73,6 @@ export default function pracProfileReducer(state = INITIAL_STATE, action) {
                 
 			};
 		case GET_PROFILE_INFO_SUCCESS:
-			console.log('action', action);
 			return {
 				...state,
 				isGetProfileInfoSuccess: action.isGetProfileInfoSuccess,

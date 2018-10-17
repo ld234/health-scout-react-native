@@ -1,9 +1,16 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: the home page for the app
+ * Created:  5 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
-import { View, Text, Platform, StyleSheet } from 'react-native';
+import { View, Platform, StyleSheet } from 'react-native';
 import { STATUS_BAR_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants';
 import ProfileCard from './ProfileCard';
 import LinearGradient from 'react-native-linear-gradient';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 class MyProfileScreen extends Component {
     static navigationOptions = () => ({
@@ -19,12 +26,17 @@ class MyProfileScreen extends Component {
             fontSize: 24,
             fontWeight: '200',
         },
-        headerLeft: <View />
+        headerLeft: null,
+        headerRight: <TouchableOpacity><MaterialIcon name={'more-vert'} style={{color: 'white', marginRight: 10, marginTop: 5,}} size={30}></MaterialIcon></TouchableOpacity>,
+
     })
 
+    //renders card and navigate to the selected screen 
     render() {
         return (
             <View style={{flex: 1, backgroundColor: 'transparent'}}>
+                <View style={{flex: 1, backgroundColor: 'transparent'}}>
+
                 <LinearGradient style={styles.header} 
                     start={{x: 0.0, y: 0.85}} end={{x: 0.7, y: 1.0}}
                     locations={[0,0.8]} colors={['#167434','#17AC71']}
@@ -54,8 +66,9 @@ class MyProfileScreen extends Component {
                         ></ProfileCard>
                     </View>
                 </View>
+                {/* <View style={styles.bottomSheet}> */}
                 
-            
+                </View>
             </View>
         );
     }
@@ -121,6 +134,9 @@ const styles = StyleSheet.create({
         paddingBottom: 20 ,
         backgroundColor: 'transparent',
         borderRadius: 10,
+    },
+    bottomSheet:{
+        zIndex: 100,
     }
 })
 

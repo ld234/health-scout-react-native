@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Actions for changing states for login and log out
+ * Created: 2 August 2018
+ * Last modified:  15 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
@@ -34,6 +41,7 @@ function setLoginError(loginError) {
 	};
 }
 
+//Check username and password with backend 
 export function login(username, password, cb) {
 	return dispatch => {
 		dispatch(setLoginPending(true));
@@ -46,7 +54,6 @@ export function login(username, password, cb) {
 				password,
 			})
 			.then(async res => {
-				console.log('data', res.data);
 				await AsyncStorage.setItem('id_token', res.data.token);
 				// deviceStorage.saveItem("id_token", res.data.token);
 				dispatch(setLoginPending(false));
@@ -54,7 +61,6 @@ export function login(username, password, cb) {
 				cb();
 			})
 			.catch(err => {
-				console.log('err', JSON.stringify(err, 0, 4));
 				dispatch(setLoginPending(false));
 				dispatch(setLoginSuccess(false, null));
 				if (err) dispatch(setLoginError(err));
@@ -71,13 +77,13 @@ export function logout() {
 	};
 }
 
+
+//Check authentication to prevent login repeatedly if the app reloads
 export function checkAuth(cb) {
-	console.log('checkAuth');
 	return dispatch => {
 		dispatch(setLoginPending(true));
 		dispatch(setLoginSuccess(false, null));
 		AsyncStorage.getItem('id_token').then(res => {
-			console.log('restok',res);
 			axios
 			.post(
 				`${ROOT_URL}/checkAuth`,
@@ -94,7 +100,6 @@ export function checkAuth(cb) {
 				setTimeout(() => cb('Main'),2000);
 			})
 			.catch(() => {
-				console.log('Auth fail');
 				dispatch(setLoginPending(false));
 				dispatch(setLoginSuccess(false, null));
 				dispatch(setLoginError(null));
@@ -126,6 +131,7 @@ function setVerifyEmailError(verifyEmailError) {
 	};
 }
 
+//verfiy that the email is correct
 export function verifyEmail(token) {
 	return dispatch => {
 		dispatch(setVerifyEmailPending(true));

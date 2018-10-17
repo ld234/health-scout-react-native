@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Tenzin
+ * Description: Actions for retriveing data for the connected 
+ * practitioner profile and search result for practitioner
+ * Created: 25 September 2018
+ * Last modified:  3 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
@@ -47,9 +55,8 @@ function updateViewCountError(isUpdateViewCountError) {
 	};
 }
 
-
+//update the view count of practitioner when they are viewed by patients
 export function updateViewCount(pracUsername) {
-	console.log('in update view count', pracUsername);
 	return dispatch => {
 		dispatch(updateViewCountPending(true));
 		dispatch(updateViewCountSuccess(false));
@@ -62,12 +69,10 @@ export function updateViewCount(pracUsername) {
 					},
 				})
 				.then(res => {
-					console.log('pracType res ', res.data);
 					dispatch(updateViewCountPending(false));
 					dispatch(updateViewCountSuccess(true, res.data));
 				})
 				.catch(err => {
-					console.log('update view err', err);
 					dispatch(updateViewCountPending(false));
 					dispatch(updateViewCountSuccess(false, null));
 					dispatch(updateViewCountError(err.response));
@@ -101,9 +106,8 @@ function getProfileInfoError(isGetProfileInfoError) {
 	};
 }
 
-
+//get general profile information such as specialties, degrees etc from different apis
 export function getProfileInfo(pracUsername) {
-	console.log('in get profile info', pracUsername);
 	return dispatch => {
 		dispatch(getProfileInfoPending(true));
 		dispatch(getProfileInfoSuccess(false));
@@ -136,12 +140,10 @@ export function getProfileInfo(pracUsername) {
 			}))
 			axios.all(promises)
 				.then(res => {
-					console.log('PROFILE SUCCESS ', res[2].data);
 					dispatch(getProfileInfoPending(false));
 					dispatch(getProfileInfoSuccess(true, res[0].data, res[1].data, res[2].data[0]));
 				})
 				.catch(err => {
-					console.log('get profileinfo error ', err);
 					dispatch(getProfileInfoPending(false));
 					dispatch(getProfileInfoSuccess(false, null));
 					dispatch(getProfileInfoError(err.response));
@@ -171,9 +173,8 @@ function getTestimonialError(isGetTestimonialError) {
 	};
 }
 
-
+//Action for retrieving testimonials of users
 export function getTestimonial(pracUsername) {
-	console.log('in get profile info', pracUsername);
 	return dispatch => {
 		dispatch(getTestimonialPending(true));
 		dispatch(getTestimonialSuccess(false));
@@ -186,7 +187,6 @@ export function getTestimonial(pracUsername) {
 					},
 				})
 				.then(res => {
-					console.log('pracType res ', res.data);
 					dispatch(getTestimonialPending(false));
 					dispatch(getTestimonialSuccess(true, res.data));
 				})
@@ -229,8 +229,8 @@ export function resetStates(){
 	}
 }
 
-export function setConnection(data, cb) {
-	console.log('SET CONNECTION', data);
+//connects patients to practitioner
+export function setConnection(pracUsername, stripeToken, cb) {
 	return dispatch => {
 		dispatch(setConnectionPending(true));
 		dispatch(setConnectionSuccess(false));
@@ -243,14 +243,12 @@ export function setConnection(data, cb) {
 					},
 				})
 				.then(res => {
-					console.log('connect res ', res.data);
 					dispatch(setConnectionPending(false));
 					dispatch(setConnectionSuccess(true));
 					getMyPractitioners();
 					if (cb) cb();
 				})
 				.catch(err => {
-					console.log('connect err ', err);
 					dispatch(setConnectionPending(false));
 					dispatch(setConnectionSuccess(false, null));
 					dispatch(setConnectionError(err.response));
@@ -282,8 +280,8 @@ function getMyPractitionersError(isGetMyPractitionersError) {
 	};
 }
 
+//get the list of connected practitioners
 export function getMyPractitioners() {
-	console.log('get my practitioners');
 	return dispatch => {
 		dispatch(getMyPractitionersPending(true));
 		dispatch(getMyPractitionersSuccess(false));
@@ -296,12 +294,10 @@ export function getMyPractitioners() {
 					},
 				})
 				.then(res => {
-					console.log('connect res ', res.data);
 					dispatch(getMyPractitionersPending(false));
 					dispatch(getMyPractitionersSuccess(true, res.data));
 				})
 				.catch(err => {
-					console.log('connect err ', err);
 					dispatch(getMyPractitionersPending(false));
 					dispatch(getMyPractitionersSuccess(false, null));
 					dispatch(getMyPractitionersError(err.response));

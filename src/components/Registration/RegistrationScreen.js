@@ -1,8 +1,14 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: the tab function which navigates
+ * between overview and prac profile overview
+ * Created:  5 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
-import { TextInput, StyleSheet, Text, View, ImageBackground, Image, Dimensions, 
+import { StyleSheet, Text, View, ImageBackground, Image, Dimensions, 
   TouchableOpacity, TouchableWithoutFeedback, ScrollView, Keyboard, DatePickerAndroid, KeyboardAvoidingView } from 'react-native';
-import { TextField } from 'react-native-material-textfield';
-import bgImage from '../../../assets/images/background2.jpg';
 import logo from '../../../assets/images/healthscout-logo.png';
 import { login } from '../../actions/auth.actions';
 import { connect } from 'react-redux';
@@ -12,8 +18,6 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import Dropdown from '../Reusable/Dropdown';
 import ImagePicker from 'react-native-image-picker';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-// import { getUserDetails } from  '../../actions/user.actions';
 import axios from 'axios'; 
 import _ from 'lodash';
 import { Surface} from 'react-native-paper';
@@ -58,6 +62,7 @@ class RegistrationScreen extends React.Component {
       err: '',
     }
   }
+  //set header
   static navigationOptions = ({navigation}) => ({
     title: '',
     headerTitleStyle: {flex: 1, textAlign: 'center', fontFamily: 'Quicksand-Medium', fontWeight: '200', fontSize: 24, color:'#17ac71'},
@@ -84,14 +89,10 @@ class RegistrationScreen extends React.Component {
   validateForm = () => {
     const fields = ['username', 'email', 'fName', 'lName', 'dob', 'title', 'gender', 'password', 'confirmPassword'];
     if (!fields.every(name => !_.isEmpty(this.state[name])) || !fields.every(name => _.isEmpty(this.state.errors[name]))) {
-      console.log('errors', this.state.errors);
-      console.log('state', this.state);
-      console.log('not working');
       fields.forEach(field => { 
         this.onFocus(field); 
         this.onBlur(field) });
     } else {
-      console.log('errors', this.state.errors);
       this.submitForm();
     }
   };
@@ -101,6 +102,7 @@ class RegistrationScreen extends React.Component {
     fields.forEach( field => this.setState({[field] : ''}));
   }
 
+  //checks input if valid
 	onBlur = value => {
 		if (_.isEmpty(this.state[value])) {
 			const newErr = _.merge(this.state.errors, { [value]: '*field required' });
@@ -124,7 +126,7 @@ class RegistrationScreen extends React.Component {
 			this.setState({ errors: newErr });
 		}
   };
-
+  
   renderFormBody = () => {
     return (
       <View style={{flex: 1, paddingLeft: 20, 
@@ -296,7 +298,6 @@ class RegistrationScreen extends React.Component {
           iconSize={0}
           inputStyle={{fontFamily: 'Quicksand-Regular', color:'#09402A'}}
           
-          // TextInput props
           autoCapitalize={'none'}
           autoCorrect={false}
           onFocus={() => this.openDatePicker()}
@@ -313,11 +314,9 @@ class RegistrationScreen extends React.Component {
           iconSize={0}
           inputStyle={{fontFamily: 'Quicksand-Regular', color:'#09402A'}}
           
-          // TextInput props
           autoCapitalize={'none'}
           autoCorrect={false}
           onFocus={() => this.openImagePicker()}
-          // onBlur={() => this.onBlur('profilePic')}
           value={this.state.avatarSource.uri}
           returnKeyType='done'
         />
@@ -326,19 +325,17 @@ class RegistrationScreen extends React.Component {
     );
   }
 
+  //open file image 
   openImagePicker = () => {
     Keyboard.dismiss();
     const options = {
       title: 'Select profile picture',
-      // customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
       storageOptions: {
         skipBackup: true,
         path: 'images',
       },
     };
-    ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-    
+    ImagePicker.showImagePicker(options, (response) => {    
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -350,10 +347,6 @@ class RegistrationScreen extends React.Component {
           uri: response.uri, 
           name: response.fileName,
           type: response.type, };
-        
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-    
         this.setState({
           avatarSource: source,
         });
@@ -384,19 +377,16 @@ class RegistrationScreen extends React.Component {
       } else{
         axios.post(URL, formdata)
         .then(res => {
-          console.log('successful creation');
           this.resetForm();
         })
         .catch(err => {
           if (err.response && err.response.data)
             this.setState({err: err.response.data.message})
           this.scrollViewRef.scrollTo({x: 0, y: 0, animated: true});
-          console.log('reg err', err);
         });
       }
     })
     .catch(({ response }) => {
-      console.log('username error', response);
       const errorMsg = response && response.data && response.data.message;
       this.setState({ err: errorMsg }, () => {
         this.scrollViewRef.scrollTo({x: 0, y: 0, animated: true});
@@ -420,12 +410,9 @@ class RegistrationScreen extends React.Component {
     Keyboard.dismiss();
     try {
       const {action, year, month, day} = await DatePickerAndroid.open({
-        // Use `new Date()` for current date.
-        // May 25 2020. Month 0 is January.
         date: new Date()
       });
       if (action !== DatePickerAndroid.dismissedAction) {
-        // Selected year, month (0-11), day
         const formattedDay = day.toString().length < 2 ? `0${day}`:day;
         const formattedMonth = month.toString().length < 2? `0${month}` : month;
         this.setState({dob: [formattedDay,month+1, year].join('-')});
@@ -488,13 +475,10 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH,
     height: null,
     justifyContent: 'center',
-    // alignSelf: 'stretch',//TODO: Importate para que la imagen abarque toda la pantalla
     backgroundColor : 'transparent',
   },
   contentContainer: {
     flex : 1,
-    // paddingHorizontal: 20,
-    // paddingVertical: 20,
     overflow:'visible',
     alignItems: 'center',
     alignSelf: 'stretch',
@@ -565,7 +549,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: null,
-    // paddingTop: 45,
     paddingBottom: 50,
   }
 });
@@ -579,7 +562,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     login: (username, password, cb) => dispatch(login(username, password, cb)),
-    // getUserDetails: (cb) => dispatch(getUserDetails(cb)),
   }
 }
 

@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: 
+ * Created:  5 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, { Component } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import axios from 'axios';
@@ -16,21 +23,16 @@ class MyPractitionerList extends Component {
     }
 
     onPracSelected = (prac) => {
-        console.log('Prac profile',prac);
         this.props.navigation.navigate('PracProfile', prac);
-        // this.props.practitionerProfileState.myPractitioners;
     }
     
     renderPractioners() {
         const myPractitioners = this.props.practitionerProfileState.myPractitioners;
-        console.log('prac state', myPractitioners);
         const searchQuery = this.props.searchState.searchQuery;
-        console.log('search query', searchQuery);
         if(searchQuery && searchQuery.length > 0 && myPractitioners.length &&  myPractitioners.length  > 0){
             let result = myPractitioners.filter( practitioner => practitioner.fName.toLowerCase().match(`^.*${searchQuery.toLowerCase()}.*$`) ||
                 practitioner.lName.toLowerCase().match(`^.*${searchQuery.toLowerCase()}.*$`) || 
                 `${practitioner.fName} ${practitioner.lName}`.toLowerCase().match(`^.*${searchQuery.toLowerCase()}.*$`));
-            console.log('filter', result);
             return result.map((practitioner, idx) => {
                 if (idx=== 0) {
                     return(
@@ -76,40 +78,9 @@ class MyPractitionerList extends Component {
                 }
             });
         }
-        // else {
-        //     if(myPractitioners){
-        //         return myPractitioners.map((practitioner, idx) => {
-        //             if(idx === 0 ){
-        //                 return(
-        //                     <TouchableOpacity key={practitioner.pracUsername} onPress={()=>this.onPracSelected(practitioner.title)}>
-        //                         <PracCard data={practitioner} top={true} bottom={false} />
-        //                     </TouchableOpacity>
-        //                     )
-        //                 }
-        //             else if (idx === practitioner.length - 1){
-        //                 return(
-        //                     <TouchableOpacity key={practitioner.pracUsername} onPress={()=>this.onPracSelected(practitioner.title)}>
-        //                         <PracCard data={practitioner} top={false} bottom={true}/>
-        //                     </TouchableOpacity>
-        //                 )
-        //             }
-        //             else{
-        //                 return (
-        //                 <TouchableOpacity key={practitioner.pracUsername} onPress={()=>this.onPracSelected(practitioner.title)}>
-        //                     <PracCard data={practitioner} top={false} bottom={false}/>
-        //                 </TouchableOpacity>
-        //                 )
-        //             }
-        //         });
-        //     }
-        //     else{
-        //         return null;
-        //     }
-        // }
     }
 
     render() {  
-        console.log(this.props.practitionerProfileState.myPractitioners);  
         return (
             <ScrollView>
                 {this.renderPractioners()}

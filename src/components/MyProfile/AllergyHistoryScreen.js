@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: add, delete or view allergies
+ * Created:  2 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, { Component } from 'react';
 import { FAB } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -38,6 +45,7 @@ class AllergyHistoryScreen extends Component {
     selectedItem: null,
   };
 
+  //toggle accordian
   toggleExpanded = () => {
     this.setState({ collapsed: !this.state.collapsed });
   };
@@ -49,6 +57,7 @@ class AllergyHistoryScreen extends Component {
 		this.setState({errors: newErr } );
 	};
 
+    //field check
 	onBlur = value => {
 		if (_.isEmpty(this.state[value])) {
 			const newErr = _.merge(this.state.errors, { [value]: '*field required' });
@@ -59,12 +68,14 @@ class AllergyHistoryScreen extends Component {
 		}
   };
 
+  //records the active accordion
   setSections = sections => {
     this.setState({
       activeSections: sections.includes(undefined) ? [] : sections,
     });
   };
   
+  //validate the form
   validateForm = () => {
     let valid = true;
     const fields = ['symptom', 'allergy'];
@@ -88,11 +99,13 @@ class AllergyHistoryScreen extends Component {
     })
   }
 
+  
   handleOnScroll = event => {
     this.setState({
       scrollOffset: event.nativeEvent.contentOffset.y
     });
   };
+
 
   renderFormContent = () => {
       return (
@@ -115,7 +128,6 @@ class AllergyHistoryScreen extends Component {
               inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
               iconClass={MaterialIconCommunity}
               
-              // TextInput props
               onBlur={() => this.onBlur('allergy')}
               onFocus={() => this.onFocus('allergy')}
               autoCapitalize={'none'}
@@ -134,7 +146,6 @@ class AllergyHistoryScreen extends Component {
               inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
               iconClass={MaterialIconCommunity}
               
-              // TextInput props
               autoCapitalize={'none'}
               autoCorrect={false}
               returnKeyType='done'
@@ -168,7 +179,6 @@ class AllergyHistoryScreen extends Component {
           onBackButtonPress={this.toggleModal}
           scrollOffset={this.state.scrollOffset}
           style={{marginTop: SCREEN_HEIGHT* 0.15}}
-          // onSwipe={this.toggleModal} swipeDirection="up" 
           onBackdropPress={this.toggleModal} isVisible={this.state.modal}>
             {this.renderFormContent()}
         </Modal>

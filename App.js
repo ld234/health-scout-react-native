@@ -1,9 +1,14 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan @Tenzin
+ * Description: reducer for
+ * Created:  5 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
 import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import reduxThunk from 'redux-thunk';
-// import reduxLogger from 'redux-logger';
 import reducers from './src/reducers';
 
 import { StyleSheet, Text, View } from 'react-native';
@@ -14,13 +19,15 @@ import MedicationHistoryScreen from './src/components/MyProfile/MedicationHistor
 import FamilyHistoryScreen from './src/components/MyProfile/FamilyHistoryScreen';
 import AllergyHistoryScreen from './src/components/MyProfile/AllergyHistoryScreen';
 import ConsultationHistoryScreen from './src/components/MyProfile/ConsultationHistoryScreen';
+
+import SearchPracProfile from './src/components/Search/SearchPracProfile';
 import MyPractitionerProfile from './src/components/MyPractitioner/MyPractitionerProfileScreen/MyPractitionerProfileScreen';
+import PaymentPage from './src/components/Search/PaymentPage';
+
 import PDFViewScreen from './src/components/MyDocuments/PDFViewScreen';
 import MyDocumentsScreen from './src/components/MyDocuments/MyDocumentsScreen';
 import FlashMessage from "react-native-flash-message";
-import SearchPracProfile from './src/components/Search/SearchPracProfile';
-import PaymentPage from './src/components/Search/PaymentPage';
-// import { Font } from 'expo';
+
 import {
   createStackNavigator
 } from 'react-navigation';
@@ -39,8 +46,6 @@ const theme = {
   },
   colors: {
     ...DefaultTheme.colors,
-    // primary: '#3498db',
-    // accent: '#f1c40f',
   }
 };
 
@@ -49,23 +54,6 @@ const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 const persistor = persistStore(store);
 
-
-// export const MyPractitionerStack = StackNavigator({
-//   MyPracList: {
-//     screen: (props) => <MyPractitioners />,
-//     // screen: MyPractitioners,
-
-//     navigationOptions: {
-//       header: null
-//     }
-//   },
-//   PracDetail:{
-//     screen: MyPractitionerDetail,
-//     navigationOptions: {
-//       header: null
-//     }
-//   },
-// })
 
 const MainNavigator = createStackNavigator({
   Splash: { screen: Splash },
@@ -79,7 +67,6 @@ const MainNavigator = createStackNavigator({
   PracProfile: { screen: MyPractitionerProfile },
   PDFView: {screen: PDFViewScreen},
   MyDocuments: { screen: MyDocumentsScreen },
-  // PracSearchProfile: { screen: PracSearchProfileScreen },
   SearchPracProfile:{ screen: SearchPracProfile },
   PaymentPage:{ screen: PaymentPage},
 },

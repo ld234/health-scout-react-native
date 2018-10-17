@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Actions for get, delete and add family conditions
+ * Created: 12 September 2018
+ * Last modified:  21 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
@@ -101,7 +109,6 @@ export function getFamilyConditions() {
 					dispatch(setGetFamilyConditionsSuccess(true, res.data.message));
 				})
 				.catch(err => {
-					console.log(err);
 					dispatch(setGetFamilyConditionsPending(false));
 					dispatch(setGetFamilyConditionsSuccess(false, null));
 					dispatch(setGetFamilyConditionsError(err.response));
@@ -133,7 +140,6 @@ function setDeleteFamilyConditionError(deleteFamilyConditionError) {
 }
 
 export function deleteFamilyCondition(famCond, cb, idx) {
-	console.log(famCond);
 	return dispatch => {
 		dispatch(setDeleteFamilyConditionPending(true));
 		dispatch(setDeleteFamilyConditionSuccess(false,null));

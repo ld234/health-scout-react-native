@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: reducer for set search query and set state of 
+ * if prac suggestion is on show
+ * Created:  4 August 2018
+ * Last modified:  13 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import { 
     SET_SEARCH_QUERY,
     SET_PRACSUGGESTION_ONSHOW

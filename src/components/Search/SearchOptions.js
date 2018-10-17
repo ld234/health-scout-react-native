@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: the filter option for the search
+ * Created:  1 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, {Component} from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Button } from 'react-native-paper';
@@ -43,11 +50,7 @@ class SearchOptions extends Component{
 
 const styles = StyleSheet.create({
     buttonWrapper:{
-        // flex: 1,
         flexDirection: 'row',
-        // paddingBottom: 10,
-        // paddingTop: 5,
-        // backgroundColor: '#f6f6f6',
         width: SCREEN_WIDTH,
     },
     button: {

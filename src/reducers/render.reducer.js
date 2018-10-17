@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: reducer for
+ * Created:  5 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import { TOGGLE_SEARCH_OPTION_MODAL, SET_LOCATION_SEARCH_BAR_FOCUS, SET_LOCATION_SEARCH_QUERY, SET_LOCATION_SUGGESTION_SHOW, 
     SET_LOCATION_LIST, CHOOSE_SEARCH_PRAC_TYPE, SET_SELECTED_SPECIALTY_LIST , SET_SELECTED_RADIUS, SET_SELECTED_SORT_OPTION,
     SET_COORD } from '../actions/render.actions';

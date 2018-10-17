@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: the tab function which navigates
+ * between overview and prac profile overview
+ * Created:  25 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { TouchableOpacity, Text, View, FlatList, Keyboard} from 'react-native';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -54,13 +62,11 @@ class SpecialtyList extends React.PureComponent {
     );
 
     componentDidMount() {
-      console.log('selected list', this.props.selectedList);
       if(Array.isArray(this.props.selectedList) )
         this.props.selectedList.forEach(item => this._onPressItem(item));
     }
   
     render() {
-      console.log('in specialtyList', this.props.callback);
       if(this.props.pracState.pracTypeSpecialties && this.props.pracState.pracTypeSpecialties.length)
         return (
           <FlatList

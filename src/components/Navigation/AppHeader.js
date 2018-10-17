@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: the tab function which navigates
+ * between overview and prac profile overview
+ * Created:  5 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { Header } from 'react-native-elements';
 

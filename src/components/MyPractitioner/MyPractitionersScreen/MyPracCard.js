@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Card for display for the my connected practitioner search
+ * Created:  5 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { StyleSheet, Image, View } from 'react-native';
 import { Card, Title, Paragraph, TouchableRipple, Text, Surface } from 'react-native-paper';
@@ -6,11 +13,9 @@ import { SCREEN_WIDTH } from '../../../constants';
 const URL = 'http://10.0.2.2:8888'
 
 const MyPracCard = (props) => {
-    console.log('my prac prop', props.data);
     return (
-        // <TouchableRipple rippleColor="rgba(200, 200, 200, .32)">
+        //sets the margin 
         <Surface style={props.top ? styles.cardTop : (props.bottom?  styles.cardBottom : styles.card)}>
-            {/* <Card.Content> */}
                 <View style={{flex: 1, flexDirection: 'row'}}>
                     <View style={styles.cardLeft}>
                         <Image
@@ -26,12 +31,7 @@ const MyPracCard = (props) => {
                         <Paragraph style={styles.cardContent}>Last visit: {props.data.lastVisited? props.data.lastVisited: ''}</Paragraph>
                     </View>
                 </View>
-            {/* </Card.Content> */}
-            {/* <Card.Actions style={styles.cardAction}> */}
-                
-            {/* </Card.Actions> */}
         </Surface>
-        // </TouchableRipple>
     );
 }
 
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         elevation: 4,
-        // padding: 20,
         borderRadius: 10
     },
     cardTop: {
@@ -52,7 +51,6 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         elevation: 4,
-        // padding: 20,
         borderRadius: 10
     },
     cardBottom: {
@@ -61,7 +59,6 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         elevation: 4,
-        // padding: 20,
         borderRadius: 10
     },
     cardTitle: {

@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Action states for getting all the documents
+ * Created: 22 August 2018
+ * Last modified:  18 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -39,8 +46,8 @@ function setSendDocumentError(sendDocumentError) {
 	};
 }
 
+//Send documents back to practitioner
 export function sendDocument(formdata) {
-	console.log('formdata', formdata);
 	return dispatch => {
 		dispatch(setSendDocumentPending(true));
 		dispatch(setSendDocumentSuccess(false));
@@ -90,12 +97,12 @@ function setGetReceivedDocsError(getReceivedDocsError) {
 	};
 }
 
+//get baseline request doc send from practitioners
 export function getReceivedDocuments() {
 	return dispatch => {
 		dispatch(setGetReceivedDocsPending(true));
 		dispatch(setGetReceivedDocsSuccess(false));
 		dispatch(setGetReceivedDocsError(null));
-		console.log('inside getReceivedDocument')
 		AsyncStorage.getItem('id_token').then(res => {
 			axios
 				.get(`${ROOT_URL}`, {
@@ -104,12 +111,10 @@ export function getReceivedDocuments() {
 					},
 				})
 				.then(res => {
-					console.log('received docs', res.data);
                     setTimeout(() => dispatch(setGetReceivedDocsPending(false)), 1000);
 					dispatch(setGetReceivedDocsSuccess(true, res.data));
 				})
 				.catch(err => {
-					console.log(err);
 					dispatch(setGetReceivedDocsPending(false));
 					dispatch(setGetReceivedDocsSuccess(false, null));
 					if (err.response && err.response.data) dispatch(setGetReceivedDocsError(err.response.data.message));
@@ -140,6 +145,7 @@ function setGetSentDocumentsError(getSentDocumentsError) {
 	};
 }
 
+//get list of documents already send to the practitioner
 export function getSentDocuments() {
 	return dispatch => {
 		dispatch(setGetSentDocumentsPending(true));
@@ -153,12 +159,10 @@ export function getSentDocuments() {
                     },
 				})
 				.then(res => {
-                    console.log('get sent doc action 1234', res.data);
 					dispatch(setGetSentDocumentsPending(false));
                     dispatch(setGetSentDocumentsSuccess(true, res.data));
 				})
 				.catch(err => {
-                    console.log(err);
 					dispatch(setGetSentDocumentsPending(false));
 					dispatch(setGetSentDocumentsSuccess(false, null));
 					if (err.response && err.response.data) dispatch(setGetSentDocumentsError(err.response.data.message));
@@ -201,11 +205,9 @@ export function getOldDocument() {
 				'x-access-token': res,
 				'Content-Type' : 'multipart/form-data',
 			}).then((resp) => {
-				console.log('get old doc resp', resp);
 				setTimeout(() => dispatch(setGetOldDocumentPending(false)), 1000);
 				dispatch(setGetOldDocumentSuccess(true, resp.data));
 			}).catch((err) => {
-				console.log('send doc err',err);
 				dispatch(setGetOldDocumentPending(false));
 				dispatch(setGetOldDocumentSuccess(false, null));
 				if (err.response && err.response.data) dispatch(setGetOldDocumentError(err.response.data.message));

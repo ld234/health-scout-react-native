@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Practitioner card for searching
+ * Created:  12 August 2018
+ * Last modified:  1 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
 import { Card, Title, Paragraph, TouchableRipple, Text } from 'react-native-paper';
@@ -32,7 +39,7 @@ class PracCard extends React.Component {
                     
                 </Card.Content>
                 <Card.Actions style={styles.cardAction}>
-                    <Text style={styles.distanceText}>Distance: {this.props.data.distance.toString().slice(0,6)}km</Text>                    
+                    <Text style={styles.distanceText}>Distance: {this.props.data.distance.toString().slice(0,6)}km</Text>
                 </Card.Actions>
             </Card>
         );

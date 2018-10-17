@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Page that retrieve and displays new document lists
+ * and send back after editing 
+ * Created:  30 August 2018
+ * Last modified:  16 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { TouchableOpacity, Text, View, FlatList, Keyboard, ScrollView, StyleSheet} from 'react-native';
 import FA from 'react-native-vector-icons/FontAwesome';
@@ -7,13 +15,15 @@ import {SCREEN_HEIGHT , SCREEN_WIDTH} from '../../constants';
 import { getReceivedDocuments } from '../../actions/document.actions';
 import { MaterialIndicator } from 'react-native-indicators';
 
+//Sets the component for displaying in the list
 class MyListItem extends React.PureComponent {
+    
+    //sets the id of the pressed item
     _onPress = () => {
       this.props.onPressItem(this.props.id);
     };
-  
+    
     render() {
-      console.log(this.props);
       const textColor = "#666";
       const font = 'Quicksand-Regular';
       return (
@@ -37,6 +47,7 @@ class MyListItem extends React.PureComponent {
     }
   }
   
+  //container class for MyListItem that renders the output of documents requested by practitioners
 class NewDocumentList extends React.Component {
     constructor(props){
         super(props);
@@ -61,7 +72,6 @@ class NewDocumentList extends React.Component {
         <MyListItem
             id={`${item.title}_${item.pracUsername}`}
             onPressItem={this._onPressItem}
-            // selected={this.state.selected.get(item.id)}
             title={item.title}
             doctorName={item.doctorName}
         />
@@ -120,7 +130,8 @@ class NewDocumentList extends React.Component {
             </View>
         )
     }
-
+    
+    //render when toggle modal is true
     renderModal = () => {
         return (
             <Modal 
@@ -129,13 +140,12 @@ class NewDocumentList extends React.Component {
               onBackButtonPress={this.toggleModal}
               scrollOffset={this.state.scrollOffset}
               style={{marginTop: SCREEN_HEIGHT* 0.15}}
-              // onSwipe={this.toggleModal} swipeDirection="up" 
               onBackdropPress={this.toggleModal} isVisible={this.state.modal} >
                 {this.renderContent()}
             </Modal>
         );
-    }
-
+    }   
+    
     componentDidMount() {
         this.props.getReceivedDocuments();
     }

@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan @Tenzin
+ * Description: front page for login
+ * Created:  1 August 2018
+ * Last modified:  29 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image, TextInput, Dimensions, 
   TouchableOpacity, TouchableWithoutFeedback, ScrollView, Keyboard, Platform} from 'react-native';
@@ -7,7 +14,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { login } from '../../actions/auth.actions';
 import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
-
 const {width: WIDTH} = Dimensions.get('window');
 
 class LoginScreen extends React.Component {
@@ -21,27 +27,18 @@ class LoginScreen extends React.Component {
       password: '',
     }
   }
+  
   static navigationOptions = {
     header: null
   }
 
-  // componentDidMount () {
-  //   this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
-  //   this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
-  // }
-
-  // componentWillUnmount () {
-  //   this.keyboardDidShowListener.remove();
-  //   this.keyboardDidHideListener.remove();
-  // }
-
-  // _keyboardDidShow = () => {
-  //   this.setState({ keyboardShow: !this.state.keyboardShow})
-  // }
-
-  // _keyboardDidHide = () => {
-  //   this.setState({ keyboardShow: !this.state.keyboardShow})
-  // }
+  //resets the state after successfully logged in
+  navigate = () => {
+    this.setState({username: ''});
+    this.setState({password: ''});
+    this.props.navigation.navigate('Main');
+  }
+   
 
   showPassword = () => {
     this.setState({showPassword: !this.state.showPassword, press: !this.state.press });
@@ -59,16 +56,17 @@ class LoginScreen extends React.Component {
   }
 
   renderFormBody = () => {
+    const { username, password } = this.state;
     return (
       <View style={styles.backgroundContainer}>
         <View style={styles.logoContainer}>
-          {/* <Image source={logo} style={styles.logo}></Image> */}
           <Text style={styles.logoText}>HealthScout</Text>
         </View>
         <View>
           <Icon name={'ios-person-outline'} size={30} color={'rgba(255,255,255,.7)'} style={styles.inputIcon}/>
           <TextInput style={styles.input}
               placeholder={'Username'}
+              value={username}
               placeholderTextColor={'rgba(255,255,255,0.7)'}
               underlineColorAndroid={'transparent'}
               returnKeyType={'next'}
@@ -81,6 +79,7 @@ class LoginScreen extends React.Component {
           <Icon name={'ios-lock-outline'} size={30} color={'rgba(255,255,255,.7)'} style={styles.inputIcon}/>
           <TextInput style={styles.input}
               placeholder={'Password'}
+              value={password}
               placeholderTextColor={'rgba(255,255,255,0.7)'}
               underlineColorAndroid={'transparent'}
               secureTextEntry={this.state.showPassword}
@@ -95,8 +94,7 @@ class LoginScreen extends React.Component {
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={() => this.props.login(this.state.username, this.state.password, () => {
-            this.props.navigation.navigate('Main');
-            console.log('called');
+            this.navigate() ;
         })} >
           <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#021B79','#0575E6' ]}
             locations={[0,0.7]}
@@ -205,7 +203,7 @@ const styles = StyleSheet.create({
     borderRadius: 45,
     borderWidth: 1,
     borderColor: '#00b6ff',
-    backgroundColor: 'transparent', //'#00b6ff',
+    backgroundColor: 'transparent', 
     justifyContent: 'center',
     marginTop: 20,
     opacity: .8,

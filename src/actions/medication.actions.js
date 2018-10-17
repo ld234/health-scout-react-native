@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Actions for add, get and delete medication history
+ * Created: 24 September 2018
+ * Last modified:  28 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
@@ -36,6 +44,7 @@ function setAddMedicationError(addMedicationError) {
 	};
 }
 
+//Add to the database, patient's past medication history
 export function addMedication(med,cb) {
 	return dispatch => {
 		dispatch(setAddMedicationPending(true));
@@ -84,6 +93,7 @@ function setGetMedicationsError(getMedicationsError) {
 	};
 }
 
+//Get the list of medications history of the patient
 export function getMedications() {
 	return dispatch => {
 		dispatch(setGetMedicationsPending(true));
@@ -131,8 +141,8 @@ function setDeleteMedicationError(deleteMedicationError) {
 	};
 }
 
+//delete certain medication detail from the database
 export function deleteMedication(med,cb, idx) {
-    console.log('idx',idx);
 	return dispatch => {
 		dispatch(setDeleteMedicationPending(true));
 		dispatch(setDeleteMedicationSuccess(false, null));
@@ -146,13 +156,11 @@ export function deleteMedication(med,cb, idx) {
                     params: med,
 				})
 				.then(res => {
-                    console.log('med action', res.data);
 					dispatch(setDeleteMedicationPending(false));
                     dispatch(setDeleteMedicationSuccess(true, idx));
                     cb();
 				})
 				.catch(err => {
-                    console.log(err);
 					dispatch(setDeleteMedicationPending(false));
 					dispatch(setDeleteMedicationSuccess(false, null));
 					if (err.response && err.response.data) dispatch(setDeleteMedicationError(err.response.data.message));

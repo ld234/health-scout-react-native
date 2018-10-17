@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Actions setting the allgery state
+ * Created: 12 August 2018
+ * Last modified:  25 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
@@ -36,8 +43,8 @@ function setAddAllergyError(addAllergyError) {
 	};
 }
 
+//Sending alergies added by patient
 export function addAllergy(allergy,cb) {
-    console.log('request',allergy);
 	return dispatch => {
 		dispatch(setAddAllergyPending(true));
 		dispatch(setAddAllergySuccess(false));
@@ -50,13 +57,11 @@ export function addAllergy(allergy,cb) {
 					},
 				})
 				.then(res => {
-					console.log('res', res.data)
 					dispatch(setAddAllergyPending(false));
                     dispatch(setAddAllergySuccess(true, res.data));
                     cb();
 				})
 				.catch(err => {
-					console.log('err', err);
 					dispatch(setAddAllergyPending(false));
                     dispatch(setAddAllergySuccess(false, null));
 					if(err.response && err.response.data) dispatch(setAddAllergyError(err.response.data.message));
@@ -87,6 +92,7 @@ function setGetAllergiesError(getAllergiesError) {
 	};
 }
 
+//Getting all the allergies previously set by the patients
 export function getAllergies() {
 	return dispatch => {
 		dispatch(setGetAllergiesPending(true));
@@ -102,10 +108,8 @@ export function getAllergies() {
 				.then(res => {
                     setTimeout(() => dispatch(setGetAllergiesPending(false)), 1000);
 					dispatch(setGetAllergiesSuccess(true, res.data.message));
-					console.log('hello', res);
 				})
 				.catch(err => {
-					console.log(err);
 					dispatch(setGetAllergiesPending(false));
 					dispatch(setGetAllergiesSuccess(false, null));
 					dispatch(setGetAllergiesError(err.response));
@@ -136,8 +140,8 @@ function setDeleteAllergyError(deleteAllergyError) {
 	};
 }
 
+//Delete allergy from the current listing of patient allergies
 export function deleteAllergy(allergy, cb, idx) {
-	console.log(allergy);
 	return dispatch => {
 		dispatch(setDeleteAllergyPending(true));
 		dispatch(setDeleteAllergySuccess(false,null));
@@ -151,13 +155,11 @@ export function deleteAllergy(allergy, cb, idx) {
                     params: allergy
 				})
 				.then(res => {
-					console.log('res' , res)
 					dispatch(setDeleteAllergyPending(false));
 					dispatch(setDeleteAllergySuccess(true, idx));
 					cb()
 				})
 				.catch(err => {
-					console.log('err', err);
 					dispatch(setDeleteAllergyPending(false));
 					dispatch(setDeleteAllergySuccess(false, null));
 					if (err.response && err.response.data) dispatch(setDeleteAllergyError(err.response.data.message));

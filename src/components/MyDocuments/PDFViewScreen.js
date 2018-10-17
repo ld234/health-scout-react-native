@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Component to view PDF and edit if its a new document.
+ * and send back after editing 
+ * Created:  28 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, { Component } from "react";
 import {
   Text,
@@ -25,6 +33,7 @@ import { connect } from 'react-redux';
 
 const pspdfkitColor = "#17ac71";
 
+//request access to the phone's file
 async function requestExternalStoragePermission(callback) {
     try {
       const granted = await PermissionsAndroid.request(
@@ -42,10 +51,10 @@ async function requestExternalStoragePermission(callback) {
 }
 
 class PdfViewScreen extends Component<{}> {
+    //sets the header for the screen
     static navigationOptions = ({ navigation }) => {
       const params = navigation.state.params || {};
       return {
-        // title: navigation.state.params['title'],
         header: (props) => {
           return (
           <LinearGradient  start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
@@ -56,14 +65,14 @@ class PdfViewScreen extends Component<{}> {
               <Header backgroundColor='transparent'
                 leftComponent={(<TouchableOpacity 
                   onPress={() => navigation.goBack()}>
-                      <MaterialIcon name='arrow-back' color= '#fff' size={30} />
+                      <MaterialIcon name='arrow-back' color= 'white' size={30} />
                   </TouchableOpacity>)}
                 centerComponent={{ 
                   text: navigation.state.params.title, 
                   style: { color: '#fff', fontSize: 24, fontFamily: 'Quicksand-Medium'} }}
                 rightComponent={navigation.state.params.readOnly? null: (<TouchableOpacity 
                   onPress={() => params.handleAnnotationButtonPress()}>
-                    <MaterialIcon name='more-vert' color= '#fff' size={30} />
+                    <MaterialIcon name='more-vert' color= 'white' size={30} />
                   </TouchableOpacity>)}
                 outerContainerStyles={{
                   borderBottomWidth: 0,
@@ -79,6 +88,7 @@ class PdfViewScreen extends Component<{}> {
           }</View>
           </LinearGradient>
         )},
+        //edit button in the header
         headerRight: (
           <Button
             onPress={() => params.handleAnnotationButtonPress()}
@@ -98,8 +108,9 @@ class PdfViewScreen extends Component<{}> {
         canBeOpened: false,
         filePath: '',
         fileCache: null, 
-        // showFooter: false,
       };
+
+      //request access to external memory of the phone
       requestExternalStoragePermission(() => {
         this.setState({permissionGranted : true}, () => {
           this.handleFileFetch();
@@ -107,7 +118,8 @@ class PdfViewScreen extends Component<{}> {
       });
       
     }
-  
+    
+    //exits or enter editing mode
     componentWillMount() {
       this.props.navigation.setParams({
         handleAnnotationButtonPress: () => {
@@ -122,9 +134,9 @@ class PdfViewScreen extends Component<{}> {
         }
       });
     }
-
+    
+    //fetch file
     handleFileFetch = () => {
-      console.log('component did mount', this.state.permissionGranted);
       const url = this.props.navigation.getParam('readOnly') ? 
         `https://10.0.2.2:9000/clients/profile/exchangeDocument/patient/viewSentDocument?title=${this.props.navigation.getParam('title')}&pracUsername=${this.props.navigation.getParam('pracUsername')}` : 
         `http://10.0.2.2:8888/${this.props.navigation.getParam('file')}`
@@ -133,24 +145,15 @@ class PdfViewScreen extends Component<{}> {
           const dirs = RNFetchBlob.fs.dirs;
           RNFetchBlob
           .config({
-            // add this option that makes response data to be stored as a file,
-            // this is much more performant.
             fileCache : true,
             appendExt : 'pdf',
             trusty: true,
-            // addAndroidDownloads : {
-            //   useDownloadManager : true,
-            //   notification : true,
-            //   path : dirs.DownloadDirs + '/testfile.pdf',
-            // }
           })
           .fetch('GET', url,{
             'x-access-token': res,
           })
           .then((res) => {
             // the temp file path
-            console.log('file', res);
-            console.log('The file saved to ', res.path())
             this.setState({canBeOpened: true, filePath: res.path(), fileCache: res});
           })
           .catch(err => console.log('err fetching file', err));
@@ -166,7 +169,6 @@ class PdfViewScreen extends Component<{}> {
     }
 
     _onDocumentSave = () => {
-      console.log('save document');
       const filename = this.state.filePath.split('/');
       this.props.sendDocument({
         pracUsername: this.props.navigation.getParam('pracUsername'),
@@ -176,9 +178,9 @@ class PdfViewScreen extends Component<{}> {
         justSendIdx:this.props.navigation.getParam('justSendIdx'),
       });
     }
-
+    
+    //e
     _onDocumentSaveFailed = () => {
-      console.log('Failed to save document');
       this.state.fileCache.flush();
       showMessage({
         message: "Save Document Error",

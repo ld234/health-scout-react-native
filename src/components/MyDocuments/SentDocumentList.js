@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Container page for new document request recieved by practitioner
+ * and send back after editing 
+ * Created:  8 October 2018
+ * Last modified:  15 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { TouchableOpacity, Text, View, FlatList, Keyboard, ScrollView, StyleSheet} from 'react-native';
 import FA from 'react-native-vector-icons/FontAwesome';
@@ -8,15 +16,15 @@ import { getSentDocuments } from '../../actions/document.actions';
 import { MaterialIndicator } from 'react-native-indicators';
 import moment from 'moment';
 
+//send component for generating send list list
 class MyListItem extends React.PureComponent {
     _onPress = () => {
       this.props.onPressItem(this.props.id);
     };
   
     render() {
-      console.log(this.props);
       const textColor = "#666";
-      const font = 'Quicksand-Regular' //: 'Quicksand-Regular';
+      const font = 'Quicksand-Regular' 
       return (
         <TouchableOpacity key={this.props.title} onPress={this._onPress}>
           <View style={{height: 80,  justifyContent: 'center', paddingLeft: 50, borderBottomColor: '#eee', borderBottomWidth: 1}}>
@@ -38,6 +46,7 @@ class MyListItem extends React.PureComponent {
     }
   }
   
+  //generate send list from the compoment MySendListItem
 class SentDocumentList extends React.Component {
     constructor(props){
         super(props);
@@ -152,7 +161,6 @@ class SentDocumentList extends React.Component {
               onBackButtonPress={this.toggleModal}
               scrollOffset={this.state.scrollOffset}
               style={{marginTop: SCREEN_HEIGHT* 0.15}}
-              // onSwipe={this.toggleModal} swipeDirection="up" 
               onBackdropPress={this.toggleModal} isVisible={this.state.modal} >
                 {this.renderContent()}
             </Modal>
@@ -164,6 +172,7 @@ class SentDocumentList extends React.Component {
     }
 
   
+    //render is get sent document is not pending bu
     render() {
         if (this.props.documentState.isGetSentDocumentsPending) return <MaterialIndicator color='#17ac71' />
         else return (

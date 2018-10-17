@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: retrieving past consultations
+ * Created: 12 August 2018
+ * Last modified:  29 August 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 
@@ -42,12 +49,10 @@ export function getConsultations() {
                     },
 				})
 				.then(res => {
-					console.log('consultation response', res);
                     setTimeout(() => dispatch(setGetConsultationsPending(false)), 1000);
 					dispatch(setGetConsultationsSuccess(true, res.data.message));
 				})
 				.catch(err => {
-					console.log(err);
 					dispatch(setGetConsultationsPending(false));
 					dispatch(setGetConsultationsSuccess(false, null));
 					dispatch(setGetConsultationsError(err.response));

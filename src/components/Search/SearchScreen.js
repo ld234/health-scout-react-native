@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: main search screen
+ * Created:  28 August 2018
+ * Last modified:  13 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import {TouchableOpacity, View, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import PracCard from './PracCard';
@@ -14,20 +21,11 @@ import { updateViewCount } from '../../actions/practitionerProfile.actions';
 
 import { ScrollView, StyleSheet, Image, Text } from 'react-native';
 import {
-    BallIndicator,
-    BarIndicator,
     DotIndicator,
-    MaterialIndicator,
-    PacmanIndicator,
-    PulseIndicator,
-    SkypeIndicator,
-    UIActivityIndicator,
-    WaveIndicator
   } from 'react-native-indicators';
 
 import logo from '../../../assets/images/healthscout-logo.png'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants';
-import RadioGroup from 'react-native-radio-button-group';
 import {
     MKRadioButton,
     MKColor,
@@ -43,6 +41,7 @@ setTheme({radioStyle: {
 
 import { PermissionsAndroid } from 'react-native';
 
+//gets permission to acces location
 async function requestLocationPermission() {
   try {
     const granted = await PermissionsAndroid.request(
@@ -83,10 +82,7 @@ class SearchScreen extends React.Component {
     }
 
     _onChecked = (checked, pracType) => {
-        console.log(pracType, checked);
         if(checked){
-            // this.props.setSearchPracType(pracType);
-            // this.props.getPracTypeSpecialties(pracType);
             this.setState({pracType});
         }
     }
@@ -97,7 +93,6 @@ class SearchScreen extends React.Component {
 
     deleteSpecialty = (id) =>{
         this.setState((state) => {
-            // copy the map rather than modifying state.
             const selected = new Map(state.selected);
             selected.delete(id);
             return {selected};
@@ -107,19 +102,6 @@ class SearchScreen extends React.Component {
     renderPracTypeRadioGroup = () =>{
         return (
             <View style={styles.modal}>
-                {/* <RadioGroup
-                    options={this.state.types}
-                    activeButtonId="0"
-                    onChange={(value) => {this.setState({value:value})}}
-                    circleStyle={{
-                        width: 30,
-                        height: 30,
-                        marginRight: 15,
-                        borderWidth: 3,
-                        borderColor: '#ddd',
-                        fillColor: '#17ac71',
-                    }}
-                /> */}
                 <View style={{flex: 0.45, width: SCREEN_WIDTH * 0.6, alignItems: 'flex-start'}}>
                     <View style={{flex: 0.33, flexDirection: 'row', justifyContent: 'center'}}>
                         <MKRadioButton
@@ -167,7 +149,7 @@ class SearchScreen extends React.Component {
             </View>
         );
     }
-
+//render distance option
     renderDistanceList = () => {
         return (
             <View style={styles.listModal}>
@@ -178,6 +160,7 @@ class SearchScreen extends React.Component {
             </View>)
     }
 
+    //render the speciality list
     renderSpecialtyList = () => {
         if(this.props.pracState.isGetPracTypeSpecialtysPending){
             return <View><Text>Fetching data...</Text></View>
@@ -291,7 +274,6 @@ class SearchScreen extends React.Component {
 
     _renderLocationList = () => {
         const listLength = this.props.renderState.locationList.length;
-        console.log('listlength', listLength);
         const height = Number.isInteger(listLength) && listLength <= 4 ?  (listLength+1)*60 : 300;
         if(listLength)
         return (
@@ -357,7 +339,6 @@ class SearchScreen extends React.Component {
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{flex:1}}>
                 <View style={styles.screenContent}>
-                    {/* <SearchBar /> */}
                     
                     <ScrollView style={styles.screenContent} showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps={'always'} contentContainerStyle={styles.scrollViewContent}>

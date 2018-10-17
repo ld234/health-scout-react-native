@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: reducer for add, get, delete medication
+ * Created:  1 August 2018
+ * Last modified:  5 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import { ADD_MEDICATION_PENDING, ADD_MEDICATION_SUCCESS, ADD_MEDICATION_ERROR,
     GET_MEDICATIONS_PENDING,
     GET_MEDICATIONS_SUCCESS,
@@ -60,7 +67,6 @@ export default function medicationReducer(state = INITIAL_STATE, action) {
 				isDeleteMedicationsPending: action.isDeleteMedicationPending,
 			};
 		case DELETE_MEDICATION_SUCCESS:
-			console.log('just delete', action.justDeleteIdx);
 			return {
 				...state,
 				isDeleteMedicationSuccess: action.isDeleteMedicationSuccess,

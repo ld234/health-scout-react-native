@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Tenzin
+ * Description: The component containing past consultation list in accordian
+ * and send back after editing 
+ * Created:  7 October 2018
+ * Last modified:  12 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
 
 import React, { Component } from 'react';
 import Modal from 'react-native-modal';
@@ -39,15 +46,7 @@ class MyPracPastConsultationTab extends Component {
           </View>
       )
   }
-
-  renderModal = () => {
-    return (
-        <Modal onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
-            {this.renderFormContent()}
-        </Modal>
-    );
-  }
-
+  //render the header of the accordian
   renderHeader = (section, _, isActive) => {
     return (
       <Animatable.View
@@ -65,6 +64,7 @@ class MyPracPastConsultationTab extends Component {
     );
   };
 
+  //renders the body of accordion
   renderContent(section, _, isActive) {
     return (
       <Animatable.View
@@ -101,7 +101,7 @@ class MyPracPastConsultationTab extends Component {
       </Animatable.View>
     );
   }
-
+ 
   componentDidMount() {
     this.props.getConsultations();
   }
@@ -125,7 +125,10 @@ class MyPracPastConsultationTab extends Component {
             
         </View>
     );
-    return <MaterialIndicator color='#17ac71' />
+    else if (this.props.consultationState.consultations.length === 0)
+      return null;
+    else
+      return <MaterialIndicator color='#17ac71' />
   }
 }
 
@@ -134,6 +137,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     marginTop: 10,
+  },
+  nullContainer:{
+    backgroundColor: '#eee',
+    height: 10
   },
   header: {
     backgroundColor: '#ffffff',

@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Tenzin @Dan
+ * Description: Profile from the search, practitioners not connected
+ * Created:  3 October 2018
+ * Last modified:  9 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import PracDetail from '../MyPractitioner/MyPractitionerProfileScreen/MyPracDetailTab';
@@ -6,26 +13,18 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../constants';
 import { getProfileInfo, setConnection, resetStates } from '../../actions/practitionerProfile.actions';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-// import stripe from 'tipsi-stripe';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { Sae } from 'react-native-textinput-effects';
 import { MaterialIndicator } from 'react-native-indicators';
 import MaterialIconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import _ from 'lodash';
-// stripe.setOptions({
-// //   merchantId: 'com.healthscout',
-//   androidPayMode: 'test',
-//   publishableKey: 'pk_test_MtzOuiItf07GsAJgk1AT5KeQ',
-// });
+
 
 import Stripe from 'react-native-stripe-api';
-import CreditCard from 'react-native-credit-card';
 import {showMessage} from 'react-native-flash-message';
 
 const apiKey = 'pk_test_MtzOuiItf07GsAJgk1AT5KeQ';
 const client = new Stripe(apiKey);
-
-// Create a Stripe token with new card infos
 
 
 const theme = {
@@ -138,6 +137,7 @@ class SearchPracProfile extends Component{
                     this.setState({expMonth: text.slice(0,2)})
                     this.setState({expYear: text.slice(2,4)})
                 }}
+               
             />
             <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular', textAlign:'right'}}>{this.state.errors.goal}</Text></View>
             <Sae
@@ -288,15 +288,18 @@ class SearchPracProfile extends Component{
             theme
         };
         return (
-            <Modal 
-                style={{alignContent:'center', paddingTop: 50}}
-                scrollTo={this.handleScrollTo}
-                onBackButtonPress={this.toggleModal}
-                scrollOffset={this.state.scrollOffset}
-                // onSwipe={this.toggleModal} swipeDirection="up" 
-                onBackdropPress={this.toggleModal} isVisible={this.state.modal}>
-                    {this.renderFormContent()}
-            </Modal>)
+                <Modal 
+                    style={{alignContent:'center', paddingTop: 50}}
+                    scrollTo={this.handleScrollTo}
+                    onBackButtonPress={this.toggleModal}
+                    scrollOffset={this.state.scrollOffset}
+                    style={{marginTop: SCREEN_HEIGHT* 0.2}}
+                    // onSwipe={this.toggleModal} swipeDirection="up" 
+                    onBackdropPress={this.toggleModal} isVisible={this.state.modal}>
+                    {this.state.cardState? this.renderCardForm(): this.renderFormContent()}
+                </Modal>
+            );
+        
     }
     static navigationOptions = ({navigation}) => {
         return {
@@ -392,7 +395,6 @@ const styles = StyleSheet.create({
         position: 'relative',
         top: -85,
         width: SCREEN_WIDTH,
-        // textAlign: 'center',
         flex:1,
         alignItems:'center',
         justifyContent:'center',    

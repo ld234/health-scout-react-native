@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Renders the display from family history
+ * Created:  2 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, { Component } from 'react';
 import { FAB } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -39,9 +46,11 @@ class FamilyHistoryScreen extends Component {
     selectedItem: null,
   };
 
+  //sets accordion to expand
   toggleExpanded = () => {
     this.setState({ collapsed: !this.state.collapsed });
   };
+
 
   toggleDialog = (item) => this.setState({dialog : !this.state.dialog, selectedItem: item});
 
@@ -59,7 +68,7 @@ class FamilyHistoryScreen extends Component {
 			this.setState({ errors: newErr });
 		}
   };
-
+  //checks if input field empty etc
   validateForm = () => {
     let valid = true;
     const fields = ['familyRelation', 'familyCondition'];
@@ -82,7 +91,7 @@ class FamilyHistoryScreen extends Component {
       familyRelation: '',
     })
   }
-
+ //enable scroll within modal
   handleOnScroll = event => {
     this.setState({
       scrollOffset: event.nativeEvent.contentOffset.y
@@ -129,7 +138,6 @@ class FamilyHistoryScreen extends Component {
               inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
               iconClass={MaterialIconCommunity}
               
-              // TextInput props
               autoCapitalize={'none'}
               autoCorrect={false}
               returnKeyType='done'
@@ -163,7 +171,6 @@ class FamilyHistoryScreen extends Component {
           onBackButtonPress={this.toggleModal}
           scrollOffset={this.state.scrollOffset}
           style={{marginTop: SCREEN_HEIGHT* 0.2}}
-          // onSwipe={this.toggleModal} swipeDirection="up" 
           onBackdropPress={this.toggleModal} isVisible={this.state.modal}>
             {this.renderFormContent()}
         </Modal>
@@ -246,7 +253,6 @@ class FamilyHistoryScreen extends Component {
   };
 
   renderContent(section, _, isActive) {
-    console.log('section', section);
     return (
       <Animatable.View
         duration={400}
@@ -269,7 +275,6 @@ class FamilyHistoryScreen extends Component {
 
   render() {
     const { activeSections } = this.state;
-    console.log('content',this.props.familyConditionState.familyConditions);
     return (
         <View style={styles.container}>
             <ScrollView 
@@ -378,10 +383,6 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.5,
     paddingBottom: 10,
     paddingTop: 10,
-  },
-  separator: {
-    // borderBottomColor: '#efefef',
-    // borderBottomWidth: 1,
   },
   longModal:{
     height: SCREEN_HEIGHT - 400,

@@ -1,60 +1,10 @@
-// import React, { Component } from 'react';
-// import { View, Text, Button } from 'react-native';
-// import stripe from 'tipsi-stripe';
-
-// stripe.setOptions({
-//     publishableKey: 'pk_test_OUqtPerqAmIdMxbK8PagM3Ng',
-// });
-
-// class PaymentPage extends Component{
-//     constructor(props){
-//         super(props);
-//         this.state={
-//             isPaymentPending: true,
-//         }
-//     }
-
-//     static navigationOptions = ({navigation}) => {
-//         return {
-//             headerTitleStyle: {flex: 1, textAlign: 'center', fontFamily: 'Quicksand-Medium', fontWeight: '200', fontSize: 24, color:'#17ac71'},
-//             headerRight: <View></View>,
-//             headerTransparent: true,
-//             headerTintColor: '#17ac71',
-//         }
-//     }
-//     requestPayment = () => {
-//         return stripe
-//           .paymentRequestWithCardForm()
-//           .then(stripeTokenInfo => {
-//             console.warn('Token created', { stripeTokenInfo });
-//           })
-//           .catch(error => {
-//             console.warn('Payment failed', { error });
-//           });
-//       };
-    
-//     render() {
-//         return (
-//           <View style={styles.container}>
-//             <Button
-//               title="Make a payment"
-//               onPress={this.requestPayment}
-//               disabled={this.state.isPaymentPending}
-//             />
-//           </View>
-//         );
-//       }
-//     }
-    
-//     const styles = {
-//       container: {
-//         flex: 1,
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//       },
-//     };
-
-//     export default PaymentPage;
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Tenzin
+ * Description:uses tipsi stripe to do payment
+ * between overview and prac profile overview
+ * Created:  10 October 2018
+ * Last modified:  12 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
 
 
 import React, { Component } from 'react';

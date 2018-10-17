@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Action for setting states of search and get pracitioner type specialty
+ * Created: 29 September 2018
+ * Last modified:  4 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
@@ -34,8 +41,8 @@ function setGetPracTypeSpecialtyError(getSpecialtyError) {
 	};
 }
 
+//retrieves certain type of practitioner based on the search filter
 export function getPracTypeSpecialties(pracType) {
-	console.log('in getPractypeSpecialties', pracType);
 	return dispatch => {
 		dispatch(setGetPracTypeSpecialtyPending(true));
 		dispatch(setGetPracTypeSpecialtySuccess(false));
@@ -48,7 +55,6 @@ export function getPracTypeSpecialties(pracType) {
 					},
 				})
 				.then(res => {
-					console.log('pracType res ', res.data);
 					dispatch(setGetPracTypeSpecialtyPending(false));
 					dispatch(setGetPracTypeSpecialtySuccess(true, res.data));
 				})
@@ -61,11 +67,6 @@ export function getPracTypeSpecialties(pracType) {
 	};
 }
 
-
-export const VERIFY_EMAIL_SUCCESS = 'VERIFY_EMAIL_SUCCESS';
-export const VERIFY_EMAIL_REQUEST = 'VERIFY_EMAIL_REQUEST';
-export const VERIFY_EMAIL_ERROR = 'VERIFY_EMAIL_ERROR';
-export const LOGOUT = 'LOGOUT';
 
 const ROOT_URL = 'http://10.0.2.2:8888/search';
 
@@ -91,8 +92,8 @@ function setSearchPracError(searchPracError) {
 	};
 }
 
+//sets the lattitute and longitude radius for the search to be performed by backend 
 export function searchPracByRadius(radius, latitude, longitude) {
-	console.log(radius, latitude, longitude);
 	return dispatch => {
 		dispatch(setSearchPracPending(true));
 		dispatch(setSearchPracSuccess(false, []));
@@ -110,12 +111,10 @@ export function searchPracByRadius(radius, latitude, longitude) {
 					}
 				})
 				.then( res => {
-					console.log(res.data);
 					dispatch(setSearchPracPending(false));
 					dispatch(setSearchPracSuccess(true, res.data));
 				})
 				.catch(err => {
-					console.log('err', JSON.stringify(err, 0, 4));
 					dispatch(setSearchPracPending(false));
 					dispatch(setSearchPracSuccess(false, []));
 					if (err) dispatch(setSearchPracError(err));

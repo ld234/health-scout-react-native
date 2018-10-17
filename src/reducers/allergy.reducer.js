@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: reducer for get, delete allergies
+ * Created:  2 August 2018
+ * Last modified:  5 August 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import { ADD_ALLERGY_PENDING, ADD_ALLERGY_SUCCESS, ADD_ALLERGY_ERROR,
     GET_ALLERGIES_PENDING,
     GET_ALLERGIES_SUCCESS,

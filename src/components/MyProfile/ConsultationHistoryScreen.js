@@ -1,6 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: View the consultation history
+ * Created:  2 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, { Component } from 'react';
-import { FAB } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   ScrollView,
   StyleSheet,
@@ -30,17 +35,19 @@ class ConsultationHistoryScreen extends Component {
     activeSections: [],
     collapsed: true,
   };
-
+  //expand selected accordion
   toggleExpanded = () => {
     this.setState({ collapsed: !this.state.collapsed });
   };
 
+  //set the active accordion
   setSections = sections => {
     this.setState({
       activeSections: sections.includes(undefined) ? [] : sections,
     });
   };
 
+  
   renderHeader = (section, _, isActive) => {
     return (
       <Animatable.View
@@ -62,6 +69,7 @@ class ConsultationHistoryScreen extends Component {
     this.props.getConsultations();
   }
 
+  //render the body of accordion
   renderContent(section, _, isActive) {
     return (
       <Animatable.View
@@ -107,45 +115,8 @@ class ConsultationHistoryScreen extends Component {
     );
   }
 
-  renderModal = () => {
-    // return (
-    //     <Modal 
-    //       style={{alignContent:'center',paddingTop:0}}
-    //       onBackButtonPress={this.toggleDialog}
-    //       onBackdropPress={this.toggleDialog} isVisible={this.state.dialog}>
-    //         <View style={styles.dialog}>
-    //           <View style={{flex:1, width: SCREEN_WIDTH*.9 }}>
-    //           <View style={styles.dialogHeader}>
-    //             <Text style={styles.dialogHeaderText}>CONFIRM MEDICATION DELETE</Text>
-    //           </View>
-    //           <View style={{flex:0.6, width:SCREEN_WIDTH*0.9, justifyContent: 'center', paddingLeft: 10, paddingRight: 10}}>
-    //             <Text style={!this.props.allergyState.deleteAllergyError? styles.dialogText: [styles.dialogText, {color: '#f00'}]}>
-    //               {!this.props.allergyState.deleteAllergyError? 
-    //               'Are you sure you want to delete this allergy from your allergy history?': 
-    //               this.props.allergyState.deleteAllergyError}
-    //             </Text>
-    //           </View>
-    //           <TouchableOpacity style={styles.closeButton} onPress={() => {
-    //               const { symptom, allergy } = this.state.selectedItem;
-    //               let idx = this.props.allergyState.allergies.findIndex(item => item.allergy === allergy);
-    //               this.props.deleteAllergy({ allergy }, this.toggleDialog, idx);
-    //           }}>
-    //               <Text style={styles.closeButtonText}>OK</Text>
-    //           </TouchableOpacity>
-    //           <TouchableOpacity style={styles.cancelButton} onPress={() => {
-    //             this.toggleDialog();
-    //           }}>
-    //               <Text style={styles.cancelButtonText}>CANCEL</Text>
-    //           </TouchableOpacity>
-    //           </View>
-    //         </View>
-    //     </Modal>
-    // );
-  }
-
   render() {
     const { activeSections } = this.state;
-    console.log('cons', this.props.consultationState.consultations);
     return (
         <View style={styles.container}>
             <ScrollView 
@@ -163,7 +134,7 @@ class ConsultationHistoryScreen extends Component {
                 />
                 
             </ScrollView>
-            {this.renderModal()}
+            
         </View>
     );
   }

@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: The bar for searching practitioner by radius etc
+ * Created:  5 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
+
 import React from 'react';
 import { StyleSheet, View,  } from 'react-native';
 import { SearchBar } from 'react-native-elements';
@@ -17,6 +25,7 @@ class SeachGroup extends React.Component {
     };
   }
 
+  //gets the longitude, lattitude of the input suburb from external api 
   getLocationList = (q) => {
     if(q.length)
         return axios.get('http://api.geonames.org/postalCodeLookupJSON',{
@@ -47,8 +56,6 @@ class SeachGroup extends React.Component {
             <SearchBar
                 style={styles.searchBar}
                 platform="android"
-                // clearIcon={false}
-                // cancelIcon={false}
                 returnKeyType='search'
                 inputContainerStyle={styles.inputContainer}
                 containerStyle={styles.searchBar}
@@ -109,8 +116,6 @@ const styles = StyleSheet.create({
         height: 55,
         marginLeft: 10,
         paddingBottom:14,
-        // paddingTop: 0,
-        // marginTop: 0,
         borderBottomColor: 'transparent',
         borderTopColor: 'transparent',
     },
@@ -123,10 +128,7 @@ const styles = StyleSheet.create({
         height: 53,
         borderRadius: 30,
         width: SCREEN_WIDTH - 10,
-        // backgroundColor: 'green',
-        // border: 'none',
-        // fontFamily: 'Quicksand-Regular',
-        // fontSize: 20
+
     }
 })
 
