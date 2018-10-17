@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Tenzin
+ * Description: Actions for retriveing data for the connected 
+ * practitioner profile and search result for practitioner
+ * Created: 25 September 2018
+ * Last modified:  3 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
@@ -23,7 +31,7 @@ export const GET_MYPRACTITIONERS_SUCCESS = 'GET_MYPRACTITIONERS_SUCCESS';
 export const GET_MYPRACTITIONERS_ERROR= 'GET_MYPRACTITIONERS_ERROR'
 
 
-const ROOT_URL = 'http://10.0.2.2:8888/patient/pracProfile/';
+const ROOT_URL = 'http://10.0.2.2:8888/patient/pracProfile';
 const CONNECT_URL = 'http://10.0.2.2:8888/patient/connect/';
 
 function updateViewCountPending(isUpdateViewCountPending) {
@@ -47,22 +55,20 @@ function updateViewCountError(isUpdateViewCountError) {
 	};
 }
 
-
+//update the view count of practitioner when they are viewed by patients
 export function updateViewCount(pracUsername) {
-	console.log('in update view count', pracUsername);
 	return dispatch => {
 		dispatch(updateViewCountPending(true));
 		dispatch(updateViewCountSuccess(false));
 		dispatch(updateViewCountError(null));
 		AsyncStorage.getItem('id_token').then(res => {
 			axios
-				.put(`${ROOT_URL}?${pracUsername}`, {
+				.put(`${ROOT_URL}?pracUsername=${pracUsername}`, {}, {
 					headers: {
 						'x-access-token': res,
 					},
 				})
 				.then(res => {
-					console.log('pracType res ', res.data);
 					dispatch(updateViewCountPending(false));
 					dispatch(updateViewCountSuccess(true, res.data));
 				})
@@ -82,12 +88,13 @@ function getProfileInfoPending(isGetProfileInfoPending) {
 	};
 }
 
-function getProfileInfoSuccess(isGetProfileInfoSuccess, qualifications, specialties) {
+function getProfileInfoSuccess(isGetProfileInfoSuccess, qualifications, specialties, generalInfo) {
 	return {
 		type: GET_PROFILE_INFO_SUCCESS,
 		isGetProfileInfoSuccess: isGetProfileInfoSuccess,
 		qualifications: qualifications,
-		specialities: specialties,
+		specialties: specialties,
+		generalInfo,
 
 	};
 }
@@ -99,33 +106,44 @@ function getProfileInfoError(isGetProfileInfoError) {
 	};
 }
 
-
+//get general profile information such as specialties, degrees etc from different apis
 export function getProfileInfo(pracUsername) {
-	console.log('in get profile info', pracUsername);
 	return dispatch => {
 		dispatch(getProfileInfoPending(true));
 		dispatch(getProfileInfoSuccess(false));
 		dispatch(getProfileInfoError(null));
 		AsyncStorage.getItem('id_token').then(res => {
 			let promises=[];
-			promises.push(axios.get(`${ROOT_URL}/Qualification?pracUsername=`+ pracUsername , {
+			promises.push(axios.get(`${ROOT_URL}/Qualification`, {
 				headers: {
 					'x-access-token': res,
 				},
+				params:{
+					pracUsername
+				}
 			}))
-			promises.push(axios.get(`${ROOT_URL}/Specialty?pracUsername=`+ pracUsername , {
+			promises.push(axios.get(`${ROOT_URL}/Specialty` , {
 				headers: {
 					'x-access-token': res,
 				},
+				params:{
+					pracUsername
+				}
+			}))
+			promises.push(axios.get(`${ROOT_URL}/`, {
+				headers: {
+					'x-access-token': res,
+				},
+				params:{
+					pracUsername
+				}
 			}))
 			axios.all(promises)
 				.then(res => {
-					console.log('PROFILE SUCCESS ', res[1].data);
 					dispatch(getProfileInfoPending(false));
-					dispatch(getProfileInfoSuccess(true, res[0].data, res[1].data));
+					dispatch(getProfileInfoSuccess(true, res[0].data, res[1].data, res[2].data[0]));
 				})
 				.catch(err => {
-					console.log('get profileinfo error ', err);
 					dispatch(getProfileInfoPending(false));
 					dispatch(getProfileInfoSuccess(false, null));
 					dispatch(getProfileInfoError(err.response));
@@ -155,9 +173,8 @@ function getTestimonialError(isGetTestimonialError) {
 	};
 }
 
-
+//Action for retrieving testimonials of users
 export function getTestimonial(pracUsername) {
-	console.log('in get profile info', pracUsername);
 	return dispatch => {
 		dispatch(getTestimonialPending(true));
 		dispatch(getTestimonialSuccess(false));
@@ -170,7 +187,6 @@ export function getTestimonial(pracUsername) {
 					},
 				})
 				.then(res => {
-					console.log('pracType res ', res.data);
 					dispatch(getTestimonialPending(false));
 					dispatch(getTestimonialSuccess(true, res.data));
 				})
@@ -213,8 +229,8 @@ export function resetStates(){
 	}
 }
 
-export function setConnection(pracUsername, stripeToken) {
-	console.log('SET CONNECTION', pracUsername);
+//connects patients to practitioner
+export function setConnection(pracUsername, stripeToken, cb) {
 	return dispatch => {
 		dispatch(setConnectionPending(true));
 		dispatch(setConnectionSuccess(false));
@@ -227,12 +243,12 @@ export function setConnection(pracUsername, stripeToken) {
 					},
 				})
 				.then(res => {
-					console.log('connect res ', res.data);
 					dispatch(setConnectionPending(false));
 					dispatch(setConnectionSuccess(true));
+					getMyPractitioners();
+					if (cb) cb();
 				})
 				.catch(err => {
-					console.log('connect err ', err);
 					dispatch(setConnectionPending(false));
 					dispatch(setConnectionSuccess(false, null));
 					dispatch(setConnectionError(err.response));
@@ -264,8 +280,8 @@ function getMyPractitionersError(isGetMyPractitionersError) {
 	};
 }
 
+//get the list of connected practitioners
 export function getMyPractitioners() {
-	console.log('get my practitioners');
 	return dispatch => {
 		dispatch(getMyPractitionersPending(true));
 		dispatch(getMyPractitionersSuccess(false));

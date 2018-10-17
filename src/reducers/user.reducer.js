@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: reducer for get user
+ * Created:  5 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import { GET_USER_PENDING, GET_USER_SUCCESS, GET_USER_ERROR } from '../actions/user.actions';
 const INITIAL_STATE = {
 	isGetUserPending: false,

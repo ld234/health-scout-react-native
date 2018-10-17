@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Star rating reusable component
+ * Created:  5 August 2018
+ * Last modified:  12 August 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, {Component} from 'react';
 import Rating from 'react-native-star-rating';
 
@@ -26,7 +33,6 @@ class AppStarRating extends Component {
         maxStars={5}
         rating={parseFloat(this.props.rating)}
         starSize={20}
-        // selectedStar={(rating) => this.onStarRatingPress(rating)}
         fullStarColor={'#FBBC05'} emptyStarColor={'#FBBC05'}
         halfStarEnabled	={true}
       />

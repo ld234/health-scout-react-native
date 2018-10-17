@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Tenzin
+ * Description: the tab function which navigates
+ * between overview and prac profile overview
+ * Created:  7 October 2018
+ * Last modified:  12 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import * as React from 'react';
 import { View, StyleSheet, Dimensions, TouchableOpacity, Animated, ScrollView} from 'react-native';
 import { TabView, TabBar, SceneMap, PagerPan } from 'react-native-tab-view';
@@ -17,14 +25,14 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../../constants';
             ],
           };
       }
+      //sets the first tab
     FirstRoute = () => (
         <View style={styles.scrollContainer}>
-            <ScrollView onScroll={(e)=>{
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={(e)=>{
                     var windowHeight = Dimensions.get('window').height,
                         height = e.nativeEvent.contentSize.height,
                         offset = e.nativeEvent.contentOffset.y;
                     if( e.nativeEvent.contentOffset.y == 0 ){
-                        // console.log(offset);
                         this.props.enableScroll();
                     }
                 }}>
@@ -32,20 +40,19 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../../constants';
             </ScrollView>
         </View>
     );
+    //sets second tab
     SecondRoute = () => (
         <View style={styles.scrollContainer}>
-            <ScrollView onScroll={(e)=>{
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={(e)=>{
                     var windowHeight = Dimensions.get('window').height,
                         height = e.nativeEvent.contentSize.height,
                         offset = e.nativeEvent.contentOffset.y;
 
                     if( e.nativeEvent.contentOffset.y == 0  ){
-                        // console.log(offset);
-
                         this.props.enableScroll();
                     }
                 }}>
-                <PractitionerPastConsultations/>
+                <PractitionerPastConsultations {...this.props} />
             </ScrollView>
         </View>
     );
@@ -54,7 +61,7 @@ import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../../constants';
         <PagerPan {...props} />
     );
   
-
+    //customize the tab bar
     renderTabBar=(props) =>{ 
         const inputRange = props.navigationState.routes.map((x, i) => i);
 

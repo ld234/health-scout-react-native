@@ -1,8 +1,17 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Tenzin
+ * Description: Parent component containing the tab 
+ * Created:  7 August 2018
+ * Last modified:  14 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { View,ScrollView,StyleSheet,Dimensions } from 'react-native';
 import ProfileHeader from './MyPractionerProfileHeader';
 import ProfileTab from './MyPractitionerProfileTab';
+import { getProfileInfo } from '../../../actions/practitionerProfile.actions';
+import {MaterialIndicator} from 'react-native-indicators';
 
 class MyPractitionerProfileScreen extends Component {
     state = {
@@ -15,15 +24,23 @@ class MyPractitionerProfileScreen extends Component {
             
         } 
     }
+    //enables the outer view scroll, result in disabling the inner scroll
     enableScroll =() =>{
-        console.log('enable scroll');
         this.setState({ enabled:true });
     }
+    //disables the outer view scroll, resulting in enabling the inner scroll
     disableScroll(){
-        console.log('disabled scroll');
         this.setState({ enabled:false });
     }
+
+    //gets profile info
+    componentDidMount() {
+        this.props.getProfileInfo(this.props.navigation.getParam('pracUsername'));
+    }
+
     render() {
+        if (this.props.pracProfileState.isGetProfileInfoPending) return <MaterialIndicator color={'#17ac71'} />
+        else if (this.props.pracProfileState.isGetProfileInfoSuccess) 
         return (
             <ScrollView 
                 scrollEnabled={this.state.enabled}
@@ -34,13 +51,15 @@ class MyPractitionerProfileScreen extends Component {
                         this.disableScroll();
                     }
                 }}
+                showsVerticalScrollIndicator={false}
                 style={styles.scrollStyle}>
                     <ProfileHeader />
                     <View style={styles.profileTab}>
-                        <ProfileTab enableScroll={()=>this.enableScroll()} />
+                        <ProfileTab enableScroll={()=>this.enableScroll()} {...this.props} />
                     </View>
             </ScrollView>
         )
+        return  <MaterialIndicator color={'#17ac71'} />;
     }
 }
 
@@ -52,12 +71,22 @@ const styles = StyleSheet.create({
         zIndex:100,
     },
     scrollStyle:{
-        height: 1300,
+        height: 1200,
+        backgroundColor: '#fff'
     }
-// profileHeader:{
-//     position:'absolute',
-//     zIndex:0
-// }
 })
 
-export default MyPractitionerProfileScreen;
+
+const mapStateToProps = state => {
+    return {
+        pracProfileState: state.practitionerProfileState,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getProfileInfo: (pracUsername) => dispatch(getProfileInfo(pracUsername)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyPractitionerProfileScreen);

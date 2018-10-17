@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: main search screen
+ * Created:  28 August 2018
+ * Last modified:  13 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import {TouchableOpacity, View, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import PracCard from './PracCard';
@@ -10,23 +17,15 @@ import LocationList from './LocationList';
 import SpecialtyList from './SpecialtyList';
 import DistanceList from './DistanceList';
 import FilterButton from './FilterButton';
+import { updateViewCount } from '../../actions/practitionerProfile.actions';
 
 import { ScrollView, StyleSheet, Image, Text } from 'react-native';
 import {
-    BallIndicator,
-    BarIndicator,
     DotIndicator,
-    MaterialIndicator,
-    PacmanIndicator,
-    PulseIndicator,
-    SkypeIndicator,
-    UIActivityIndicator,
-    WaveIndicator
   } from 'react-native-indicators';
 
 import logo from '../../../assets/images/healthscout-logo.png'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants';
-import RadioGroup from 'react-native-radio-button-group';
 import {
     MKRadioButton,
     MKColor,
@@ -42,6 +41,7 @@ setTheme({radioStyle: {
 
 import { PermissionsAndroid } from 'react-native';
 
+//gets permission to acces location
 async function requestLocationPermission() {
   try {
     const granted = await PermissionsAndroid.request(
@@ -72,11 +72,6 @@ class SearchScreen extends React.Component {
             isModalVisible: false,
             value: 0,
             selectedSortOption: this.props.renderState.selectedSortOption,
-            // pracTypes: [
-            //     {id: 0, labelView: (<View><Text style={styles.optionText}>Dietitian</Text></View>) },
-            //     {id: 1, labelView: (<View><Text style={styles.optionText}>Physiotherapist</Text></View>) },
-            //     {id: 2, labelView: (<View><Text style={styles.optionText}>Exercise Physiologist</Text></View>) }
-            // ],
             specialties: [],
             pracType: null,
             specialty: null,
@@ -87,10 +82,7 @@ class SearchScreen extends React.Component {
     }
 
     _onChecked = (checked, pracType) => {
-        console.log(pracType, checked);
         if(checked){
-            // this.props.setSearchPracType(pracType);
-            // this.props.getPracTypeSpecialties(pracType);
             this.setState({pracType});
         }
     }
@@ -101,7 +93,6 @@ class SearchScreen extends React.Component {
 
     deleteSpecialty = (id) =>{
         this.setState((state) => {
-            // copy the map rather than modifying state.
             const selected = new Map(state.selected);
             selected.delete(id);
             return {selected};
@@ -111,19 +102,6 @@ class SearchScreen extends React.Component {
     renderPracTypeRadioGroup = () =>{
         return (
             <View style={styles.modal}>
-                {/* <RadioGroup
-                    options={this.state.types}
-                    activeButtonId="0"
-                    onChange={(value) => {this.setState({value:value})}}
-                    circleStyle={{
-                        width: 30,
-                        height: 30,
-                        marginRight: 15,
-                        borderWidth: 3,
-                        borderColor: '#ddd',
-                        fillColor: '#17ac71',
-                    }}
-                /> */}
                 <View style={{flex: 0.45, width: SCREEN_WIDTH * 0.6, alignItems: 'flex-start'}}>
                     <View style={{flex: 0.33, flexDirection: 'row', justifyContent: 'center'}}>
                         <MKRadioButton
@@ -171,7 +149,7 @@ class SearchScreen extends React.Component {
             </View>
         );
     }
-
+//render distance option
     renderDistanceList = () => {
         return (
             <View style={styles.listModal}>
@@ -182,6 +160,7 @@ class SearchScreen extends React.Component {
             </View>)
     }
 
+    //render the speciality list
     renderSpecialtyList = () => {
         if(this.props.pracState.isGetPracTypeSpecialtysPending){
             return <View><Text>Fetching data...</Text></View>
@@ -295,8 +274,7 @@ class SearchScreen extends React.Component {
 
     _renderLocationList = () => {
         const listLength = this.props.renderState.locationList.length;
-        console.log('listlength', listLength);
-        const height = Number.isInteger(listLength) && listLength <= 5 ?  listLength*60 : 300;
+        const height = Number.isInteger(listLength) && listLength <= 4 ?  (listLength+1)*60 : 300;
         if(listLength)
         return (
             <Surface style={{
@@ -329,7 +307,8 @@ class SearchScreen extends React.Component {
     };
 
     onPracSelected = item => {
-        this.props.navigation.navigate('PracSearchProfile', item);
+        this.props.navigation.navigate('SearchPracProfile', item);
+        this.props.updateViewCount(item.pracUsername);
     }
 
     render() {
@@ -339,20 +318,15 @@ class SearchScreen extends React.Component {
                 return {...item, rating: 0};
             return item;
         })
-            .filter(prac => specialties.every(sp => prac.Specialties.map(s => s.specialty).includes(sp)));
+            .filter(prac => specialties.every(sp => prac.Specialties.map(s => s.specialty).includes(sp))).filter(prac => prac.distance <= this.props.renderState.selectedRadius);
         if (this.props.renderState.searchPracType && this.props.renderState.searchPracType.length) {
-            list = list.filter(prac => prac.pracType === this.props.renderState.searchPracType);
+            list = list.filter(prac => prac.pracType.toLowerCase() === this.props.renderState.searchPracType.toLowerCase());
         }
-        console.log('selected sort opt', this.props.renderState.selectedSortOption);
         if (this.props.renderState.selectedSortOption == 0){
             list = list.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance)).slice();
-            console.log('option 0', list);
         } else if (this.props.renderState.selectedSortOption == 1){
             list = list.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating)).slice();
-            console.log('option 1', list);
         }
-        // console.log('after filter', list, list.length)
-        // console.log('ispending?', this.props.pracState.isSearchPracPending);
         if (this.props.pracState.isSearchPracPending){
             return (
                 <View style={styles.logoContainer}>
@@ -363,17 +337,17 @@ class SearchScreen extends React.Component {
             );
         }
         return (
-            
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{flex:1}}>
                 <View style={styles.screenContent}>
-                    {/* <SearchBar /> */}
                     
-                    <ScrollView style={styles.screenContent} showsVerticalScrollIndicator={false} keyboardDismissMode='on-drag'
+                    <ScrollView style={styles.screenContent} showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps={'always'} contentContainerStyle={styles.scrollViewContent}>
-                        <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{flex:1}}>
-                        <View onStartShouldSetResponder={() => true} >
+                        
+                        <View >
                             {list.map((item, idx) => {
                                 if (idx ===  0 ) {
-                                    return (<TouchableOpacity key={item.pracUsername}
+                                    return (
+                                    <TouchableOpacity key={item.pracUsername}
                                         onPress={()=>this.onPracSelected(item)}>
                                         <PracCard data={item} top={true} bottom={false} /> 
                                     </TouchableOpacity> );
@@ -387,18 +361,20 @@ class SearchScreen extends React.Component {
                                 else {
                                     return (<TouchableOpacity 
                                         onPress={()=>this.onPracSelected(item)} key={item.pracUsername}>
-                                        <PracCard data={item} top={false} bottom={true} /> 
+                                        <PracCard data={item} top={false} bottom={false} /> 
                                     </TouchableOpacity>);
                                 }
                             })}
                         </View>
-                        </TouchableWithoutFeedback>
+                       
                     </ScrollView>
+                    
                     {this.renderModal(this.props.renderState.searchOptionModalType)}
                     {this.props.renderState.isLocationSuggestionShown ? 
                         this._renderLocationList() : null}
                     {this._renderFAB()}
                 </View>
+            </TouchableWithoutFeedback>
         );
     }
 }
@@ -516,6 +492,7 @@ const mapDispatchToProps = dispatch => {
         setSearchPracType: (pracType) => dispatch(setSearchPracType(pracType)),
         setSelectedSpecialties: (list) => dispatch(setSelectedSpecialties(list)),
         setSelectedSortOption: (n) => dispatch(setSelectedSortOption(n)),
+        updateViewCount: (prac) => dispatch(updateViewCount(prac)),
     }
 }
 

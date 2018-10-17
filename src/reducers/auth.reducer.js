@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: redux for login, verify and logout 
+ * Created:  5 August 2018
+ * Last modified:  10 August 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import {
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,

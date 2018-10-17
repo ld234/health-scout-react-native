@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Actions for get, delete and add family conditions
+ * Created: 12 September 2018
+ * Last modified:  21 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';

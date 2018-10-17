@@ -1,3 +1,12 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Tenzin
+ * Description: reducer for update view count,
+ * get profile info, get testimonial, set connection, 
+ * get connected pracitioner
+ * Created:  2 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import {
     UPDATE_VIEWCOUNT_PENDING,
     UPDATE_VIEWCOUNT_ERROR,
@@ -29,7 +38,8 @@ const INITIAL_STATE = {
     isGetTestimonialError: false,
     testimonial:[],
     qualifications: [],
-	speciality: [],
+	specialties: [],
+	generalInfo: {},
 	isConnectionPending:false,
 	isConnectionSuccess:false,
 	isConnectionError:false,
@@ -66,8 +76,9 @@ export default function pracProfileReducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				isGetProfileInfoSuccess: action.isGetProfileInfoSuccess,
-                qualifications: action.qualifications,
-                specialities: action.specialities,
+                qualifications: action.qualifications? action.qualifications: state.qualifications,
+				specialties: action.specialties ? action.specialties: state.specialties,
+				generalInfo: action.generalInfo ? action.generalInfo: state.generalInfo,
 			};
 		case GET_PROFILE_INFO_ERROR:
 			return {
@@ -114,7 +125,7 @@ export default function pracProfileReducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				isGetMyPractitionersSuccess: action.isGetMyPractitionersSuccess,
-				myPractitioners: action.myPractitioners,
+				myPractitioners: action.myPractitioners && action.myPractitioners.length ?  action.myPractitioners : state.myPractitioners,
 			}
 		case GET_MYPRACTITIONERS_ERROR:
 			return {

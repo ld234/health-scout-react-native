@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: reducer for add, deleete and get family conditions
+ * Created:  6 August 2018
+ * Last modified:  12 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import { ADD_FAMILY_CONDITION_PENDING, ADD_FAMILY_CONDITION_SUCCESS, ADD_FAMILY_CONDITION_ERROR,
     GET_FAMILY_CONDITIONS_PENDING,
     GET_FAMILY_CONDITIONS_SUCCESS,

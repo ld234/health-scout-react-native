@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Component that list our similar results to search query
+ * Created:  1 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { TouchableOpacity, Text, View, FlatList, Keyboard} from 'react-native';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,7 +17,6 @@ class MyListItem extends React.PureComponent {
       this.props.onPressItem(this.props.id);
     };
     
-
     render() {
       const textColor = this.props.selected ? "red" : "black";
       return (
@@ -31,16 +37,16 @@ class LocationList extends React.PureComponent {
   
     _keyExtractor = (item, index) => item.id;
   
+      // sets to current location if id is your location or else gets search query
     _onPressItem = (id, lat, lng) => {
       if (id === 'Your location') {
         navigator.geolocation.getCurrentPosition((obj) => {
-          console.log('My location', obj);
           this.props.setCoord(obj.coords.latitude, obj.coords.longitude);
           this.props.setLocationSuggestionShow(false);
           this.props.setLocationSearchQuery(id);
           this.props.searchPracByRadius(this.props.renderState.selectedRadius, obj.coords.latitude, obj.coords.longitude);
           Keyboard.dismiss();
-        })
+        }, (err) => console.log('err: ', err),  { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
       } else {
         this.props.setCoord(lat,lng);
         this.props.setLocationSuggestionShow(false);

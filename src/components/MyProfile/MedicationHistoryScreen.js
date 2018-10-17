@@ -1,20 +1,18 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: enables to view, add, delete medical history
+ * Created:  2 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, { Component } from 'react';
 import { FAB } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
-import { SwipeRow } from 'react-native-swipe-list-view';
 import { Sae } from 'react-native-textinput-effects';
 import moment from 'moment';
 import {
-  BallIndicator,
-  BarIndicator,
-  DotIndicator,
   MaterialIndicator,
-  PacmanIndicator,
-  PulseIndicator,
-  SkypeIndicator,
-  UIActivityIndicator,
-  WaveIndicator
 } from 'react-native-indicators';
 import {
   ScrollView,
@@ -34,31 +32,6 @@ import { addMedication, getMedications, deleteMedication } from '../../actions/m
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-const BACON_IPSUM =
-  'Bacon';
-
-const CONTENT = [
-  {
-    title: 'Aspirin',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Acetaminophen',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Alprazolam',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Ofloxacin',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Quinidex',
-    content: BACON_IPSUM,
-  },
-];
 
 class MedicationHistoryScreen extends Component {
   static navigationOptions = ({navigation}) => {
@@ -78,13 +51,15 @@ class MedicationHistoryScreen extends Component {
     dialog: false,
     errors: {},
   };
-
+  
+  //expands the accordion of the selected medication history
   toggleExpanded = () => {
     this.setState({ collapsed: !this.state.collapsed });
   };
 
   toggleDialog = (item) => this.setState({dialog : !this.state.dialog, selectedItem: item});
 
+    //sets selected accordion
   setSections = sections => {
     this.setState({
       activeSections: sections.includes(undefined) ? [] : sections,
@@ -96,6 +71,7 @@ class MedicationHistoryScreen extends Component {
 		this.setState({errors: newErr } );
 	};
 
+  //checks input value
 	onBlur = value => {
 		if (_.isEmpty(this.state[value])) {
 			const newErr = _.merge(this.state.errors, { [value]: '*field required' });
@@ -106,6 +82,7 @@ class MedicationHistoryScreen extends Component {
 		}
   };
   
+  //validate form before sending to server
   validateForm = () => {
     let valid = true;
     const fields = ['fillDate', 'medication'];
@@ -122,7 +99,6 @@ class MedicationHistoryScreen extends Component {
     }
     if (valid) {
       const { fillDate, medication, dosageForm, strength, quantity } = this.state;
-      console.log(fillDate);
       const obj = { fillDate, medication };
       if (dosageForm) obj['dosageForm'] = dosageForm;
       if (strength) obj['strength'] = strength;
@@ -131,7 +107,7 @@ class MedicationHistoryScreen extends Component {
       this.resetForm();
     }
   }
-
+  
   resetForm = () =>{
     this.setState({errors: {}});
     this.setState({
@@ -143,24 +119,21 @@ class MedicationHistoryScreen extends Component {
     })
   }
 
+//sets the date via android date picker
   openDatePicker = async () => {
     Keyboard.dismiss();
     try {
       const {action, year, month, day} = await DatePickerAndroid.open({
-        // Use `new Date()` for current date.
-        // May 25 2020. Month 0 is January.
         date: new Date(),
         maxDate: new Date(),
       });
       if (action !== DatePickerAndroid.dismissedAction) {
-        // Selected year, month (0-11), day
         const formattedDay = day.toString().length < 2 ? `0${day}`:day;
         const formattedMonth = month.toString().length < 2? `0${month}` : month;
         this.setState({fillDate: [formattedDay,month+1, year].join('-')});
         this.onBlur('fillDate');
       } else {
         this.onBlur('fillDate');
-        // this.setState({errors: { fillDate: '*fields required'}})
       }
     } catch ({code, message}) {
       console.warn('Cannot open date picker', message);
@@ -194,7 +167,6 @@ class MedicationHistoryScreen extends Component {
               iconSize={0}
               inputStyle={{fontFamily: 'Quicksand-Regular', color:'#17ac71'}}
               
-              // TextInput props
               autoCapitalize={'none'}
               autoCorrect={false}
               returnKeyType='done'
@@ -303,7 +275,7 @@ class MedicationHistoryScreen extends Component {
         </Modal>
     );
   }
-
+  //dialog box for deleting selected medication history
   renderDialog = () => {
     return (
         <Modal 

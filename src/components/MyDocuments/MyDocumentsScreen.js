@@ -1,133 +1,11 @@
-// import React, {Component} from 'react';
-// import { connect } from 'react-redux';
-// import { View, Text, Platform , StyleSheet, Button, ScrollView } from 'react-native';
-// import { STATUS_BAR_HEIGHT , SCREEN_WIDTH, SCREEN_HEIGHT } from '../../constants';
-// import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-// import PDFKit from './PDFKit';
-// import { createStackNavigator } from 'react-navigation';
-// import PDFView from './PDFViewScreen';
-// import { TabView, TabBar, SceneMap, PagerPan } from 'react-native-tab-view';
-// import LinearGradient from 'react-native-linear-gradient';
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Container page for new document request recieved by practitioner
+ * and send back after editing 
+ * Created:  29 August 2018
+ * Last modified:  15 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
 
-
-// class MyDocumentScreen extends Component {
-//     static navigationOptions = () => ({
-
-//     })
-
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             index: 0,
-//             routes: [
-//               { key: 'first', title: 'New', icon:'list' },
-//               { key: 'second', title: 'NONE', icon:'description' },
-//             ],
-//         };
-//     }
-//     FirstRoute = () => (
-//         <View style={styles.scrollContainer}>
-//             <ScrollView>
-//                 <Text>First Route</Text>
-//             </ScrollView>
-//         </View>
-//     );
-//     SecondRoute = () => (
-//         <View style={styles.scrollContainer}>
-//             <ScrollView>
-//                 <Text>Second Route</Text>
-//             </ScrollView>
-//         </View>
-//     );
-    
-//     renderPager = props => (
-//         <PagerPan {...props} />
-//     );
-
-//     renderTabBar=(props) =>{ 
-//         const inputRange = props.navigationState.routes.map((x, i) => i);
-
-//         return (
-//             <TabBar
-//                 {...props}
-//                 style={styles.tabBarMain}
-//                 scrollEnabled={true}
-//                 tabStyle={styles.tabBar}
-//                 indicatorStyle={styles.tabItemActive}
-//             />
-//         );
-//      };
-
-//     render() {
-//         return (
-//             <View style={styles.container}>
-//                 <LinearGradient style={styles.header} 
-//                     start={{x: 0.0, y: 0.85}} end={{x: 0.7, y: 1.0}}
-//                     locations={[0,0.8]} colors={['#167434','#17AC71']}
-//                     locations={[0,0.9]} />
-//                 <View style={styles.tabWrapper}>
-//                     <TabView
-//                         navigationState={this.state}
-//                         renderScene={SceneMap({
-//                             first: this.FirstRoute,
-//                             second: this.SecondRoute,
-//                         })}
-//                         renderTabBar={this.renderTabBar}
-//                         renderPager={this.renderPager}
-//                         onIndexChange={index => this.setState({ index })}
-//                         initialLayout={{ width: SCREEN_WIDTH, height:SCREEN_HEIGHT -60 }}
-//                     />
-//                 </View>
-//             </View>
-//         );
-//     }
-// }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: '#fff',
-//     },
-//     header:{
-//         height: 120 , 
-//         position: 'relative', 
-//         top: 0, 
-//         left: 0, 
-//     },
-//     tabWrapper:{
-//         position: 'absolute',
-//         top: 76,
-//         zIndex: 10,
-//     },
-//     // header: {
-//     //     paddingTop: 10,
-//     // },
-//     tabBarMain:{
-//         backgroundColor: 'transparent'
-//     },
-//     tabBar: {
-//         width: SCREEN_WIDTH /2,
-//     },
-//     tabItemActive: {
-//         backgroundColor:'white',
-//         padding:2
-//     },
-//     tabItem: {
-//         flex: 1,
-//         alignItems: 'center',
-//         padding: 16,
-//     },
-//     tabBarText:{
-//         fontSize: 15,
-//         fontFamily: 'Quicksand-light',
-//     },
-//     scrollContainer:{
-//         // flex:1,
-//         // height:SCREEN_HEIGHT,
-//         // backgroundColor:"#eee"
-//     }
-// })
-// export default MyDocumentScreen;
 
 import * as React from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
@@ -140,13 +18,6 @@ import { YellowBox } from 'react-native';
 import { connect } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
-
-// const FirstRoute = (props) => (
-//     <View style={[styles.scene, { backgroundColor: '#fff' }]} >
-//         <NewDocumentList {...props} />
-//     </View>
-// );
-
 
 
 class MyDocumentsScreen extends React.Component {
@@ -161,12 +32,14 @@ class MyDocumentsScreen extends React.Component {
     };
   }
 
+  //sets componenent to be displayed in first tab
   FirstRoute = (props) => (
     <View style={[styles.scene, { backgroundColor: '#fff' }]} >
         <NewDocumentList {...this.props} />
     </View>
   );
 
+  //sets componenent to be displayed in first tab
   SecondRoute = () => (
     <View style={[styles.scene, { backgroundColor: '#fff' }]} >
       <SentDocumentList {...this.props} />
@@ -175,13 +48,10 @@ class MyDocumentsScreen extends React.Component {
 
   _handleIndexChange = index => this.setState({ index });
 
+  //render tab bar style 
   _renderTabBar = props => <TabBar {...props} style={styles.header} indicatorStyle={styles.tabItemActive} />
-        // <View>
-        //     <View style={styles.tabContainer}>
-                // <TabBar {...props} style={styles.header} />
-        //     </View>
-        // </View>;
-
+   
+  //bind the contents of tab to the tab itself
   _renderScene = SceneMap({
     first: this.FirstRoute,
     second: this.SecondRoute,
@@ -190,7 +60,6 @@ class MyDocumentsScreen extends React.Component {
   _handleIndexChange = (index) => this.setState({index});
 
   render() {
-    console.log('navigation:' ,this.props.navigation);
     return (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
           <LinearGradient style={styles.gradientHeader} 
@@ -198,7 +67,7 @@ class MyDocumentsScreen extends React.Component {
           locations={[0,0.8]} colors={['#167434','#17AC71']}
           locations={[0,0.9]} />
           <TabView
-              style={{position: 'relative', top: -55, height: SCREEN_HEIGHT}}
+              style={{position: 'relative', top: -50, height: SCREEN_HEIGHT}}
               navigationState={this.state}
               renderScene={this._renderScene}
               renderTabBar={this._renderTabBar}
@@ -229,10 +98,6 @@ class MyDocumentsScreen extends React.Component {
 
 const styles = StyleSheet.create({
   scene: {
-    // flex: 1,
-    // position:'ab',
-    // width: SCREEN_WIDTH,
-    // height: 200,
     paddingTop:0,
     marginTop:0,
     borderBottomWidth: 0.5,
@@ -243,20 +108,15 @@ const styles = StyleSheet.create({
   },
   tabContainer:{
     position:'relative',
-    // top: -55,
     height: 60,
     zIndex:1
   },
   tabBody:{
-    // position:'ablsolute',
-    // top: -55,
-    // backgroundColor: 'black',
     height: 60,
     zIndex:1
   },
   header: {
     backgroundColor:'transparent',
-    // backgroundColor: 'red',
   },
   tabItemActive: {
     backgroundColor:'white',

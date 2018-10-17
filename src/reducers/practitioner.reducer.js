@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: reducer for get specialty, get pract type and search practitioner
+ * Created:  1 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import {
 	GET_SPECIALTY_PENDING,
 	GET_SPECIALTY_SUCCESS,

@@ -1,7 +1,12 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Tenzin
+ * Description: The component containing past consultation list in accordian
+ * and send back after editing 
+ * Created:  7 October 2018
+ * Last modified:  12 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
 
 import React, { Component } from 'react';
-import { FAB } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import {
   ScrollView,
@@ -11,57 +16,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
 import { STATUS_BAR_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
 import MaterialIconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import Octicons from 'react-native-vector-icons/SimpleLineIcons';
+import { connect} from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
+import { getConsultations } from '../../../actions/consultation.actions';
 
-const BACON_IPSUM =
-  'Bacon ipsum dolor amet chuck turducken landjaeger tongue spare ribs.';
-
-const CONTENT = [
-  {
-    title: 'Aspirin',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Acetaminophen',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Alprazolam',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Ofloxacin',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Quinidex',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Traditional Herbs',
-    content: BACON_IPSUM,
-  },
-];
-
-const SELECTORS = [
-  {
-    title: 'First',
-    value: 0,
-  },
-  {
-    title: 'Third',
-    value: 2,
-  },
-  {
-    title: 'None',
-  },
-];
-
-export default class MyPracPastConsultationTab extends Component {
+class MyPracPastConsultationTab extends Component {
   state = {
     activeSections: [],
     collapsed: true,
@@ -84,15 +46,7 @@ export default class MyPracPastConsultationTab extends Component {
           </View>
       )
   }
-
-  renderModal = () => {
-    return (
-        <Modal onBackdropPress={this.props.toggleSearchOptionModal} isVisible={this.props.renderState.isSearchOptionModalShown}>
-            {this.renderFormContent()}
-        </Modal>
-    );
-  }
-
+  //render the header of the accordian
   renderHeader = (section, _, isActive) => {
     return (
       <Animatable.View
@@ -110,6 +64,7 @@ export default class MyPracPastConsultationTab extends Component {
     );
   };
 
+  //renders the body of accordion
   renderContent(section, _, isActive) {
     return (
       <Animatable.View
@@ -123,7 +78,7 @@ export default class MyPracPastConsultationTab extends Component {
                     <Text style={styles.contentTextLeft}>Date</Text>
                 </View>
                 <View style={[styles.contentContainer, styles.separator]}>
-                    <Text style={styles.contentText}>{section.content.slice(0,9)}</Text>
+                    <Text style={styles.contentText}>{section.consultDate}</Text>
                 </View>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -131,7 +86,7 @@ export default class MyPracPastConsultationTab extends Component {
                     <Text style={styles.contentTextLeft}>Summary</Text>
                 </View>
                 <View style={[styles.contentContainer, styles.separator]}>
-                    <Text style={styles.contentText}>{section.content}</Text>
+                    <Text style={styles.contentText}>{section.summary}</Text>
                 </View>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -139,60 +94,53 @@ export default class MyPracPastConsultationTab extends Component {
                     <Text style={styles.contentTextLeft}>Intervention</Text>
                 </View>
                 <View style={[styles.contentContainer]}>
-                    <Text style={styles.contentText}>{section.content}</Text>
+                    <Text style={styles.contentText}>{section.intervention}</Text>
                 </View>
             </View>
         </Animatable.View>
       </Animatable.View>
     );
   }
+ 
+  componentDidMount() {
+    this.props.getConsultations();
+  }
 
   render() {
     const { activeSections } = this.state;
-
+    if (this.props.consultationState.consultations.length)
     return (
         <View style={styles.container}>
           
-                <Accordion
-                    activeSections={activeSections}
-                    sections={CONTENT}
-                    touchableComponent={TouchableOpacity}
-                    expandMultiple={false}
-                    renderHeader={this.renderHeader}
-                    renderContent={this.renderContent}
-                    duration={400}
-                    onChange={this.setSections}
-                />
+          <Accordion
+              activeSections={activeSections}
+              sections={this.props.consultationState.consultations.filter(c => c.pracUsername === this.props.navigation.getParam('pracUsername'))}
+              touchableComponent={TouchableOpacity}
+              expandMultiple={false}
+              renderHeader={this.renderHeader}
+              renderContent={this.renderContent}
+              duration={400}
+              onChange={this.setSections}
+          />
             
         </View>
     );
+    else if (this.props.consultationState.consultations.length === 0)
+      return null;
+    else
+      return <MaterialIndicator color='#17ac71' />
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#fff',
     marginTop: 10,
   },
-  
-  fab: {
-    position: 'absolute',
-    margin: 20,
-    right: 5,
-    height: 60,
-    borderRadius: 50,
-    width: 60,
-    bottom: 0,
-    backgroundColor: '#17ac71',
-    elevation: 5,
-  },
-  fabWrapper: {
-    right: 5,
-    height: 60,
-    borderRadius: 50,
-    width: 60,
-    bottom: 0,
+  nullContainer:{
+    backgroundColor: '#eee',
+    height: 10
   },
   header: {
     backgroundColor: '#ffffff',
@@ -263,3 +211,16 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
 });
+
+const mapStateToProps = state=>{
+  return {
+    consultationState: state.consultationState,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getConsultations: () => dispatch(getConsultations()),
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MyPracPastConsultationTab);

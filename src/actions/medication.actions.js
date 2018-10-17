@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Actions for add, get and delete medication history
+ * Created: 24 September 2018
+ * Last modified:  28 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
@@ -36,6 +44,7 @@ function setAddMedicationError(addMedicationError) {
 	};
 }
 
+//Add to the database, patient's past medication history
 export function addMedication(med,cb) {
 	return dispatch => {
 		dispatch(setAddMedicationPending(true));
@@ -84,6 +93,7 @@ function setGetMedicationsError(getMedicationsError) {
 	};
 }
 
+//Get the list of medications history of the patient
 export function getMedications() {
 	return dispatch => {
 		dispatch(setGetMedicationsPending(true));
@@ -131,6 +141,7 @@ function setDeleteMedicationError(deleteMedicationError) {
 	};
 }
 
+//delete certain medication detail from the database
 export function deleteMedication(med,cb, idx) {
 	return dispatch => {
 		dispatch(setDeleteMedicationPending(true));

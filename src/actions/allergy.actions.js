@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Actions setting the allgery state
+ * Created: 12 August 2018
+ * Last modified:  25 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
@@ -36,6 +43,7 @@ function setAddAllergyError(addAllergyError) {
 	};
 }
 
+//Sending alergies added by patient
 export function addAllergy(allergy,cb) {
 	return dispatch => {
 		dispatch(setAddAllergyPending(true));
@@ -84,6 +92,7 @@ function setGetAllergiesError(getAllergiesError) {
 	};
 }
 
+//Getting all the allergies previously set by the patients
 export function getAllergies() {
 	return dispatch => {
 		dispatch(setGetAllergiesPending(true));
@@ -131,6 +140,7 @@ function setDeleteAllergyError(deleteAllergyError) {
 	};
 }
 
+//Delete allergy from the current listing of patient allergies
 export function deleteAllergy(allergy, cb, idx) {
 	return dispatch => {
 		dispatch(setDeleteAllergyPending(true));

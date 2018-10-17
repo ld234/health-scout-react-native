@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Render Distance list for search
+ * Created:  5 October 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { TouchableOpacity, Text, View, FlatList, Keyboard} from 'react-native';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,7 +17,6 @@ class MyListItem extends React.PureComponent {
     };
   
     render() {
-      console.log('two things', this.props.selectedRadius,parseInt(this.props.id.slice(0,this.props.id.length - 3)), this.props.selectedRadius === parseInt(this.props.id.slice(0,this.props.id.length - 3)));
       const color = this.props.selectedRadius === parseInt(this.props.id.slice(0,this.props.id.length - 3))? '#17ac71':'#666';
       const font = this.props.selectedRadius === parseInt(this.props.id.slice(0,this.props.id.length - 3))? 'Quicksand-Medium':'Quicksand-Regular';
       return (
@@ -54,7 +60,6 @@ class DistanceList extends React.PureComponent {
     );
   
     render() {
-      console.log('pracState', this.props.renderState);
       return (
         <FlatList
           initialScrollIndex={this.props.renderState.selectedRadius/5 - 1}

@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: reducer for get consultations
+ * Created: 29 August 2018
+ * Last modified:  1 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import {
     GET_CONSULTATIONS_PENDING,
     GET_CONSULTATIONS_SUCCESS,

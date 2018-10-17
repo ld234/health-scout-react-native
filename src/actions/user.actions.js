@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Actions for add, get and delete medication history
+ * Created: 24 September 2018
+ * Last modified:  28 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import axios from 'axios';
 import { logout } from './auth.actions';
 import { AsyncStorage } from 'react-native';

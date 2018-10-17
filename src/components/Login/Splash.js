@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Default screen when loading
+ * Created:  1 August 2018
+ * Last modified:  6 August 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image, Button } from 'react-native';
 import bgImage from '../../../assets/images/background.jpg';

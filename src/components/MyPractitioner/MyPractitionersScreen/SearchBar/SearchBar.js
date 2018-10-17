@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: function that 
+ * Created:  5 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { StyleSheet, View,  } from 'react-native';
 import { SearchBar } from 'react-native-elements';
@@ -9,9 +16,10 @@ import { setSearchQuery, setPracSuggestionOnShow } from '../../../../actions/myp
 class SeachGroup extends React.Component {
   constructor(props){
     super(props);
-   
+    
   }
 
+  //shows suggestion of practitioner name based on query
   render() {
     return (
         <View>
@@ -24,10 +32,8 @@ class SeachGroup extends React.Component {
                 inputStyle={styles.input}
                 value={this.props.searchState.searchQuery}
                 onChangeText={(query) => {
-                    console.log(query);
                     this.props.setPracSuggestionOnShow(true);
-                    this.props.setSearchQuery(query)
-                   
+                    this.props.setSearchQuery(query);
                 }}
                 onFocus={() => {
                     this.props.setPracSuggestionOnShow(true);
@@ -99,7 +105,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setPracSuggestionOnShow: (boolVal) => dispatch(setPracSuggestionOnShow(boolVal)),
-        setSearchQuery:() => dispatch(setSearchQuery()),
+        setSearchQuery:(q) => dispatch(setSearchQuery(q)),
     }
 }
 

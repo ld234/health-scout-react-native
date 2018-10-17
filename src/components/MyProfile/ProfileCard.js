@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Settings and customiseing the card to be displayed
+ * Created:  6 August 2018
+ * Last modified:  10 August 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Surface, } from 'react-native-paper';

@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: Actions for changing states for login and log out
+ * Created: 2 August 2018
+ * Last modified:  15 September 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import axios from 'axios';
 import DeviceStorage from '../services/DeviceStorage';
 import { AsyncStorage } from 'react-native';
@@ -34,6 +41,7 @@ function setLoginError(loginError) {
 	};
 }
 
+//Check username and password with backend 
 export function login(username, password, cb) {
 	return dispatch => {
 		dispatch(setLoginPending(true));
@@ -69,6 +77,8 @@ export function logout() {
 	};
 }
 
+
+//Check authentication to prevent login repeatedly if the app reloads
 export function checkAuth(cb) {
 	return dispatch => {
 		dispatch(setLoginPending(true));
@@ -121,6 +131,7 @@ function setVerifyEmailError(verifyEmailError) {
 	};
 }
 
+//verfiy that the email is correct
 export function verifyEmail(token) {
 	return dispatch => {
 		dispatch(setVerifyEmailPending(true));

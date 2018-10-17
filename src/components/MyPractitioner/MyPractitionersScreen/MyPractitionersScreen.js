@@ -1,14 +1,15 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: a parent container for the connected practitioner list
+ * Created:  5 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
-import { View, Text, Platform } from 'react-native';
-import SearchBar from './SearchBar/SearchBar';
+import { View } from 'react-native';
 import MyPractitionerList from './MyPractitionerList';
-import { getMyPractitioners } from '../../../actions/mypracSearch.actions';
 
 export default class MyPractitionersScreen extends Component {
-    // componentDidMount(){
-    //     console.log(this.props.navigation);
-    // }
     render() {
         return (
             <View style={{ flex: 1 }}>

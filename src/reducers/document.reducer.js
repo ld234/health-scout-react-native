@@ -1,3 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * @Dan
+ * Description: reducer for get send documents, recieved documents, and send documents to practitioner
+ * Created:  9 August 2018
+ * Last modified:  10 October 2018
+ * * * * * * * * * * * * * * * * * * * * * */
+
 import { GET_SENT_DOCUMENTS_PENDING, 
 	GET_SENT_DOCUMENTS_SUCCESS, 
 	GET_SENT_DOCUMENTS_ERROR,
@@ -50,7 +57,7 @@ export default function docReducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				isGetSentDocumentsSuccess: action.isGetSentDocumentsSuccess,
-				receivedDocs: action.medication? [...state.receivedDocs, action.medication]: state.receivedDocs,
+				sentDocuments: action.sentDocuments && action.sentDocuments.length?  action.sentDocuments : state.sentDocuments,
 			};
 		case GET_SENT_DOCUMENTS_ERROR:
 			return {
@@ -63,7 +70,6 @@ export default function docReducer(state = INITIAL_STATE, action) {
 				isSendDocumentPending: action.isSendDocumentPending,
 			};
 		case SEND_DOCUMENT_SUCCESS:
-			console.log('just delete', action.justSendIdx);
 			return {
 				...state,
 				isSendDocumentSuccess: action.isSendDocumentSuccess,
@@ -71,9 +77,9 @@ export default function docReducer(state = INITIAL_STATE, action) {
 				receivedDocs: Number.isInteger(action.justSendIdx) ? 
 					state.receivedDocs.filter((item, idx) => idx !== action.justSendIdx): 
 					state.receivedDocs,
+				sentDocuments: action.newSentDoc ? [...state.sentDocuments, action.newSentDoc] : state.sentDocuments, 
 			};
 		case SEND_DOCUMENT_ERROR:
-			console.log(state);
 			return {
 				...state,
 				sendDocumentError: action.sendDocumentError,
