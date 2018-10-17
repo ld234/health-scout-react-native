@@ -318,7 +318,7 @@ class SearchScreen extends React.Component {
                 return {...item, rating: 0};
             return item;
         })
-            .filter(prac => specialties.every(sp => prac.Specialties.map(s => s.specialty).includes(sp))).filter(prac => prac.distance <= this.props.renderState.selectedRadius);
+            .filter(prac => specialties.every(sp => (prac.Specialties ? prac.Specialties: []).map(s => s.specialty).includes(sp))).filter(prac => prac.distance <= this.props.renderState.selectedRadius);
         if (this.props.renderState.searchPracType && this.props.renderState.searchPracType.length) {
             list = list.filter(prac => prac.pracType.toLowerCase() === this.props.renderState.searchPracType.toLowerCase());
         }
