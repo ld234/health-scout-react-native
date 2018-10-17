@@ -101,7 +101,6 @@ class MyPracDetailTab extends Component {
                         {serviceProvided}
                     </Text>
                 </Surface>
-                {/* <View style={styles.hrLine}/> */}
 
                 <Surface style={styles.wrapperLast}>
                     <Text style={[styles.title, {flexDirection: 'row'}]}>

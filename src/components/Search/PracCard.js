@@ -32,15 +32,7 @@ class PracCard extends React.Component {
                     
                 </Card.Content>
                 <Card.Actions style={styles.cardAction}>
-                    <Text style={styles.distanceText}>Distance: {this.props.data.distance.toString().slice(0,6)}km</Text>
-                    {/* <TouchableRipple
-                        borderless
-                        onPress={() => console.log('Pressed')}
-                        rippleColor="rgba(200, 200, 200, .32)"
-                    >
-                        <Text style={styles.actionText}>More</Text>
-                    </TouchableRipple> */}
-                    
+                    <Text style={styles.distanceText}>Distance: {this.props.data.distance.toString().slice(0,6)}km</Text>                    
                 </Card.Actions>
             </Card>
         );

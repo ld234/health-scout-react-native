@@ -75,31 +75,29 @@ class SearchPracProfile extends Component{
         }
     }
 
+    handleOnScroll = event => {
+        this.setState({
+          scrollOffset: event.nativeEvent.contentOffset.y
+        });
+    };
+
+    handleScrollTo = p => {
+        if (this.scrollViewRef) {
+          this.scrollViewRef.scrollTo(p);
+        }
+    };
+
     renderCardForm = () => {
         return (
-            <ScrollView
-            //   ref={ref => (this.scrollViewRef = ref)}
-              keyboardShouldPersistTaps={'always'}
-              showsVerticalScrollIndicator={false} 
-              style={{position: 'relative'}} 
-            //   onScroll={this.handleOnScroll}
-              contentContainerStyle={styles.longModal} >
+            <ScrollView 
+                ref={ref => (this.scrollViewRef = ref)}
+                keyboardShouldPersistTaps={'always'}
+                showsVerticalScrollIndicator={false} 
+                style={{position: 'relative'}} 
+                onScroll={this.handleOnScroll}
+                contentContainerStyle={styles.longModal} >
               <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular', textAlign:'center'}}>
-                {/* {this.props.con.addFamilyConditionError}  */}
               </Text></View>
-              {/* <View style={{flex: 1, heigth: 300}}>
-                <CreditCard
-                    // type={this.state.type}
-                    // imageFront={require('./images/card-front.png')}
-                    // imageBack={require('./images/card-back.png')}
-                    shiny={false}
-                    bar={false}
-                    focused={this.state.focused}
-                    number={this.state.cardNum}
-                    name={this.state.name}
-                    expiry={this.state.expMonth+this.state.expYear}
-                    cvc={this.state.cvv}/>
-              </View> */}
             <View style={{width: SCREEN_WIDTH*0.78, marginRight: 10}}>
             <Sae
                 style={{width: SCREEN_WIDTH*0.78, marginRight: 10}}
@@ -140,8 +138,6 @@ class SearchPracProfile extends Component{
                     this.setState({expMonth: text.slice(0,2)})
                     this.setState({expYear: text.slice(2,4)})
                 }}
-                // onBlur={() => { this.onBlur('expYear'); this.onBlur('expMonth'); }}
-                // onFocus={() => this.onFocus('expMonth')}
             />
             <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular', textAlign:'right'}}>{this.state.errors.goal}</Text></View>
             <Sae
@@ -210,7 +206,6 @@ class SearchPracProfile extends Component{
               onScroll={this.handleOnScroll}
               contentContainerStyle={styles.longModal} >
               <View><Text style={{color:'#ff0000', fontFamily:'Quicksand-Regular', textAlign:'center'}}>
-                {/* {this.props.con.addFamilyConditionError}  */}
               </Text></View>
             <Sae
                 style={{width: SCREEN_WIDTH*0.78, marginRight: 10}}
@@ -293,25 +288,15 @@ class SearchPracProfile extends Component{
             theme
         };
         return (
-                <Modal 
-                    style={{alignContent:'center', paddingTop: 50}}
-                    scrollTo={this.handleScrollTo}
-                    onBackButtonPress={this.toggleModal}
-                    scrollOffset={this.state.scrollOffset}
-                    style={{marginTop: SCREEN_HEIGHT* 0.2}}
-                    // onSwipe={this.toggleModal} swipeDirection="up" 
-                    onBackdropPress={this.toggleModal} isVisible={this.state.modal}>
-                    {this.state.cardState? this.renderCardForm(): this.renderFormContent()}
-                </Modal>
-            );
-        // stripe.paymentRequestWithCardForm()
-        //     .then(response => {
-        //         console.log('Token:',response);
-        //         this.props.setConnection(pracUsername,response.tokenId);
-        //     })
-        //     .catch(error => {
-        //         console.log('Stripe token failed');
-        //     });
+            <Modal 
+                style={{alignContent:'center', paddingTop: 50}}
+                scrollTo={this.handleScrollTo}
+                onBackButtonPress={this.toggleModal}
+                scrollOffset={this.state.scrollOffset}
+                // onSwipe={this.toggleModal} swipeDirection="up" 
+                onBackdropPress={this.toggleModal} isVisible={this.state.modal}>
+                    {this.renderFormContent()}
+            </Modal>)
     }
     static navigationOptions = ({navigation}) => {
         return {
@@ -333,13 +318,19 @@ class SearchPracProfile extends Component{
         }).then(stripeToken => {
             const pracUsername = this.props.navigation.getParam('pracUsername');
             console.log('stripe token created', stripeToken);
-            this.props.setConnection(pracUsername, stripeToken.id, () => {
+            this.props.setConnection({
+                pracUsername, 
+                stripeToken: 
+                stripeToken.id, 
+                goal: this.state.goal, 
+                conditions: this.state.conditions, message: this.state.message }, () => {
                 this.toggleModal(); 
                 showMessage({
                     message: 'Connect successfully.',
                     type: 'success',
                     description: 'Please wait for practitioner to accept your connection.'
                 })
+                setTimeout(() => this.props.navigation.goBack(), 2000);
             });
             this.resetForm();
         })
@@ -434,6 +425,7 @@ const styles = StyleSheet.create({
     },
     longModal:{
         height: SCREEN_HEIGHT - 300,
+        width: SCREEN_WIDTH*0.9,
         backgroundColor: 'white',
         borderRadius: 10,
         justifyContent: 'center',

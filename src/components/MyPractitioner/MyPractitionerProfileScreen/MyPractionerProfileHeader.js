@@ -29,7 +29,6 @@ class MyPractitionerProfileHeader extends Component {
                     style={styles.practitionerType}>
                     {this.props.pracProfileState.generalInfo.pracType}
                 </Text>
-                {/* <Icon name={}/> */}
                 </LinearGradient>
                 
             </View>

@@ -70,7 +70,6 @@ export default function medicationReducer(state = INITIAL_STATE, action) {
 					state.medications,
 			};
 		case DELETE_MEDICATION_ERROR:
-			console.log(state);
 			return {
 				...state,
 				deleteMedicationError: action.deleteMedicationError,

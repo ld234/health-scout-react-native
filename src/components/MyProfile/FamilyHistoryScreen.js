@@ -241,20 +241,6 @@ class FamilyHistoryScreen extends Component {
                 <Octicons name={'trash'} color={'#666'} size={26}></Octicons>
             </TouchableOpacity> :null }
         </View>
-        {/* <View style={styles.standalone}>
-          <SwipeRow leftOpenValue={75} rightOpenValue={-75}>
-            <View style={styles.standaloneRowBack}>
-              <Text style={styles.backTextWhite}>Left</Text>
-              <Text style={styles.backTextWhite}>Right</Text>
-            </View>
-            <View style={styles.standaloneRowFront}>
-                <MaterialIconCommunity name={'human-male-female'} color={'#17ac71'} size={26}></MaterialIconCommunity>
-                <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.headerText}>{section.title}</Text>
-                </View>
-            </View>
-          </SwipeRow>
-        </View> */}
       </Animatable.View>
     );
   };

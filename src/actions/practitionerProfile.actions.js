@@ -229,15 +229,15 @@ export function resetStates(){
 	}
 }
 
-export function setConnection(pracUsername, stripeToken, cb) {
-	console.log('SET CONNECTION', pracUsername);
+export function setConnection(data, cb) {
+	console.log('SET CONNECTION', data);
 	return dispatch => {
 		dispatch(setConnectionPending(true));
 		dispatch(setConnectionSuccess(false));
 		dispatch(setConnectionError(null));
 		AsyncStorage.getItem('id_token').then(res => {
 			axios
-				.post(`${CONNECT_URL}`,{pracUsername, stripeToken}, {
+				.post(`${CONNECT_URL}`,data, {
 					headers: {
 						'x-access-token': res,
 					},

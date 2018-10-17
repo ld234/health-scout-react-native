@@ -117,14 +117,12 @@ class LoginScreen extends React.Component {
     if (this.state.keyboardShow) {
       return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-          {/* <KeyboardAvoidingView  keyboardVerticalOffset={0} behavior="padding" enabled style={styles.backgroundContainer}> */}
           <ScrollView keyboardDismissMode='on-drag'
             keyboardShouldPersistTaps={'always'} style={styles.scrollView}>
             <TouchableWithoutFeedback style={styles.backgroundContainer} onPress={Keyboard.dismiss}>
               {this.renderFormBody()}
             </TouchableWithoutFeedback>
           </ScrollView>
-          {/* </KeyboardAvoidingView> */}
         </ImageBackground>
       );
     } else {

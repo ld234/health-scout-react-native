@@ -163,15 +163,6 @@ class ConsultationHistoryScreen extends Component {
                 />
                 
             </ScrollView>
-            {/* <FAB 
-                  icon={({ size, color }) => (
-                      <Icon size={28} color={'white'} name="filter-list" />
-                  )}
-                  style={styles.fab}
-                  onPress={() => {
-                    this.toggleModal();
-                }}
-            /> */}
             {this.renderModal()}
         </View>
     );

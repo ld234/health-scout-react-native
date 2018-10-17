@@ -178,28 +178,6 @@ class Navigation extends React.Component {
 Navigation.propTypes = {
   component: PropTypes.element,
 }
-/*
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import MyProfile from '../MyProfile/MyProfileScreen';
-import MyDocuments from '../MyDocuments/MyDocumentsScreen';
-
-export default createMaterialBottomTabNavigator({
-  MyProfile: { screen: MyProfile },
-  MyDocuments: { screen: MyDocuments },
-}, {
-  initialRouteName: 'MyProfile',
-  activeTintColor: '#17AC71',
-  inactiveTintColor: '#f0edf6',
-  barStyle: { backgroundColor: '#fff', height: 60},
-  labeled: false,
-  navigationOptions: ({ navigation }) => ({
-    tabBarIcon: ({ focused, tintColor }) => {
-      const { routeName } = navigation.state;
-      return <SimpleLineIcon color={tintColor} size={24} name={'user'} />;
-    },
-  })
-});
-*/
 
 const mapDispatchToProps = dispatch => {
   return {
