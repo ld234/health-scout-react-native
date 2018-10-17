@@ -36,7 +36,6 @@ function setGetConsultationsError(getConsultationsError) {
 	};
 }
 
-//Get past consultation details
 export function getConsultations() {
 	return dispatch => {
 		dispatch(setGetConsultationsPending(true));
